@@ -1,0 +1,491 @@
+.loadingContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  z-index: 9999;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.loadingContainer.fadeOut {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Background with 3D gradient orbs */
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 50%, #FFFFFF 100%);
+}
+
+.gradientOrb1 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(9, 168, 107, 0.08) 0%, transparent 70%);
+  top: -200px;
+  left: -200px;
+  animation: float1 8s ease-in-out infinite;
+  filter: blur(60px);
+}
+
+.gradientOrb2 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 119, 217, 0.08) 0%, transparent 70%);
+  bottom: -150px;
+  right: -150px;
+  animation: float2 10s ease-in-out infinite;
+  filter: blur(60px);
+}
+
+.gradientOrb3 {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(9, 168, 107, 0.06) 0%, transparent 70%);
+  top: 50%;
+  right: 10%;
+  transform: translateY(-50%);
+  animation: float3 12s ease-in-out infinite;
+  filter: blur(50px);
+}
+
+@keyframes float1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(30px, 30px) scale(1.1);
+  }
+}
+
+@keyframes float2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-40px, -40px) scale(1.15);
+  }
+}
+
+@keyframes float3 {
+  0%, 100% {
+    transform: translateY(-50%) translateX(0) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) translateX(-30px) scale(1.1);
+  }
+}
+
+/* Main Content */
+.content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Logo Container */
+.logoContainer {
+  margin-bottom: 1rem;
+}
+
+.logo {
+  max-width: 200px;
+  width: auto;
+  height: auto;
+  animation: logoPulse 2s ease-in-out infinite;
+  object-fit: contain;
+}
+
+.websiteName {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #09A86B 0%, #1077D9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  letter-spacing: 0.05em;
+  animation: logoPulse 2s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+}
+
+/* Loader Wrapper */
+.loaderWrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Energy Waves */
+.energyWaves {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.wave {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #09A86B;
+  border-right-color: #1077D9;
+  animation: waveRotate 2s linear infinite;
+  animation-delay: var(--delay);
+  opacity: 0.6;
+}
+
+.wave:nth-child(1) {
+  animation-duration: 2s;
+}
+
+.wave:nth-child(2) {
+  animation-duration: 2.5s;
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+}
+
+.wave:nth-child(3) {
+  animation-duration: 3s;
+  width: 60%;
+  height: 60%;
+  top: 20%;
+  left: 20%;
+}
+
+@keyframes waveRotate {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.6;
+  }
+}
+
+/* Solar Panel Grid */
+.solarGrid {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 8px;
+  animation: gridRotate 20s linear infinite;
+}
+
+@keyframes gridRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.solarPanel {
+  position: relative;
+  background: linear-gradient(135deg, rgba(9, 168, 107, 0.15) 0%, rgba(16, 119, 217, 0.15) 100%);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(9, 168, 107, 0.2);
+  animation: panelShine 3s ease-in-out infinite;
+}
+
+.solarPanel:nth-child(odd) {
+  animation-delay: 0.2s;
+}
+
+.solarPanel:nth-child(even) {
+  animation-delay: 0.4s;
+}
+
+@keyframes panelShine {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(9, 168, 107, 0.3);
+  }
+}
+
+.panelSurface {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 70%
+  );
+  animation: surfaceShine 2s linear infinite;
+}
+
+@keyframes surfaceShine {
+  0% {
+    transform: translateX(-100%) translateY(-100%);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%);
+  }
+}
+
+.panelGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(9, 168, 107, 0.4) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+/* Energy Core */
+.energyCore {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #09A86B 0%, #1077D9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px rgba(9, 168, 107, 0.4), 0 0 60px rgba(16, 119, 217, 0.3);
+  animation: corePulse 2s ease-in-out infinite;
+}
+
+@keyframes corePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 30px rgba(9, 168, 107, 0.4), 0 0 60px rgba(16, 119, 217, 0.3);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 40px rgba(9, 168, 107, 0.6), 0 0 80px rgba(16, 119, 217, 0.5);
+  }
+}
+
+.coreInner {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  animation: innerRotate 3s linear infinite;
+}
+
+@keyframes innerRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.corePulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  animation: pulseExpand 2s ease-out infinite;
+}
+
+@keyframes pulseExpand {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Progress Container */
+.progressContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 300px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 4px;
+  background: rgba(9, 168, 107, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #09A86B 0%, #1077D9 100%);
+  border-radius: 10px;
+  transition: width 0.3s ease-out;
+  box-shadow: 0 0 10px rgba(9, 168, 107, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.progressFill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: progressShine 1.5s ease-in-out infinite;
+}
+
+@keyframes progressShine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.progressText {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #09A86B;
+  letter-spacing: 0.05em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .websiteName {
+    font-size: 2rem;
+  }
+
+  .loaderWrapper {
+    width: 160px;
+    height: 160px;
+  }
+
+  .solarGrid {
+    width: 110px;
+    height: 110px;
+  }
+
+  .energyCore {
+    width: 50px;
+    height: 50px;
+  }
+
+  .coreInner {
+    width: 25px;
+    height: 25px;
+  }
+
+  .progressContainer {
+    width: 250px;
+  }
+
+  .gradientOrb1,
+  .gradientOrb2,
+  .gradientOrb3 {
+    filter: blur(40px);
+  }
+}
+
+@media (max-width: 480px) {
+  .websiteName {
+    font-size: 1.75rem;
+  }
+
+  .loaderWrapper {
+    width: 140px;
+    height: 140px;
+  }
+
+  .solarGrid {
+    width: 100px;
+    height: 100px;
+  }
+
+  .content {
+    gap: 2rem;
+  }
+}
+
