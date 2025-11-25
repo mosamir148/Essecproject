@@ -1,0 +1,471 @@
+.page {
+  min-height: 100vh;
+  background-color: rgb(249, 250, 251);
+  padding: 2rem 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .page {
+    background-color: rgb(17, 24, 39);
+  }
+}
+
+.container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.loadingContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(249, 250, 251);
+}
+
+@media (prefers-color-scheme: dark) {
+  .loadingContainer {
+    background-color: rgb(17, 24, 39);
+  }
+}
+
+.loadingContent {
+  text-align: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  border-radius: 9999px;
+  height: 3rem;
+  width: 3rem;
+  border-bottom: 2px solid #2563eb;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  margin-top: 1rem;
+  color: rgb(75, 85, 99);
+}
+
+@media (prefers-color-scheme: dark) {
+  .loadingText {
+    color: rgb(156, 163, 175);
+  }
+}
+
+.header {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: rgb(17, 24, 39);
+}
+
+@media (prefers-color-scheme: dark) {
+  .title {
+    color: white;
+  }
+}
+
+.subtitle {
+  margin-top: 0.5rem;
+  color: rgb(75, 85, 99);
+}
+
+@media (prefers-color-scheme: dark) {
+  .subtitle {
+    color: rgb(156, 163, 175);
+  }
+}
+
+.subtitleSpan {
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.subtitleBold {
+  font-weight: 600;
+}
+
+.headerActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonPrimary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.buttonPrimary:hover {
+  background-color: #1d4ed8;
+}
+
+.buttonDanger {
+  background-color: #dc2626;
+  color: white;
+}
+
+.buttonDanger:hover {
+  background-color: #b91c1c;
+}
+
+.buttonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.errorMessage {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: rgb(254, 242, 242);
+  border: 1px solid rgb(248, 113, 113);
+  color: rgb(185, 28, 28);
+  border-radius: 0.5rem;
+}
+
+.tableContainer {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tableContainer {
+    background-color: rgb(31, 41, 55);
+  }
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHead {
+  background-color: rgb(249, 250, 251);
+}
+
+@media (prefers-color-scheme: dark) {
+  .tableHead {
+    background-color: rgb(55, 65, 81);
+  }
+}
+
+.tableRow {
+  border-bottom: 1px solid rgb(229, 231, 235);
+}
+
+@media (prefers-color-scheme: dark) {
+  .tableRow {
+    border-bottom-color: rgb(55, 65, 81);
+  }
+}
+
+.tableRow:hover {
+  background-color: rgb(249, 250, 251);
+}
+
+@media (prefers-color-scheme: dark) {
+  .tableRow:hover {
+    background-color: rgb(55, 65, 81);
+  }
+}
+
+.tableHeader {
+  padding: 0.75rem 1.5rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgb(107, 114, 128);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tableHeaderRight {
+  text-align: right;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tableHeader {
+    color: rgb(209, 213, 219);
+  }
+}
+
+.tableCell {
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.tableCellCenter {
+  text-align: center;
+}
+
+.tableCellRight {
+  text-align: right;
+}
+
+.tableCellName {
+  font-weight: 500;
+  color: rgb(17, 24, 39);
+}
+
+@media (prefers-color-scheme: dark) {
+  .tableCellName {
+    color: white;
+  }
+}
+
+.tableCellText {
+  color: rgb(107, 114, 128);
+}
+
+@media (prefers-color-scheme: dark) {
+  .tableCellText {
+    color: rgb(156, 163, 175);
+  }
+}
+
+.tableActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+
+.actionButtonBlue {
+  color: #2563eb;
+}
+
+.actionButtonBlue:hover {
+  color: #1e40af;
+}
+
+@media (prefers-color-scheme: dark) {
+  .actionButtonBlue {
+    color: #60a5fa;
+  }
+
+  .actionButtonBlue:hover {
+    color: #93c5fd;
+  }
+}
+
+.actionButtonGreen {
+  color: #16a34a;
+}
+
+.actionButtonGreen:hover {
+  color: #15803d;
+}
+
+@media (prefers-color-scheme: dark) {
+  .actionButtonGreen {
+    color: #4ade80;
+  }
+
+  .actionButtonGreen:hover {
+    color: #86efac;
+  }
+}
+
+.actionButtonRed {
+  color: #dc2626;
+}
+
+.actionButtonRed:hover {
+  color: #991b1b;
+}
+
+@media (prefers-color-scheme: dark) {
+  .actionButtonRed {
+    color: #f87171;
+  }
+
+  .actionButtonRed:hover {
+    color: #fca5a5;
+  }
+}
+
+.actionIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+}
+
+.modalContent {
+  background-color: white;
+  border-radius: 0.5rem;
+  max-width: 56rem;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .modalContent {
+    background-color: rgb(31, 41, 55);
+  }
+}
+
+.modalHeader {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: rgb(17, 24, 39);
+}
+
+@media (prefers-color-scheme: dark) {
+  .modalTitle {
+    color: white;
+  }
+}
+
+.modalCloseButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgb(107, 114, 128);
+  transition: color 0.2s;
+}
+
+.modalCloseButton:hover {
+  color: rgb(55, 65, 81);
+}
+
+@media (prefers-color-scheme: dark) {
+  .modalCloseButton {
+    color: rgb(156, 163, 175);
+  }
+
+  .modalCloseButton:hover {
+    color: rgb(229, 231, 235);
+  }
+}
+
+.modalCloseIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.modalBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modalField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.modalFieldLabel {
+  font-weight: 700;
+  color: rgb(55, 65, 81);
+}
+
+@media (prefers-color-scheme: dark) {
+  .modalFieldLabel {
+    color: rgb(209, 213, 219);
+  }
+}
+
+.modalFieldValue {
+  color: rgb(75, 85, 99);
+  margin-top: 0.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .modalFieldValue {
+    color: rgb(156, 163, 175);
+  }
+}
+
+.modalList {
+  list-style-type: disc;
+  list-style-position: inside;
+  color: rgb(75, 85, 99);
+  margin-top: 0.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .modalList {
+    color: rgb(156, 163, 175);
+  }
+}
+

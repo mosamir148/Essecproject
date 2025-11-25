@@ -1,0 +1,614 @@
+/* Navbar Styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  transition: all 0.3s;
+}
+
+.navbarScrolled {
+  background-color: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px -4px rgba(9, 168, 107, 0.15), 0 2px 8px -2px rgba(16, 119, 217, 0.1);
+  border-bottom: 1px solid rgba(9, 168, 107, 0.15);
+}
+
+.navbarNotScrolled {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(16, 119, 217, 0.1);
+}
+
+/* Home page - transparent navbar when not scrolled */
+.navbarTransparent {
+  background-color: transparent;
+  backdrop-filter: none;
+  border-bottom: 1px solid transparent;
+}
+
+/* Home page - navbar with background when scrolled */
+.navbarScrolledHome {
+  background-color: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px -4px rgba(9, 168, 107, 0.15), 0 2px 8px -2px rgba(16, 119, 217, 0.1);
+  border-bottom: 1px solid rgba(9, 168, 107, 0.15);
+}
+
+.container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.navbarContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logoImage {
+  height: 6rem;
+  width: auto;
+  transition: transform 0.3s;
+}
+
+.logoLink:hover .logoImage {
+  transform: scale(1.05);
+}
+
+.desktopNav {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .desktopNav {
+    display: flex;
+  }
+}
+
+.navLink {
+  position: relative;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0.5rem;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.navLinkActive {
+  color: #09A86B;
+  font-weight: 600;
+}
+
+.navLinkInactive {
+  color: #4a5568;
+}
+
+.navLinkInactive:hover {
+  color: #09A86B;
+  transform: translateY(-1px);
+}
+
+/* Make nav links white on transparent navbar (home page) */
+.navbarTransparent .navLinkInactive {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.navbarTransparent .navLinkActive {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.navbarTransparent .navLinkInactive:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Removed navLinkIndicator for cleaner professional look */
+
+.navLinkBackground {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+  transition: opacity 0.2s;
+}
+
+.navLinkBackgroundActive {
+  background: linear-gradient(135deg, rgba(9, 168, 107, 0.1), rgba(16, 119, 217, 0.06));
+  opacity: 1;
+}
+
+.navLinkBackgroundInactive {
+  background-color: rgba(9, 168, 107, 0.04);
+  opacity: 0;
+}
+
+.navLink:hover .navLinkBackgroundInactive,
+.navLink:focus .navLinkBackgroundInactive {
+  opacity: 1;
+}
+
+.navLinkText {
+  position: relative;
+  z-index: 10;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.languageSwitcher {
+  display: none;
+  align-items: center;
+  background-color: rgba(16, 119, 217, 0.08);
+  border-radius: 0.75rem;
+  padding: 0.375rem;
+  gap: 0.25rem;
+  border: 1px solid rgba(16, 119, 217, 0.15);
+}
+
+@media (min-width: 768px) {
+  .languageSwitcher {
+    display: flex;
+  }
+}
+
+.languageButton {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  transition: all 0.2s;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* Make language switcher visible on transparent navbar */
+.navbarTransparent .languageSwitcher {
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+.navbarTransparent .languageButtonInactive {
+  color: white;
+}
+
+.navbarTransparent .languageButtonActive {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.languageButtonActive {
+  background: linear-gradient(135deg, #09A86B, #1077D9);
+  color: white;
+  box-shadow: 0 2px 8px rgba(9, 168, 107, 0.3);
+}
+
+.languageButtonInactive {
+  color: #4a5568;
+}
+
+.languageButtonInactive:hover {
+  color: #09A86B;
+  background-color: rgba(9, 168, 107, 0.1);
+}
+
+.languageFlag {
+  margin-right: 0.375rem;
+}
+
+.themeButton {
+  padding: 0.625rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, rgba(9, 168, 107, 0.1), rgba(16, 119, 217, 0.1));
+  color: #09A86B;
+  transition: all 0.3s;
+  border: 1px solid rgba(9, 168, 107, 0.2);
+  cursor: pointer;
+}
+
+/* Make theme button visible on transparent navbar */
+.navbarTransparent .themeButton {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  backdrop-filter: blur(8px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbarTransparent .themeButton:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.themeButton:hover {
+  background: linear-gradient(135deg, #09A86B, #1077D9);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(9, 168, 107, 0.3);
+}
+
+.mobileMenuButton {
+  display: block;
+  padding: 0.625rem;
+  border-radius: 0.5rem;
+  color: rgb(55, 65, 81);
+  transition: background-color 0.2s;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* Make mobile menu button visible on transparent navbar */
+.navbarTransparent .mobileMenuButton {
+  color: white;
+}
+
+.navbarTransparent .mobileMenuButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.mobileMenuButton:hover {
+  background-color: rgb(243, 244, 246);
+}
+
+@media (min-width: 1024px) {
+  .mobileMenuButton {
+    display: none;
+  }
+}
+
+.mobileMenu {
+  display: block;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-top: 1px solid rgba(16, 119, 217, 0.15);
+  animation: slide-in-from-top 0.2s ease-out;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+}
+
+@media (min-width: 1024px) {
+  .mobileMenu {
+    display: none;
+  }
+}
+
+.mobileNavItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobileNavLink {
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.mobileNavLinkActive {
+  background: linear-gradient(135deg, rgba(9, 168, 107, 0.1), rgba(16, 119, 217, 0.06));
+  color: #09A86B;
+  font-weight: 600;
+}
+
+.mobileNavLinkInactive {
+  color: #4a5568;
+}
+
+.mobileNavLinkInactive:hover {
+  background-color: rgba(9, 168, 107, 0.08);
+  color: #09A86B;
+}
+
+.mobileLanguageSection {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(16, 119, 217, 0.15);
+}
+
+.mobileLanguageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.mobileLanguageTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+}
+
+.mobileLanguageIcon {
+  margin-right: 0.5rem;
+}
+
+.mobileLanguageButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.mobileLanguageButton {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.mobileLanguageButtonActive {
+  background: linear-gradient(135deg, #09A86B, #1077D9);
+  color: white;
+  box-shadow: 0 4px 12px rgba(9, 168, 107, 0.3);
+}
+
+.mobileLanguageButtonInactive {
+  background-color: rgba(16, 119, 217, 0.08);
+  color: #4a5568;
+  border: 1px solid rgba(16, 119, 217, 0.15);
+}
+
+.mobileLanguageButtonInactive:hover {
+  background-color: rgba(9, 168, 107, 0.1);
+  color: #09A86B;
+}
+
+.mobileLanguageFlag {
+  margin-right: 0.5rem;
+}
+
+@keyframes slide-in-from-top {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark Mode Styles */
+:global(.dark) .navbarScrolled {
+  background-color: rgba(11, 15, 19, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 
+    0 4px 20px -4px rgba(0, 230, 118, 0.2),
+    0 2px 8px -2px rgba(0, 176, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 230, 118, 0.1);
+  border-bottom: 1px solid rgba(0, 230, 118, 0.2);
+}
+
+:global(.dark) .navbarNotScrolled {
+  background-color: rgba(11, 15, 19, 0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 176, 255, 0.15);
+}
+
+:global(.dark) .navbarScrolledHome {
+  background-color: rgba(11, 15, 19, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 
+    0 4px 20px -4px rgba(0, 230, 118, 0.2),
+    0 2px 8px -2px rgba(0, 176, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 230, 118, 0.1);
+  border-bottom: 1px solid rgba(0, 230, 118, 0.2);
+}
+
+:global(.dark) .navLinkActive {
+  color: #00E676 !important;
+  text-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+}
+
+:global(.dark) .navLinkInactive {
+  color: #E5E5E5 !important;
+}
+
+:global(.dark) .navLinkInactive:hover {
+  color: #00E676 !important;
+  text-shadow: 0 0 8px rgba(0, 230, 118, 0.4);
+}
+
+:global(.dark) .navbarTransparent .navLinkInactive {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+:global(.dark) .navbarTransparent .navLinkActive {
+  color: #00E676 !important;
+  text-shadow: 0 0 15px rgba(0, 230, 118, 0.6), 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+:global(.dark) .navbarTransparent .navLinkInactive:hover {
+  color: #00E676 !important;
+  text-shadow: 0 0 12px rgba(0, 230, 118, 0.5);
+}
+
+:global(.dark) .navLinkBackgroundActive {
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.2), rgba(0, 176, 255, 0.15));
+  box-shadow: 0 0 15px rgba(0, 230, 118, 0.2);
+}
+
+:global(.dark) .navLinkBackgroundInactive {
+  background-color: rgba(0, 230, 118, 0.08);
+}
+
+:global(.dark) .languageSwitcher {
+  background-color: rgba(0, 176, 255, 0.15);
+  border: 1px solid rgba(0, 176, 255, 0.25);
+}
+
+:global(.dark) .navbarTransparent .languageSwitcher {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+:global(.dark) .navbarTransparent .languageButtonInactive {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+:global(.dark) .navbarTransparent .languageButtonActive {
+  background-color: rgba(0, 230, 118, 0.3);
+  color: #00E676 !important;
+  box-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
+}
+
+:global(.dark) .languageButtonActive {
+  background: linear-gradient(135deg, #00E676, #00B0FF);
+  color: #0B0F13 !important;
+  box-shadow: 0 2px 12px rgba(0, 230, 118, 0.4), 0 0 20px rgba(0, 176, 255, 0.3);
+}
+
+:global(.dark) .languageButtonInactive {
+  color: #E5E5E5 !important;
+}
+
+:global(.dark) .languageButtonInactive:hover {
+  color: #00E676 !important;
+  background-color: rgba(0, 230, 118, 0.15);
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.2);
+}
+
+:global(.dark) .themeButton {
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.2), rgba(0, 176, 255, 0.2));
+  color: #00E676 !important;
+  border: 1px solid rgba(0, 230, 118, 0.3);
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.2);
+}
+
+:global(.dark) .navbarTransparent .themeButton {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(12px);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+:global(.dark) .navbarTransparent .themeButton:hover {
+  background-color: rgba(0, 230, 118, 0.3);
+  color: #00E676 !important;
+  box-shadow: 0 0 20px rgba(0, 230, 118, 0.4);
+}
+
+:global(.dark) .themeButton:hover {
+  background: linear-gradient(135deg, #00E676, #00B0FF);
+  color: #0B0F13 !important;
+  transform: scale(1.05);
+  box-shadow: 
+    0 4px 20px rgba(0, 230, 118, 0.5),
+    0 0 30px rgba(0, 176, 255, 0.4);
+}
+
+:global(.dark) .mobileMenuButton {
+  color: #E5E5E5 !important;
+}
+
+:global(.dark) .navbarTransparent .mobileMenuButton {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+:global(.dark) .navbarTransparent .mobileMenuButton:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+:global(.dark) .mobileMenuButton:hover {
+  background-color: rgba(0, 230, 118, 0.1);
+  color: #00E676 !important;
+}
+
+:global(.dark) .mobileMenu {
+  background: rgba(11, 15, 19, 0.98);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(0, 176, 255, 0.2);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+}
+
+:global(.dark) .mobileNavLinkActive {
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.2), rgba(0, 176, 255, 0.15));
+  color: #00E676 !important;
+  box-shadow: 0 0 15px rgba(0, 230, 118, 0.2);
+}
+
+:global(.dark) .mobileNavLinkInactive {
+  color: #E5E5E5 !important;
+}
+
+:global(.dark) .mobileNavLinkInactive:hover {
+  background-color: rgba(0, 230, 118, 0.15);
+  color: #00E676 !important;
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.2);
+}
+
+:global(.dark) .mobileLanguageSection {
+  border-top: 1px solid rgba(0, 176, 255, 0.2);
+}
+
+:global(.dark) .mobileLanguageTitle {
+  color: #E5E5E5 !important;
+}
+
+:global(.dark) .mobileLanguageButtonActive {
+  background: linear-gradient(135deg, #00E676, #00B0FF);
+  color: #0B0F13 !important;
+  box-shadow: 0 4px 15px rgba(0, 230, 118, 0.4), 0 0 20px rgba(0, 176, 255, 0.3);
+}
+
+:global(.dark) .mobileLanguageButtonInactive {
+  background-color: rgba(0, 176, 255, 0.15);
+  color: #E5E5E5 !important;
+  border: 1px solid rgba(0, 176, 255, 0.25);
+}
+
+:global(.dark) .mobileLanguageButtonInactive:hover {
+  background-color: rgba(0, 230, 118, 0.2);
+  color: #00E676 !important;
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.2);
+}
+
+

@@ -1,0 +1,197 @@
+/* Footer Styles - Clean Energy Theme */
+.footer {
+  background: linear-gradient(135deg, #FFFFFF 0%, rgba(16, 119, 217, 0.02) 100%);
+  color: #4a5568;
+  border-top: 1px solid rgba(9, 168, 107, 0.15);
+}
+
+.container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.companySection {
+  grid-column: span 1;
+}
+
+@media (min-width: 768px) {
+  .companySection {
+    grid-column: span 2;
+  }
+}
+
+.logoLink {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.logoLink:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.logoImage {
+  height: auto;
+  width: auto;
+  max-width: 200px;
+  max-height: 70px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+}
+
+@media (max-width: 767px) {
+  .logoImage {
+    max-width: 160px;
+    max-height: 56px;
+  }
+}
+
+.companyTitle {
+  color: #1a1a1a;
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  margin-top: 0;
+  background: linear-gradient(135deg, #09A86B, #1077D9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.companyDescription {
+  font-size: 0.875rem;
+  color: #4a5568;
+  margin-bottom: 1rem;
+  line-height: 1.625;
+}
+
+.sectionTitle {
+  color: #1a1a1a;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.linksList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.link {
+  color: #4a5568;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: #09A86B;
+  transform: translateX(4px);
+}
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
+.copyright {
+  border-top: 1px solid rgba(16, 119, 217, 0.15);
+  margin-top: 2rem;
+  padding-top: 2rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #718096;
+}
+
+/* Dark Mode Styles */
+:global(.dark) .footer {
+  background: linear-gradient(135deg, #0B0F13 0%, rgba(0, 230, 118, 0.03) 100%);
+  color: #E5E5E5 !important;
+  border-top: 1px solid rgba(0, 230, 118, 0.2);
+  position: relative;
+}
+
+:global(.dark) .footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(0, 230, 118, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(0, 176, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+:global(.dark) .companyTitle {
+  color: #FFFFFF !important;
+  background: linear-gradient(135deg, #00E676, #00B0FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(0, 230, 118, 0.3));
+}
+
+:global(.dark) .companyDescription {
+  color: #E5E5E5 !important;
+}
+
+:global(.dark) .sectionTitle {
+  color: #FFFFFF !important;
+  text-shadow: 0 0 10px rgba(0, 176, 255, 0.2);
+}
+
+:global(.dark) .link {
+  color: #E5E5E5 !important;
+}
+
+:global(.dark) .link:hover {
+  color: #00E676 !important;
+  text-shadow: 0 0 8px rgba(0, 230, 118, 0.4);
+}
+
+:global(.dark) .contactList {
+  color: #E5E5E5 !important;
+}
+
+:global(.dark) .copyright {
+  border-top: 1px solid rgba(0, 176, 255, 0.2);
+  color: #B0B0B0 !important;
+}
+

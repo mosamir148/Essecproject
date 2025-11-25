@@ -1,0 +1,694 @@
+/* FAQ Section Styles */
+.section {
+  padding: 6rem 0;
+  position: relative;
+  overflow: hidden;
+  /*background: linear-gradient(135deg, #FFFFFF 0%, rgba(16, 119, 217, 0.03) 30%, rgba(9, 168, 107, 0.02) 100%);*/
+  margin: 0;
+}
+
+/* Professional Motion Background */
+.motionBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Animated Wave Container */
+.waveContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+}
+
+.wave {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(16, 119, 217, 0.15) 0%,
+    rgba(9, 168, 107, 0.12) 30%,
+    rgba(16, 119, 217, 0.08) 60%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  animation: waveAnimation 20s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.wave1 {
+  top: -50%;
+  left: -50%;
+  animation-duration: 20s;
+  animation-delay: 0s;
+}
+
+.wave2 {
+  top: -40%;
+  left: -40%;
+  animation-duration: 25s;
+  animation-delay: -5s;
+}
+
+.wave3 {
+  top: -60%;
+  left: -60%;
+  animation-duration: 30s;
+  animation-delay: -10s;
+}
+
+@keyframes waveAnimation {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 0.15;
+  }
+  25% {
+    transform: translate(5%, 5%) scale(1.1) rotate(90deg);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate(-5%, -5%) scale(0.9) rotate(180deg);
+    opacity: 0.1;
+  }
+  75% {
+    transform: translate(3%, -3%) scale(1.05) rotate(270deg);
+    opacity: 0.18;
+  }
+}
+
+/* Floating Particles */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: linear-gradient(135deg, #09A86B, #1077D9);
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: floatParticle 15s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(9, 168, 107, 0.6);
+}
+
+.particle:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+.particle:nth-child(2) { top: 20%; left: 80%; animation-delay: 1s; }
+.particle:nth-child(3) { top: 30%; left: 30%; animation-delay: 2s; }
+.particle:nth-child(4) { top: 50%; left: 70%; animation-delay: 3s; }
+.particle:nth-child(5) { top: 60%; left: 20%; animation-delay: 4s; }
+.particle:nth-child(6) { top: 70%; left: 60%; animation-delay: 5s; }
+.particle:nth-child(7) { top: 80%; left: 40%; animation-delay: 6s; }
+.particle:nth-child(8) { top: 15%; left: 50%; animation-delay: 7s; }
+.particle:nth-child(9) { top: 40%; left: 15%; animation-delay: 8s; }
+.particle:nth-child(10) { top: 55%; left: 85%; animation-delay: 9s; }
+.particle:nth-child(11) { top: 75%; left: 25%; animation-delay: 10s; }
+.particle:nth-child(12) { top: 25%; left: 75%; animation-delay: 11s; }
+
+@keyframes floatParticle {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  25% {
+    transform: translate(20px, -30px) scale(1.2);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-15px, 20px) scale(0.8);
+    opacity: 0.3;
+  }
+  75% {
+    transform: translate(10px, 15px) scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+/* Geometric Shapes */
+.geometricShapes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.shape {
+  position: absolute;
+  border: 2px solid;
+  opacity: 0.1;
+  animation: rotateShape 30s linear infinite;
+}
+
+.shape1 {
+  width: 200px;
+  height: 200px;
+  top: 10%;
+  left: 10%;
+  border-color: rgba(9, 168, 107, 0.25);
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  animation-duration: 25s;
+}
+
+.shape2 {
+  width: 150px;
+  height: 150px;
+  top: 60%;
+  right: 15%;
+  border-color: rgba(16, 119, 217, 0.25);
+  border-radius: 50%;
+  animation-duration: 30s;
+  animation-direction: reverse;
+}
+
+.shape3 {
+  width: 180px;
+  height: 180px;
+  bottom: 15%;
+  left: 20%;
+  border-color: rgba(9, 168, 107, 0.2);
+  border-radius: 20% 80% 20% 80% / 80% 20% 80% 20%;
+  animation-duration: 35s;
+}
+
+.shape4 {
+  width: 120px;
+  height: 120px;
+  top: 30%;
+  right: 25%;
+  border-color: rgba(16, 119, 217, 0.2);
+  animation-duration: 20s;
+  animation-direction: reverse;
+}
+
+@keyframes rotateShape {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* Gradient Orbs */
+.gradientOrbs {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.3;
+}
+
+.orb1 {
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(16, 119, 217, 0.25), transparent 70%);
+  animation: pulseOrb1 10s ease-in-out infinite;
+}
+
+.orb2 {
+  width: 350px;
+  height: 350px;
+  bottom: -80px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(9, 168, 107, 0.25), transparent 70%);
+  animation: pulseOrb2 12s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.orb3 {
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(16, 119, 217, 0.2), transparent 70%);
+  animation: pulseOrb3 15s ease-in-out infinite;
+  animation-delay: -4s;
+}
+
+@keyframes pulseOrb1 {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.5;
+  }
+}
+
+@keyframes pulseOrb2 {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.5;
+  }
+}
+
+@keyframes pulseOrb3 {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.5;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .waveContainer {
+    opacity: 0.1;
+  }
+  
+  .particle {
+    width: 3px;
+    height: 3px;
+  }
+  
+  .shape1, .shape2, .shape3, .shape4 {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .orb1, .orb2, .orb3 {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  pointer-events: none;
+}
+
+.container {
+  max-width: 90rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  position: relative;
+  z-index: 2;
+  overflow: visible;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .content {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .content {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+  margin-bottom: 5rem;
+  transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #09A86B, #1077D9);
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.4s;
+}
+
+.sectionTitle.visible::after {
+  opacity: 1;
+}
+
+@media (min-width: 768px) {
+  .sectionTitle {
+    font-size: 3.5rem;
+    margin-bottom: 6rem;
+  }
+}
+
+.sectionTitle.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sectionTitle.hidden {
+  opacity: 0;
+  transform: translateY(-2rem);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  transition: all 1s;
+}
+
+.headerVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.headerHidden {
+  opacity: 0;
+  transform: translateY(2.5rem);
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 3rem;
+  }
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faqItem {
+  /*background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);*/
+  border-radius: 1.75rem;
+  border: 1px solid rgba(9, 168, 107, 0.15);
+  box-shadow: 
+    0 10px 25px -5px rgba(9, 168, 107, 0.1),
+    0 4px 12px -2px rgba(16, 119, 217, 0.06),
+    0 0 0 1px rgba(9, 168, 107, 0.08);
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.faqItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #09A86B, #1077D9);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.faqItem:hover::before {
+  opacity: 1;
+}
+
+.faqItem:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 20px 40px -8px rgba(9, 168, 107, 0.2),
+    0 8px 20px -4px rgba(16, 119, 217, 0.12),
+    0 0 0 1px rgba(9, 168, 107, 0.2);
+  border-color: rgba(9, 168, 107, 0.25);
+}
+
+.faqItemVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.faqItemHidden {
+  opacity: 0;
+  transform: translateY(2.5rem);
+}
+
+.faqButton {
+  width: 100%;
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.faqButton:hover {
+  background: linear-gradient(135deg, rgba(9, 168, 107, 0.08), rgba(16, 119, 217, 0.05));
+}
+
+.faqQuestion {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  padding-right: 1rem;
+  letter-spacing: -0.015em;
+  line-height: 1.4;
+  transition: color 0.3s ease;
+}
+
+.faqItem:hover .faqQuestion {
+  color: #09A86B;
+}
+
+.chevronIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #09A86B;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.25rem;
+  border-radius: 50%;
+  background: rgba(9, 168, 107, 0.1);
+}
+
+.faqButton:hover .chevronIcon {
+  background: linear-gradient(135deg, rgba(9, 168, 107, 0.2), rgba(16, 119, 217, 0.15));
+  transform: scale(1.1);
+}
+
+.chevronRotated {
+  transform: rotate(180deg);
+}
+
+.faqAnswer {
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.faqAnswerOpen {
+  max-height: 24rem;
+  opacity: 1;
+}
+
+.faqAnswerClosed {
+  max-height: 0;
+  opacity: 0;
+}
+
+.faqAnswerContent {
+  padding: 0 2rem 1.5rem;
+}
+
+.faqAnswerText {
+  color: #4a5568;
+  line-height: 1.8;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 768px) {
+  .faqAnswerText {
+    font-size: 1.0625rem;
+  }
+}
+
+/* Dark Mode Styles */
+:global(.dark) .section {
+  background: #0B0F13;
+  position: relative;
+}
+
+:global(.dark) .section::before {
+  display: none;
+}
+
+:global(.dark) .wave {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 230, 118, 0.2) 0%,
+    rgba(0, 176, 255, 0.15) 30%,
+    rgba(0, 230, 118, 0.1) 60%,
+    transparent 100%
+  );
+}
+
+:global(.dark) .particle {
+  background: radial-gradient(circle, #00E676, #00B0FF);
+  box-shadow: 
+    0 0 6px rgba(0, 230, 118, 0.6),
+    0 0 12px rgba(0, 176, 255, 0.4);
+}
+
+:global(.dark) .sectionTitle {
+  color: #FFFFFF !important;
+  text-shadow: 0 0 20px rgba(0, 230, 118, 0.3);
+}
+
+:global(.dark) .sectionTitle::after {
+  background: linear-gradient(90deg, #00E676, #00B0FF);
+  box-shadow: 0 0 15px rgba(0, 230, 118, 0.5);
+}
+
+:global(.dark) .faqItem {
+  background: rgba(13, 17, 23, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 230, 118, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 0 20px rgba(0, 230, 118, 0.05);
+}
+
+:global(.dark) .faqItem:hover {
+  border-color: rgba(0, 230, 118, 0.4);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(0, 230, 118, 0.1),
+    0 0 50px rgba(0, 230, 118, 0.3);
+}
+
+:global(.dark) .faqButton:hover {
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.15), rgba(0, 176, 255, 0.1));
+}
+
+:global(.dark) .faqQuestion {
+  color: #FFFFFF !important;
+  text-shadow: 0 0 10px rgba(0, 230, 118, 0.2);
+}
+
+:global(.dark) .faqItem:hover .faqQuestion {
+  color: #00E676 !important;
+  text-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
+}
+
+:global(.dark) .chevronIcon {
+  color: #00E676;
+  background: rgba(0, 230, 118, 0.2);
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.2);
+}
+
+:global(.dark) .faqButton:hover .chevronIcon {
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.3), rgba(0, 176, 255, 0.25));
+  box-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
+}
+
+:global(.dark) .faqAnswerText {
+  color: #E5E5E5 !important;
+}
+
+:global(.dark) .title {
+  color: #FFFFFF !important;
+}
+
+:global(.dark) .subtitle {
+  color: #CCCCCC !important;
+}
+
+@keyframes energyPulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+

@@ -1,0 +1,251 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "solar": "Système solaire",
+    "services": "Services",
+    "projects": "Projets",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "Solutions d'énergie solaire de premier plan",
+    "subtitle": "Alimenter l'avenir avec une technologie solaire durable",
+    "stats": {
+      "completedProjects": "Projets terminés",
+      "engineers": "Ingénieurs",
+      "workers": "Ouvriers",
+      "avgCompletion": "Temps moyen de réalisation"
+    },
+    "splitSection": {
+      "title": "Transformer l'énergie, autonomiser demain",
+      "description": "Découvrez l'avenir de l'énergie durable avec nos solutions solaires de pointe. Nous combinons une technologie innovante avec une ingénierie experte pour fournir des systèmes énergétiques fiables, efficaces et respectueux de l'environnement qui alimentent votre maison et votre entreprise tout en réduisant votre empreinte carbone.",
+      "button": "Explorer les solutions",
+      "imageAlt": "Installation de panneaux solaires modernes"
+    },
+    "splitSectionReverse": {
+      "title": "L'innovation rencontre la durabilité",
+      "description": "Nos solutions de technologie solaire avancées sont conçues pour maximiser l'efficacité énergétique tout en minimisant l'impact environnemental. Avec une ingénierie de pointe et une fiabilité éprouvée, nous fournissons des systèmes énergétiques durables qui répondent aux normes les plus élevées de performance et de durabilité.",
+      "button": "En savoir plus",
+      "imageAlt": "Technologie avancée de l'énergie solaire"
+    },
+    "vision": {
+      "title": "Notre Vision",
+      "subtitle": "Façonner l'avenir de l'énergie renouvelable",
+      "description": "Chez ESSEC Solar Engineering, nous envisageons un monde où l'énergie propre et durable est accessible à tous. Notre mission est de mener la transformation vers des solutions d'énergie renouvelable qui sont non seulement respectueuses de l'environnement mais aussi économiquement viables.",
+      "points": {
+        "innovation": "Innovation",
+        "innovationDesc": "Pionnier des technologies solaires de pointe",
+        "sustainability": "Durabilité",
+        "sustainabilityDesc": "Engagé en faveur de la protection de l'environnement",
+        "excellence": "Excellence",
+        "excellenceDesc": "Offrir une qualité supérieure dans chaque projet",
+        "partnership": "Partenariat",
+        "partnershipDesc": "Construire des relations durables avec les clients"
+      }
+    },
+    "featuredProject": {
+      "title": "Projet en Vedette",
+      "subtitle": "L'Excellence en Action",
+      "viewProject": "Voir le Projet Complet",
+      "location": "Emplacement",
+      "completed": "Terminé",
+      "capacity": "Capacité",
+      "results": "Résultats Clés"
+    },
+    "benefits": {
+      "title": "Avantages de l'utilisation de l'énergie propre",
+      "whySolar": "Pourquoi le solaire",
+      "energySaving": "Économie d'énergie",
+      "energySavingDesc": "Réduisez considérablement vos factures d'électricité",
+      "feature2": "Impact environnemental",
+      "feature2Desc": "Contribuer à une planète plus propre",
+      "feature3": "Investissement à long terme",
+      "feature3Desc": "Rendements fiables pendant des décennies",
+      "feature4": "Maintenance faible",
+      "feature4Desc": "Entretien minimal requis",
+      "crescent": {
+        "reducedCarbon": "Réduction de l'empreinte carbone",
+        "lowerCosts": "Coûts énergétiques réduits",
+        "governmentIncentives": "Incitations gouvernementales",
+        "propertyValue": "Valeur immobilière accrue",
+        "energyIndependence": "Indépendance énergétique"
+      }
+    },
+    "timeline": {
+      "title": "Notre Parcours",
+      "step1Title": "Consultation Initiale",
+      "step1Description": "Nous commençons par une évaluation complète de vos besoins énergétiques, l'évaluation de la propriété et la conception de solutions solaires personnalisées adaptées à vos exigences spécifiques.",
+      "step2Title": "Conception et Planification du Système",
+      "step2Description": "Nos ingénieurs experts créent des conceptions de système détaillées, effectuent une analyse du site et développent des plans d'installation complets garantissant une production d'énergie optimale.",
+      "step3Title": "Installation Professionnelle",
+      "step3Description": "Des techniciens certifiés installent votre système solaire avec précision, en suivant les meilleures pratiques de l'industrie et les normes de sécurité pour une efficacité et une durabilité maximales.",
+      "step4Title": "Surveillance et Support",
+      "step4Description": "Une surveillance continue, un support de maintenance et des services de garantie garantissent que votre système solaire fonctionne à des performances optimales pendant des décennies à venir."
+    },
+    "faq": {
+      "title": "Questions Fréquemment Posées",
+      "subtitle": "Tout ce que vous devez savoir sur l'énergie solaire",
+      "items": {
+        "q1": "Combien de temps durent les panneaux solaires?",
+        "a1": "Les panneaux solaires durent généralement 25 à 30 ans, la plupart des fabricants offrant des garanties de performance de 25 ans. Les panneaux continuent de produire de l'électricité au-delà de cette période, bien qu'à une efficacité légèrement réduite.",
+        "q2": "Quelle est la période de récupération d'un système solaire?",
+        "a2": "La période de récupération varie selon la taille du système, l'emplacement et les coûts énergétiques, généralement de 5 à 8 ans. Après cette période, vous obtenez essentiellement de l'électricité gratuite pour le reste de la durée de vie du système.",
+        "q3": "Les panneaux solaires fonctionnent-ils par temps nuageux?",
+        "a3": "Oui, les panneaux solaires peuvent générer de l'électricité même par temps nuageux, bien qu'à une efficacité réduite (généralement 10-25% de la capacité totale). Les panneaux modernes sont conçus pour capturer efficacement la lumière solaire diffuse.",
+        "q4": "Quelle maintenance les systèmes solaires nécessitent-ils?",
+        "a4": "Les systèmes solaires nécessitent une maintenance minimale. Un nettoyage régulier des panneaux (2 à 4 fois par an) et des inspections périodiques du système sont généralement suffisants. La plupart des systèmes incluent une surveillance pour vous alerter de tout problème.",
+        "q5": "Puis-je être complètement hors réseau avec le solaire?",
+        "a5": "Oui, avec un système solaire hors réseau qui inclut un stockage de batterie, vous pouvez atteindre une indépendance énergétique complète. C'est idéal pour les emplacements éloignés ou les zones avec un accès au réseau peu fiable.",
+        "q6": "De combien d'espace de toit ai-je besoin?",
+        "a6": "Généralement, vous avez besoin d'environ 100-200 pieds carrés par kilowatt de capacité solaire. Un système de 5 kW (moyenne résidentielle) nécessite environ 300-400 pieds carrés d'espace de toit."
+      }
+    }
+  },
+  "solar": {
+    "title": "Nos systèmes d'énergie solaire",
+    "systems": {
+      "onGrid": {
+        "name": "Génération d'énergie solaire PV – Sur réseau",
+        "summary": "Systèmes solaires connectés au réseau qui renvoient l'énergie excédentaire au réseau électrique"
+      },
+      "offGrid": {
+        "name": "Génération d'énergie solaire PV – Hors réseau",
+        "summary": "Systèmes solaires indépendants avec stockage de batterie pour une autonomie énergétique complète"
+      },
+      "netMeter": {
+        "name": "Génération d'énergie solaire PV – Système de comptage net",
+        "summary": "Système de comptage intelligent qui suit la production et la consommation d'énergie"
+      },
+      "centralHeating": {
+        "name": "Systèmes de chauffage solaire de l'eau – Central",
+        "summary": "Chauffage solaire de l'eau centralisé pour les grands bâtiments et complexes"
+      },
+      "waterHeater": {
+        "name": "Chauffe-eau solaire",
+        "summary": "Solutions efficaces de chauffage solaire de l'eau pour résidentiel et commercial"
+      },
+      "pump": {
+        "name": "Pompe solaire",
+        "summary": "Systèmes de pompage d'eau à énergie solaire pour l'irrigation et l'approvisionnement en eau"
+      },
+      "inverter": {
+        "name": "Onduleur d'énergie solaire",
+        "summary": "Onduleurs avancés convertissant l'énergie solaire CC en énergie CA utilisable"
+      },
+      "battery": {
+        "name": "Stockage de batterie solaire",
+        "summary": "Systèmes de batteries haute capacité pour le stockage d'énergie et l'alimentation de secours"
+      }
+    },
+    "detail": {
+      "description": "Description",
+      "technicalDetails": "Détails techniques",
+      "benefits": "Avantages",
+      "usageScenarios": "Scénarios d'utilisation",
+      "howItWorks": "Comment ça fonctionne"
+    }
+  },
+  "projects": {
+    "title": "Nos projets",
+    "subtitle": "Mettre en valeur l'excellence dans la mise en œuvre de l'énergie solaire",
+    "stats": {
+      "totalProjects": "Total des projets",
+      "avgExecution": "Temps d'exécution moyen"
+    },
+    "card": {
+      "location": "Emplacement",
+      "completed": "Terminé",
+      "duration": "Durée"
+    },
+    "detail": {
+      "description": "Description du projet",
+      "challenges": "Défis",
+      "execution": "Méthodes d'exécution",
+      "results": "Résultats",
+      "technicalNotes": "Notes techniques",
+      "gallery": "Galerie d'images"
+    }
+  },
+  "about": {
+    "title": "À propos de nous",
+    "establishment": "Établi",
+    "solutions": "Solutions et services",
+    "team": "Notre équipe",
+    "ceo": "Directeur général",
+    "executiveDirector": "Directeur exécutif",
+    "engineer": "Ingénieur"
+  },
+  "services": {
+    "title": "Nos services",
+    "subtitle": "Solutions complètes d'énergie solaire",
+    "systemDesign": "Conception de système",
+    "installation": "Installation, maintenance et garantie",
+    "aftersale": "Service après-vente",
+    "delivery": "Livraison"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Contactez notre équipe",
+    "form": {
+      "name": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "message": "Message",
+      "send": "Envoyer le message"
+    },
+    "info": {
+      "address": "Adresse",
+      "phone": "Téléphone",
+      "email": "Email"
+    }
+  },
+  "common": {
+    "learnMore": "En savoir plus",
+    "viewDetails": "Voir les détails",
+    "back": "Retour",
+    "readMore": "Lire la suite"
+  },
+  "admin": {
+    "dashboard": "Tableau de bord administrateur",
+    "manageProjects": "Gérez vos projets",
+    "addNewProject": "Ajouter un nouveau projet",
+    "editProject": "Modifier le projet",
+    "createProject": "Créer un projet",
+    "updateProject": "Mettre à jour le projet",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "view": "Voir",
+    "edit": "Modifier",
+    "logout": "Déconnexion",
+    "loggedInAs": "Connecté en tant que",
+    "projectName": "Nom",
+    "location": "Emplacement",
+    "year": "Année",
+    "duration": "Durée",
+    "imageUrl": "URL de l'image",
+    "videoUrl": "URL de la vidéo (optionnel)",
+    "description": "Description",
+    "challenges": "Défis",
+    "executionMethods": "Méthodes d'exécution",
+    "results": "Résultats",
+    "technicalNotes": "Notes techniques",
+    "gallery": "Galerie d'images",
+    "addChallenge": "Ajoutez un défi et appuyez sur Entrée",
+    "addMethod": "Ajoutez une méthode et appuyez sur Entrée",
+    "addResult": "Ajoutez un résultat et appuyez sur Entrée",
+    "addGalleryImage": "Ajoutez l'URL de l'image et appuyez sur Entrée",
+    "previewImage": "Aperçu de l'image",
+    "previewVideo": "Aperçu de la vidéo",
+    "uploadImage": "Télécharger une image",
+    "uploadVideo": "Télécharger une vidéo",
+    "noProjects": "Aucun projet trouvé. Cliquez sur \"Ajouter un nouveau projet\" pour commencer.",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce projet ?",
+    "projectCreated": "Projet créé avec succès",
+    "projectUpdated": "Projet mis à jour avec succès",
+    "projectDeleted": "Projet supprimé avec succès",
+    "error": "Une erreur s'est produite",
+    "loading": "Chargement..."
+  }
+}
+
