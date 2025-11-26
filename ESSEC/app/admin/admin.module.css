@@ -1,13 +1,30 @@
+/* Admin Page Styles - Matching Contact Page Design */
 .page {
   min-height: 100vh;
-  background-color: rgb(249, 250, 251);
+  background-color: rgb(249 250 251);
   padding: 2rem 0;
+  padding-top: calc(5rem + 2rem); /* Navbar height (5rem) + top padding (2rem) */
+  transition: background-color 0.3s ease;
+  position: relative;
 }
 
-@media (prefers-color-scheme: dark) {
-  .page {
-    background-color: rgb(17, 24, 39);
-  }
+:global(.dark) .page {
+  background: linear-gradient(135deg, #0B0F13 0%, rgba(0, 230, 118, 0.03) 30%, rgba(0, 176, 255, 0.03) 70%, #0B0F13 100%);
+  position: relative;
+}
+
+:global(.dark) .page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(0, 230, 118, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(0, 176, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .container {
@@ -16,6 +33,8 @@
   margin-right: auto;
   padding-left: 1rem;
   padding-right: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 @media (min-width: 640px) {
@@ -37,13 +56,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(249, 250, 251);
+  background-color: rgb(249 250 251);
 }
 
-@media (prefers-color-scheme: dark) {
-  .loadingContainer {
-    background-color: rgb(17, 24, 39);
-  }
+:global(.dark) .loadingContainer {
+  background: linear-gradient(135deg, #0B0F13 0%, rgba(0, 230, 118, 0.03) 30%, rgba(0, 176, 255, 0.03) 70%, #0B0F13 100%);
 }
 
 .loadingContent {
@@ -55,8 +72,15 @@
   border-radius: 9999px;
   height: 3rem;
   width: 3rem;
-  border-bottom: 2px solid #2563eb;
+  border: 3px solid transparent;
+  border-top-color: rgb(37 99 235);
+  border-right-color: rgb(37 99 235);
   margin: 0 auto;
+}
+
+:global(.dark) .spinner {
+  border-top-color: #00B0FF;
+  border-right-color: #00E676;
 }
 
 @keyframes spin {
@@ -67,47 +91,57 @@
 
 .loadingText {
   margin-top: 1rem;
-  color: rgb(75, 85, 99);
+  color: rgb(75 85 99);
+  font-size: 1rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  .loadingText {
-    color: rgb(156, 163, 175);
-  }
+:global(.dark) .loadingText {
+  color: #CCCCCC;
 }
 
+/* Header Section */
 .header {
   margin-bottom: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .headerContent {
   flex: 1;
+  min-width: 200px;
 }
 
 .title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: rgb(17, 24, 39);
+  color: rgb(17 24 39);
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
+:global(.dark) .title {
+  color: #FFFFFF;
+  text-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+}
+
+@media (min-width: 768px) {
   .title {
-    color: white;
+    font-size: 2.25rem;
   }
 }
 
 .subtitle {
   margin-top: 0.5rem;
-  color: rgb(75, 85, 99);
+  color: rgb(75 85 99);
+  font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .subtitle {
-    color: rgb(156, 163, 175);
-  }
+:global(.dark) .subtitle {
+  color: #CCCCCC;
 }
 
 .subtitleSpan {
@@ -117,41 +151,79 @@
 
 .subtitleBold {
   font-weight: 600;
+  color: rgb(37 99 235);
+}
+
+:global(.dark) .subtitleBold {
+  color: #00B0FF;
 }
 
 .headerActions {
   display: flex;
   gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  transition: background-color 0.3s;
-  font-weight: 500;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 1rem;
   border: none;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .buttonPrimary {
-  background-color: #2563eb;
+  background: linear-gradient(135deg, rgb(37 99 235) 0%, rgb(29 78 216) 100%);
   color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.buttonPrimary:hover {
-  background-color: #1d4ed8;
+.buttonPrimary:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgb(29 78 216) 0%, rgb(37 99 235) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+}
+
+:global(.dark) .buttonPrimary {
+  background: linear-gradient(135deg, #00B0FF 0%, #00E676 100%);
+  box-shadow: 0 0 20px rgba(0, 176, 255, 0.3);
+}
+
+:global(.dark) .buttonPrimary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #00E676 0%, #00B0FF 100%);
+  box-shadow: 0 0 30px rgba(0, 230, 118, 0.4);
 }
 
 .buttonDanger {
-  background-color: #dc2626;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.buttonDanger:hover {
-  background-color: #b91c1c;
+.buttonDanger:hover:not(:disabled) {
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.4);
+}
+
+:global(.dark) .buttonDanger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+:global(.dark) .buttonDanger:hover:not(:disabled) {
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .buttonIcon {
@@ -159,26 +231,54 @@
   height: 1.25rem;
 }
 
+/* Error Message */
 .errorMessage {
   margin-bottom: 1.5rem;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   background-color: rgb(254, 242, 242);
-  border: 1px solid rgb(248, 113, 113);
+  border-left: 4px solid #ef4444;
   color: rgb(185, 28, 28);
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
+:global(.dark) .errorMessage {
+  background-color: rgba(127, 29, 29, 0.2);
+  border-left-color: #f87171;
+  color: #fca5a5;
+}
+
+/* Table Container */
 .tableContainer {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  background: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-@media (prefers-color-scheme: dark) {
-  .tableContainer {
-    background-color: rgb(31, 41, 55);
-  }
+.tableContainer:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+:global(.dark) .tableContainer {
+  background: rgba(13, 17, 23, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 230, 118, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 0 20px rgba(0, 230, 118, 0.05),
+    0 0 30px rgba(0, 230, 118, 0.1);
+}
+
+:global(.dark) .tableContainer:hover {
+  border-color: rgba(0, 230, 118, 0.3);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 0 20px rgba(0, 230, 118, 0.08),
+    0 0 40px rgba(0, 230, 118, 0.15);
 }
 
 .tableWrapper {
@@ -191,53 +291,47 @@
 }
 
 .tableHead {
-  background-color: rgb(249, 250, 251);
+  background-color: rgb(249 250 251);
 }
 
-@media (prefers-color-scheme: dark) {
-  .tableHead {
-    background-color: rgb(55, 65, 81);
-  }
+:global(.dark) .tableHead {
+  background-color: rgba(31, 41, 55, 0.5);
 }
 
 .tableRow {
   border-bottom: 1px solid rgb(229, 231, 235);
+  transition: background-color 0.2s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .tableRow {
-    border-bottom-color: rgb(55, 65, 81);
-  }
+:global(.dark) .tableRow {
+  border-bottom-color: rgba(0, 230, 118, 0.1);
 }
 
 .tableRow:hover {
-  background-color: rgb(249, 250, 251);
+  background-color: rgb(249 250 251);
 }
 
-@media (prefers-color-scheme: dark) {
-  .tableRow:hover {
-    background-color: rgb(55, 65, 81);
-  }
+:global(.dark) .tableRow:hover {
+  background-color: rgba(0, 230, 118, 0.05);
 }
 
 .tableHeader {
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 1.5rem;
   text-align: left;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: rgb(107, 114, 128);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgb(75 85 99);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  transition: color 0.3s ease;
+}
+
+:global(.dark) .tableHeader {
+  color: #CCCCCC;
 }
 
 .tableHeaderRight {
   text-align: right;
-}
-
-@media (prefers-color-scheme: dark) {
-  .tableHeader {
-    color: rgb(209, 213, 219);
-  }
 }
 
 .tableCell {
@@ -255,24 +349,22 @@
 }
 
 .tableCellName {
-  font-weight: 500;
-  color: rgb(17, 24, 39);
+  font-weight: 600;
+  color: rgb(17 24 39);
+  transition: color 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .tableCellName {
-    color: white;
-  }
+:global(.dark) .tableCellName {
+  color: #FFFFFF;
 }
 
 .tableCellText {
-  color: rgb(107, 114, 128);
+  color: rgb(75 85 99);
+  transition: color 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .tableCellText {
-    color: rgb(156, 163, 175);
-  }
+:global(.dark) .tableCellText {
+  color: #CCCCCC;
 }
 
 .tableActions {
@@ -285,26 +377,35 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.25rem;
-  transition: color 0.2s;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actionButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .actionButtonBlue {
-  color: #2563eb;
+  color: rgb(37 99 235);
 }
 
 .actionButtonBlue:hover {
-  color: #1e40af;
+  color: rgb(29 78 216);
+  background-color: rgba(37, 99, 235, 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  .actionButtonBlue {
-    color: #60a5fa;
-  }
+:global(.dark) .actionButtonBlue {
+  color: #00B0FF;
+}
 
-  .actionButtonBlue:hover {
-    color: #93c5fd;
-  }
+:global(.dark) .actionButtonBlue:hover {
+  color: #60a5fa;
+  background-color: rgba(0, 176, 255, 0.2);
 }
 
 .actionButtonGreen {
@@ -313,16 +414,16 @@
 
 .actionButtonGreen:hover {
   color: #15803d;
+  background-color: rgba(22, 163, 74, 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  .actionButtonGreen {
-    color: #4ade80;
-  }
+:global(.dark) .actionButtonGreen {
+  color: #00E676;
+}
 
-  .actionButtonGreen:hover {
-    color: #86efac;
-  }
+:global(.dark) .actionButtonGreen:hover {
+  color: #4ade80;
+  background-color: rgba(0, 230, 118, 0.2);
 }
 
 .actionButtonRed {
@@ -330,17 +431,17 @@
 }
 
 .actionButtonRed:hover {
-  color: #991b1b;
+  color: #b91c1c;
+  background-color: rgba(220, 38, 38, 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  .actionButtonRed {
-    color: #f87171;
-  }
+:global(.dark) .actionButtonRed {
+  color: #f87171;
+}
 
-  .actionButtonRed:hover {
-    color: #fca5a5;
-  }
+:global(.dark) .actionButtonRed:hover {
+  color: #fca5a5;
+  background-color: rgba(248, 113, 113, 0.2);
 }
 
 .actionIcon {
@@ -348,6 +449,7 @@
   height: 1.25rem;
 }
 
+/* Modal */
 .modal {
   position: fixed;
   inset: 0;
@@ -357,21 +459,27 @@
   justify-content: center;
   z-index: 50;
   padding: 1rem;
+  backdrop-filter: blur(4px);
 }
 
 .modalContent {
   background-color: white;
-  border-radius: 0.5rem;
+  border-radius: 1.5rem;
   max-width: 56rem;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-@media (prefers-color-scheme: dark) {
-  .modalContent {
-    background-color: rgb(31, 41, 55);
-  }
+:global(.dark) .modalContent {
+  background: rgba(13, 17, 23, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    inset 0 0 20px rgba(0, 230, 118, 0.05),
+    0 0 40px rgba(0, 230, 118, 0.2);
 }
 
 .modalHeader {
@@ -379,19 +487,23 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
+  border-bottom: 1px solid rgb(229, 231, 235);
+}
+
+:global(.dark) .modalHeader {
+  border-bottom-color: rgba(0, 230, 118, 0.2);
 }
 
 .modalTitle {
   font-size: 1.5rem;
   font-weight: 700;
-  color: rgb(17, 24, 39);
+  color: rgb(17 24 39);
+  transition: color 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .modalTitle {
-    color: white;
-  }
+:global(.dark) .modalTitle {
+  color: #FFFFFF;
+  text-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
 }
 
 .modalCloseButton {
@@ -399,21 +511,26 @@
   border: none;
   cursor: pointer;
   color: rgb(107, 114, 128);
-  transition: color 0.2s;
+  transition: all 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modalCloseButton:hover {
   color: rgb(55, 65, 81);
+  background-color: rgb(249, 250, 251);
 }
 
-@media (prefers-color-scheme: dark) {
-  .modalCloseButton {
-    color: rgb(156, 163, 175);
-  }
+:global(.dark) .modalCloseButton {
+  color: #CCCCCC;
+}
 
-  .modalCloseButton:hover {
-    color: rgb(229, 231, 235);
-  }
+:global(.dark) .modalCloseButton:hover {
+  color: #FFFFFF;
+  background-color: rgba(0, 230, 118, 0.1);
 }
 
 .modalCloseIcon {
@@ -431,41 +548,66 @@
 .modalField {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 .modalFieldLabel {
-  font-weight: 700;
-  color: rgb(55, 65, 81);
+  font-weight: 600;
+  color: rgb(75 85 99);
+  font-size: 0.875rem;
+  transition: color 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .modalFieldLabel {
-    color: rgb(209, 213, 219);
-  }
+:global(.dark) .modalFieldLabel {
+  color: #CCCCCC;
 }
 
 .modalFieldValue {
-  color: rgb(75, 85, 99);
+  color: rgb(17 24 39);
   margin-top: 0.25rem;
+  line-height: 1.6;
+  transition: color 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .modalFieldValue {
-    color: rgb(156, 163, 175);
-  }
+:global(.dark) .modalFieldValue {
+  color: #FFFFFF;
 }
 
 .modalList {
   list-style-type: disc;
   list-style-position: inside;
-  color: rgb(75, 85, 99);
+  color: rgb(75 85 99);
   margin-top: 0.25rem;
+  padding-left: 1rem;
+  line-height: 1.8;
+  transition: color 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .modalList {
-    color: rgb(156, 163, 175);
+:global(.dark) .modalList {
+  color: #CCCCCC;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .headerActions {
+    width: 100%;
+  }
+
+  .button {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .tableWrapper {
+    overflow-x: scroll;
+  }
+
+  .table {
+    min-width: 600px;
   }
 }
-

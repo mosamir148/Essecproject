@@ -20,18 +20,16 @@ export default function LoadingPage({
 }: LoadingPageProps) {
   const pathname = usePathname()
   const [isVisible, setIsVisible] = useState(true)
-  const [progress, setProgress] = useState(() => {
-    // Initialize progress based on current document state
-    if (typeof window !== 'undefined') {
-      if (document.readyState === 'complete') return 90
-      if (document.readyState === 'interactive') return 60
-      return 30
-    }
-    return 0
-  })
+  const [progress, setProgress] = useState(0) // Always start at 0 to avoid hydration mismatch
+  const [mounted, setMounted] = useState(false)
   const startTime = useRef(Date.now())
   const isCompleteRef = useRef(false)
   const previousPathname = useRef(pathname)
+
+  // Set mounted flag to avoid hydration issues
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Reset loading state when pathname changes
   useEffect(() => {
@@ -46,7 +44,7 @@ export default function LoadingPage({
   }, [pathname])
 
   useEffect(() => {
-    if (!isVisible) return
+    if (!isVisible || !mounted) return
 
     // Calculate loading progress
     const calculateProgress = () => {
@@ -146,7 +144,7 @@ export default function LoadingPage({
       clearInterval(contentCheckInterval)
       clearTimeout(fallbackTimeout)
     }
-  }, [onComplete, minDisplayTime, isVisible, pathname])
+  }, [onComplete, minDisplayTime, isVisible, pathname, mounted])
 
   if (!isVisible) return null
 
@@ -171,6 +169,7 @@ export default function LoadingPage({
               height={70}
               className={styles.logo}
               priority
+              style={{ width: 'auto', height: 'auto' }}
             />
           ) : (
             <h1 className={styles.websiteName}>{websiteName}</h1>
@@ -211,7 +210,9 @@ export default function LoadingPage({
               style={{ width: `${Math.min(progress, 100)}%` }}
             />
           </div>
-          <span className={styles.progressText}>{Math.round(Math.min(progress, 100))}%</span>
+          <span className={styles.progressText} suppressHydrationWarning>
+            {mounted ? `${Math.round(Math.min(progress, 100))}%` : '0%'}
+          </span>
         </div>
       </div>
     </div>
