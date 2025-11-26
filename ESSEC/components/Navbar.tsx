@@ -15,7 +15,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const { t, language, setLanguage, dir } = useLanguage()
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, resolvedTheme } = useTheme()
 
   const isHomePage = pathname === '/'
 
@@ -56,6 +56,10 @@ export default function Navbar() {
     }
   }
 
+  // Determine which logo to use based on theme
+  // Use resolvedTheme to handle 'system' theme, fallback to checking document class
+  const isDarkMode = resolvedTheme === 'dark' || document.documentElement.classList.contains('dark')
+
   return (
     <nav className={`${styles.navbar} ${getNavbarClasses()}`}>
       <div className={styles.container}>
@@ -72,9 +76,9 @@ export default function Navbar() {
                 className={styles.logoImage}
                 priority
               />
-            ) : theme === 'dark' ? (
+            ) : isDarkMode ? (
               <Image
-                src="/logo.PNG"
+                src="/logo w.PNG"
                 alt="ESSEC Logo"
                 width={180}
                 height={64}
@@ -83,7 +87,7 @@ export default function Navbar() {
               />
             ) : (
               <Image
-                src="/logo w.PNG"
+                src="/logo.PNG"
                 alt="ESSEC Logo"
                 width={180}
                 height={64}

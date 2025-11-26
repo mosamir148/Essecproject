@@ -3,10 +3,23 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useLanguage } from '@/hooks/useLanguage'
+import { useTheme } from 'next-themes'
+import { useState, useEffect } from 'react'
 import styles from './Footer.module.css'
 
 export default function Footer() {
   const { t } = useLanguage()
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Determine which logo to use based on theme
+  // Use resolvedTheme to handle 'system' theme, fallback to checking document class
+  const isDarkMode = mounted && (resolvedTheme === 'dark' || (typeof window !== 'undefined' && document.documentElement.classList.contains('dark')))
+  const logoSrc = isDarkMode ? '/logo w.PNG' : '/logo.PNG'
 
   return (
     <footer className={styles.footer}>
@@ -16,7 +29,7 @@ export default function Footer() {
           <div className={styles.companySection}>
             <Link href="/" className={styles.logoLink}>
               <Image
-                src="/logo.PNG"
+                src={logoSrc}
                 alt="ESSEC Solar Engineering Logo"
                 width={200}
                 height={70}
