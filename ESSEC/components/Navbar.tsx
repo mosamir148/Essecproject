@@ -13,6 +13,7 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(false)
   const pathname = usePathname()
   const { t, language, setLanguage, dir } = useLanguage()
   const { theme, setTheme, resolvedTheme } = useTheme()
@@ -27,6 +28,29 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Update isDarkMode when resolvedTheme changes
+  useEffect(() => {
+    if (mounted) {
+      const checkDarkMode = () => {
+        const dark = resolvedTheme === 'dark' || 
+                    (typeof document !== 'undefined' && document.documentElement.classList.contains('dark'))
+        setIsDarkMode(dark)
+      }
+      checkDarkMode()
+      
+      // Also listen for DOM changes in case the class is updated asynchronously
+      const observer = new MutationObserver(checkDarkMode)
+      if (typeof document !== 'undefined') {
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['class']
+        })
+      }
+      
+      return () => observer.disconnect()
+    }
+  }, [mounted, resolvedTheme])
 
   const navItems = [
     { key: 'home', href: '/' },
@@ -55,10 +79,6 @@ export default function Navbar() {
       return scrolled ? styles.navbarScrolled : styles.navbarNotScrolled
     }
   }
-
-  // Determine which logo to use based on theme
-  // Use resolvedTheme to handle 'system' theme, fallback to checking document class
-  const isDarkMode = resolvedTheme === 'dark' || document.documentElement.classList.contains('dark')
 
   return (
     <nav className={`${styles.navbar} ${getNavbarClasses()}`}>

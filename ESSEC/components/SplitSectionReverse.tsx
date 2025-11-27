@@ -49,7 +49,7 @@ export default function SplitSectionReverse({ scrollY = 0 }: SplitSectionReverse
               fill
               className={styles.image}
               priority
-              sizes="50vw"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
             <div className={styles.imageOverlay}></div>
           </div>

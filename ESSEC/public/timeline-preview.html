@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline S-Wave Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 1400px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #1D3557;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .svg-preview {
+            width: 100%;
+            max-width: 1200px;
+            height: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #FAFAFA;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        button {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #457B9D 0%, #1D3557 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(29, 53, 87, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .info {
+            background: #E8F4F8;
+            border-left: 4px solid #457B9D;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            color: #1D3557;
+            font-size: 0.9rem;
+        }
+        
+        .info strong {
+            color: #1D3557;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Timeline S-Wave Preview</h1>
+        
+        <div class="preview-container">
+            <div id="svg-container">
+                <!-- SVG will be loaded here -->
+            </div>
+            
+            <div class="controls">
+                <button onclick="loadSVG('timeline-s-wave-standalone.svg')">Standalone Version</button>
+                <button onclick="loadSVG('timeline-s-wave-with-images.svg')">With Images Version</button>
+                <button onclick="downloadSVG()">Download SVG</button>
+            </div>
+            
+            <div class="info">
+                <strong>📐 Dimensions:</strong> 1200 × 2000px<br>
+                <strong>🎨 Format:</strong> Scalable Vector Graphics (SVG)<br>
+                <strong>💡 Tip:</strong> Right-click the timeline and select "Save Image As" to download, or use the conversion scripts to generate PNG files.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function loadSVG(filename) {
+            try {
+                const response = await fetch(filename);
+                const svgText = await response.text();
+                document.getElementById('svg-container').innerHTML = svgText;
+                
+                // Update the SVG to be responsive
+                const svg = document.querySelector('#svg-container svg');
+                if (svg) {
+                    svg.setAttribute('class', 'svg-preview');
+                    svg.removeAttribute('width');
+                    svg.removeAttribute('height');
+                    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+                }
+            } catch (error) {
+                console.error('Error loading SVG:', error);
+                document.getElementById('svg-container').innerHTML = 
+                    '<p style="color: red; text-align: center;">Error loading SVG file. Make sure the file exists in the same directory.</p>';
+            }
+        }
+        
+        function downloadSVG() {
+            const svg = document.querySelector('#svg-container svg');
+            if (!svg) {
+                alert('Please load an SVG first');
+                return;
+            }
+            
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const blob = new Blob([svgData], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'timeline-s-wave.svg';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Load standalone version by default
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSVG('timeline-s-wave-standalone.svg');
+        });
+    </script>
+</body>
+</html>
+
+

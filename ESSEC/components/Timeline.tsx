@@ -99,8 +99,35 @@ export default function Timeline({ scrollY = 0 }: TimelineProps) {
         </h2>
 
         <div className={styles.timelineWrapper}>
-          {/* Center vertical line */}
-          <div className={styles.centerLine}></div>
+          {/* Center wavy vertical line */}
+          <svg 
+            className={styles.centerLineSVG} 
+            viewBox="0 0 4 1000" 
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="wavyLineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgba(9, 168, 107, 0.15)" />
+                <stop offset="15%" stopColor="rgba(9, 168, 107, 0.4)" />
+                <stop offset="30%" stopColor="rgba(16, 119, 217, 0.7)" />
+                <stop offset="50%" stopColor="rgba(16, 119, 217, 0.85)" />
+                <stop offset="70%" stopColor="rgba(16, 119, 217, 0.7)" />
+                <stop offset="85%" stopColor="rgba(9, 168, 107, 0.4)" />
+                <stop offset="100%" stopColor="rgba(9, 168, 107, 0.15)" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M 2 0 Q 3.2 50 2 100 Q 0.8 150 2 200 Q 3.2 250 2 300 Q 0.8 350 2 400 Q 3.2 450 2 500 Q 0.8 550 2 600 Q 3.2 650 2 700 Q 0.8 750 2 800 Q 3.2 850 2 900 Q 0.8 950 2 1000"
+              stroke="url(#wavyLineGradient)"
+              strokeWidth="4"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={styles.wavyPath}
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
 
           {/* Timeline steps */}
           <div className={styles.stepsContainer}>

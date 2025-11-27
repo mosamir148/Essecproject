@@ -64,7 +64,7 @@ export default function SplitSection({ scrollY = 0 }: SplitSectionProps) {
               fill
               className={styles.image}
               priority
-              sizes="50vw"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
             <div className={styles.imageOverlay}></div>
           </div>

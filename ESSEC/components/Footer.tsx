@@ -11,14 +11,36 @@ export default function Footer() {
   const { t } = useLanguage()
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(false)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
+  // Update isDarkMode when resolvedTheme changes
+  useEffect(() => {
+    if (mounted) {
+      const checkDarkMode = () => {
+        const dark = resolvedTheme === 'dark' || 
+                    (typeof document !== 'undefined' && document.documentElement.classList.contains('dark'))
+        setIsDarkMode(dark)
+      }
+      checkDarkMode()
+      
+      // Also listen for DOM changes in case the class is updated asynchronously
+      const observer = new MutationObserver(checkDarkMode)
+      if (typeof document !== 'undefined') {
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['class']
+        })
+      }
+      
+      return () => observer.disconnect()
+    }
+  }, [mounted, resolvedTheme])
+
   // Determine which logo to use based on theme
-  // Use resolvedTheme to handle 'system' theme, fallback to checking document class
-  const isDarkMode = mounted && (resolvedTheme === 'dark' || (typeof window !== 'undefined' && document.documentElement.classList.contains('dark')))
   const logoSrc = isDarkMode ? '/logo w.PNG' : '/logo.PNG'
 
   return (
