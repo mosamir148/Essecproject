@@ -48,7 +48,7 @@ export default function ProjectDetailPage() {
       <div className={styles.loadingContainer}>
         <div className={styles.loadingContent}>
           <div className={styles.spinner}></div>
-          <p className={styles.loadingText}>Loading project...</p>
+          <p className={styles.loadingText}>{t('projects.detail.loading')}</p>
         </div>
       </div>
     )
@@ -58,11 +58,11 @@ export default function ProjectDetailPage() {
     return (
       <div className={styles.errorContainer}>
         <div className={styles.errorContent}>
-          <h1 className={styles.errorTitle}>Project Not Found</h1>
-          <p className={styles.errorText}>The project you're looking for doesn't exist.</p>
+          <h1 className={styles.errorTitle}>{t('projects.detail.notFound')}</h1>
+          <p className={styles.errorText}>{t('projects.detail.notFoundMessage')}</p>
           <Link href="/projects" className={styles.errorLink}>
             <ArrowLeft className={styles.errorLinkIcon} />
-            Back to Projects
+            {t('projects.detail.backToProjects')}
           </Link>
         </div>
       </div>
@@ -101,7 +101,7 @@ export default function ProjectDetailPage() {
         <div className={styles.backContainer}>
           <Link href="/projects" className={styles.backLink}>
             <ArrowLeft className={styles.backIcon} />
-            {t('common.back')} to Projects
+            {t('projects.detail.backToProjects')}
           </Link>
         </div>
       </div>

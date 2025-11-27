@@ -6,7 +6,7 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react'
 import styles from './page.module.css'
 
 export default function ContactPage() {
-  const { t } = useLanguage()
+  const { t, dir } = useLanguage()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,7 +21,7 @@ export default function ContactPage() {
     
     // Simulate form submission
     setTimeout(() => {
-      alert('Thank you for your message! We will get back to you soon.')
+      alert(t('contact.form.successMessage'))
       setFormData({ name: '', email: '', phone: '', message: '' })
       setIsSubmitting(false)
     }, 1000)
@@ -35,7 +35,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} dir={dir}>
       {/* Hero Section */}
       <section className={styles.heroSection}>
         <div className={styles.heroContainer}>
@@ -57,7 +57,7 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div className={styles.formSection}>
               <h2 className={styles.sectionTitle}>
-                Send us a Message
+                {t('contact.form.title')}
               </h2>
               <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.formGroup}>
@@ -138,7 +138,7 @@ export default function ContactPage() {
             <div className={styles.infoSection}>
               <div className={styles.infoCard}>
                 <h2 className={styles.sectionTitle}>
-                  Get in Touch
+                  {t('contact.info.title')}
                 </h2>
                 <div>
                   <div className={styles.infoItem}>
@@ -150,9 +150,12 @@ export default function ContactPage() {
                         {t('contact.info.address')}
                       </div>
                       <div className={styles.infoValue}>
-                        Solar Energy District<br />
-                        Building 123, Street 456<br />
-                        City, Country 12345
+                        {t('contact.info.addressValue').split('\n').map((line, index) => (
+                          <span key={index}>
+                            {line}
+                            {index < t('contact.info.addressValue').split('\n').length - 1 && <br />}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -166,8 +169,12 @@ export default function ContactPage() {
                         {t('contact.info.phone')}
                       </div>
                       <div className={styles.infoValue}>
-                        +123 456 7890<br />
-                        +123 456 7891
+                        {t('contact.info.phoneValue').split('\n').map((line, index) => (
+                          <span key={index}>
+                            {line}
+                            {index < t('contact.info.phoneValue').split('\n').length - 1 && <br />}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -181,8 +188,12 @@ export default function ContactPage() {
                         {t('contact.info.email')}
                       </div>
                       <div className={styles.infoValue}>
-                        info@essec-solar.com<br />
-                        support@essec-solar.com
+                        {t('contact.info.emailValue').split('\n').map((line, index) => (
+                          <span key={index}>
+                            {line}
+                            {index < t('contact.info.emailValue').split('\n').length - 1 && <br />}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -191,17 +202,17 @@ export default function ContactPage() {
 
               <div className={styles.hoursCard}>
                 <h3 className={styles.hoursTitle}>
-                  Business Hours
+                  {t('contact.hours.title')}
                 </h3>
                 <div className={styles.hoursList}>
                   <div className={styles.hoursItem}>
-                    <span className={styles.hoursItemStrong}>Monday - Friday:</span> 9:00 AM - 6:00 PM
+                    <span className={styles.hoursItemStrong}>{t('contact.hours.weekdays')}:</span> {t('contact.hours.weekdaysTime')}
                   </div>
                   <div className={styles.hoursItem}>
-                    <span className={styles.hoursItemStrong}>Saturday:</span> 10:00 AM - 4:00 PM
+                    <span className={styles.hoursItemStrong}>{t('contact.hours.saturday')}:</span> {t('contact.hours.saturdayTime')}
                   </div>
                   <div className={styles.hoursItem}>
-                    <span className={styles.hoursItemStrong}>Sunday:</span> Closed
+                    <span className={styles.hoursItemStrong}>{t('contact.hours.sunday')}:</span> {t('contact.hours.sundayTime')}
                   </div>
                 </div>
               </div>

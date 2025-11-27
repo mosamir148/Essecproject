@@ -180,7 +180,11 @@
       "execution": "طرق التنفيذ",
       "results": "النتائج",
       "technicalNotes": "ملاحظات تقنية",
-      "gallery": "معرض الصور"
+      "gallery": "معرض الصور",
+      "backToProjects": "العودة إلى المشاريع",
+      "loading": "جاري تحميل المشروع...",
+      "notFound": "المشروع غير موجود",
+      "notFoundMessage": "المشروع الذي تبحث عنه غير موجود."
     }
   },
   "about": {
@@ -220,16 +224,31 @@
     "title": "اتصل بنا",
     "subtitle": "تواصل مع فريقنا",
     "form": {
+      "title": "أرسل لنا رسالة",
       "name": "الاسم",
       "email": "البريد الإلكتروني",
       "phone": "الهاتف",
       "message": "الرسالة",
-      "send": "إرسال الرسالة"
+      "send": "إرسال الرسالة",
+      "successMessage": "شكراً لرسالتك! سنتواصل معك قريباً."
     },
     "info": {
+      "title": "تواصل معنا",
       "address": "العنوان",
+      "addressValue": "منطقة الطاقة الشمسية\nالمبنى 123، الشارع 456\nالمدينة، الدولة 12345",
       "phone": "الهاتف",
-      "email": "البريد الإلكتروني"
+      "phoneValue": "+123 456 7890\n+123 456 7891",
+      "email": "البريد الإلكتروني",
+      "emailValue": "info@essec-solar.com\nsupport@essec-solar.com"
+    },
+    "hours": {
+      "title": "ساعات العمل",
+      "weekdays": "الاثنين - الجمعة",
+      "weekdaysTime": "9:00 صباحاً - 6:00 مساءً",
+      "saturday": "السبت",
+      "saturdayTime": "10:00 صباحاً - 4:00 مساءً",
+      "sunday": "الأحد",
+      "sundayTime": "مغلق"
     }
   },
   "common": {

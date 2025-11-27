@@ -180,7 +180,11 @@
       "execution": "Méthodes d'exécution",
       "results": "Résultats",
       "technicalNotes": "Notes techniques",
-      "gallery": "Galerie d'images"
+      "gallery": "Galerie d'images",
+      "backToProjects": "Retour aux projets",
+      "loading": "Chargement du projet...",
+      "notFound": "Projet introuvable",
+      "notFoundMessage": "Le projet que vous recherchez n'existe pas."
     }
   },
   "about": {
@@ -220,16 +224,31 @@
     "title": "Contactez-nous",
     "subtitle": "Contactez notre équipe",
     "form": {
+      "title": "Envoyez-nous un message",
       "name": "Nom",
       "email": "Email",
       "phone": "Téléphone",
       "message": "Message",
-      "send": "Envoyer le message"
+      "send": "Envoyer le message",
+      "successMessage": "Merci pour votre message! Nous vous répondrons bientôt."
     },
     "info": {
+      "title": "Contactez-nous",
       "address": "Adresse",
+      "addressValue": "Quartier de l'énergie solaire\nBâtiment 123, Rue 456\nVille, Pays 12345",
       "phone": "Téléphone",
-      "email": "Email"
+      "phoneValue": "+123 456 7890\n+123 456 7891",
+      "email": "Email",
+      "emailValue": "info@essec-solar.com\nsupport@essec-solar.com"
+    },
+    "hours": {
+      "title": "Heures d'ouverture",
+      "weekdays": "Lundi - Vendredi",
+      "weekdaysTime": "9h00 - 18h00",
+      "saturday": "Samedi",
+      "saturdayTime": "10h00 - 16h00",
+      "sunday": "Dimanche",
+      "sundayTime": "Fermé"
     }
   },
   "common": {
