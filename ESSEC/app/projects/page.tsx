@@ -5,7 +5,7 @@ import { useLanguage } from '@/hooks/useLanguage'
 import ProjectCard from '@/components/ProjectCard'
 import { projects as staticProjects, Project } from '@/data/projects'
 import { api } from '@/lib/api'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import styles from './projects.module.css'
 
 export default function ProjectsPage() {
@@ -58,7 +58,7 @@ export default function ProjectsPage() {
               </p>
             </div>
             <div className={styles.heroImage}>
-              <Image
+              <DefaultImage
                 src="/se.jpg"
                 alt="ESSEC Solar Projects"
                 fill

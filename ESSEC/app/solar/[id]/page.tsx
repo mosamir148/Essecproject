@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { useLanguage } from '@/hooks/useLanguage'
 import { solarSystems, SolarSystem } from '@/data/solarSystems'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import Link from 'next/link'
 import { ArrowLeft, Zap, Settings, CheckCircle, MapPin, Lightbulb, Wrench, TrendingUp, FileText, Image as ImageIcon } from 'lucide-react'
 import styles from './page.module.css'
@@ -64,17 +64,24 @@ export default function SolarSystemDetailPage() {
                 {t(`solar.${system.summaryKey}`)}
               </p>
             </div>
-            {system.images && system.images.length > 0 && (
+            {system.images && system.images.length > 0 ? (
               <div className={styles.heroImage}>
-                <Image
+                <DefaultImage
                   src={system.images[0]}
                   alt={t(`solar.${system.nameKey}`)}
                   fill
                   className={styles.heroImageContent}
                   priority
-                  onError={(e) => {
-                    e.currentTarget.src = '/3 (2).jpg'
-                  }}
+                />
+              </div>
+            ) : (
+              <div className={styles.heroImage}>
+                <DefaultImage
+                  src=""
+                  alt={t(`solar.${system.nameKey}`)}
+                  fill
+                  className={styles.heroImageContent}
+                  priority
                 />
               </div>
             )}
@@ -202,14 +209,11 @@ export default function SolarSystemDetailPage() {
                   <div className={styles.galleryGrid}>
                     {system.images.slice(1).map((image, index) => (
                       <div key={index} className={styles.galleryItem}>
-                        <Image
+                        <DefaultImage
                           src={image}
                           alt={`${t(`solar.${system.nameKey}`)} - Image ${index + 2}`}
                           fill
                           className={styles.galleryImage}
-                          onError={(e) => {
-                            e.currentTarget.src = '/3 (2).jpg'
-                          }}
                         />
                       </div>
                     ))}
@@ -252,19 +256,14 @@ export default function SolarSystemDetailPage() {
               </div>
 
               {/* Sidebar Image */}
-              {system.images && system.images.length > 0 && (
-                <div className={styles.sidebarImage}>
-                  <Image
-                    src={system.images[0]}
-                    alt={t(`solar.${system.nameKey}`)}
-                    fill
-                    className={styles.sidebarImageContent}
-                    onError={(e) => {
-                      e.currentTarget.src = '/3 (2).jpg'
-                    }}
-                  />
-                </div>
-              )}
+              <div className={styles.sidebarImage}>
+                <DefaultImage
+                  src={system.images && system.images.length > 0 ? system.images[0] : ''}
+                  alt={t(`solar.${system.nameKey}`)}
+                  fill
+                  className={styles.sidebarImageContent}
+                />
+              </div>
             </div>
           </div>
         </div>

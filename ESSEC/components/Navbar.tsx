@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useLanguage } from '@/hooks/useLanguage'
 import { useTheme } from 'next-themes'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import { Menu, X, Sun, Moon, Globe } from 'lucide-react'
 import styles from './Navbar.module.css'
 
@@ -88,7 +88,7 @@ export default function Navbar() {
           <Link href="/" className={styles.logoLink}>
             {isHomePage && !scrolled ? (
               // On home page with transparent navbar, always use white logo
-              <Image
+              <DefaultImage
                 src="/logo w.PNG"
                 alt="ESSEC Logo"
                 width={180}
@@ -97,7 +97,7 @@ export default function Navbar() {
                 priority
               />
             ) : isDarkMode ? (
-              <Image
+              <DefaultImage
                 src="/logo w.PNG"
                 alt="ESSEC Logo"
                 width={180}
@@ -106,7 +106,7 @@ export default function Navbar() {
                 priority
               />
             ) : (
-              <Image
+              <DefaultImage
                 src="/logo.PNG"
                 alt="ESSEC Logo"
                 width={180}

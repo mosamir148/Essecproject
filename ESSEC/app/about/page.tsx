@@ -2,7 +2,7 @@
 
 import { useLanguage } from '@/hooks/useLanguage'
 import { teamMembers } from '@/data/team'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import { Award, Users, Calendar, Briefcase, UserCog } from 'lucide-react'
 import styles from './about.module.css'
 
@@ -20,13 +20,13 @@ export default function AboutPage() {
                 {t('about.title')}
               </h1>
               <p className={styles.heroSubtitle}>
-                Leading the solar energy revolution
+                {t('about.heroSubtitle')}
               </p>
             </div>
             <div className={styles.heroImage}>
-              <Image
-                src="/3 (2).jpg"
-                alt="About ESSEC Solar Engineering"
+              <DefaultImage
+                src="/aboutus1.png"
+                alt={t('about.heroImageAlt')}
                 fill
                 className={styles.heroImageContent}
                 priority
@@ -46,21 +46,21 @@ export default function AboutPage() {
                 <UserCog className={styles.statIconSvg} />
               </div>
               <div className={styles.statValue}>25+</div>
-              <div className={styles.statLabel}>Engineers</div>
+              <div className={styles.statLabel}>{t('about.stats.engineers')}</div>
             </div>
             <div className={styles.statCard}>
               <div className={styles.statIcon}>
                 <Users className={styles.statIconSvg} />
               </div>
               <div className={styles.statValue}>100+</div>
-              <div className={styles.statLabel}>Workers</div>
+              <div className={styles.statLabel}>{t('about.stats.workers')}</div>
             </div>
             <div className={styles.statCard}>
               <div className={styles.statIcon}>
                 <Briefcase className={styles.statIconSvg} />
               </div>
               <div className={styles.statValue}>15+</div>
-              <div className={styles.statLabel}>Managers</div>
+              <div className={styles.statLabel}>{t('about.stats.managers')}</div>
             </div>
           </div>
         </div>
@@ -75,14 +75,10 @@ export default function AboutPage() {
                 {t('about.title')}
               </h2>
               <p className={styles.companyText}>
-                ESSEC Solar Engineering is a leading provider of comprehensive solar energy solutions, 
-                committed to delivering sustainable and efficient renewable energy systems. With years of 
-                experience in the industry, we specialize in designing, installing, and maintaining solar 
-                photovoltaic systems for residential, commercial, and industrial applications.
+                {t('about.companyDescription1')}
               </p>
               <p className={styles.companyTextLast}>
-                Our mission is to make clean, renewable energy accessible to everyone while providing 
-                exceptional service and support throughout the entire project lifecycle.
+                {t('about.companyDescription2')}
               </p>
               
               <div className={styles.establishmentInfo}>
@@ -99,25 +95,25 @@ export default function AboutPage() {
                 <li className={styles.solutionItem}>
                   <Award className={styles.solutionIcon} />
                   <span className={styles.solutionText}>
-                    Solar PV Power Generation Systems (On-Grid, Off-Grid, Net-Meter)
+                    {t('about.solutionsList.solarPV')}
                   </span>
                 </li>
                 <li className={styles.solutionItem}>
                   <Award className={styles.solutionIcon} />
                   <span className={styles.solutionText}>
-                    Solar Water Heating Systems
+                    {t('about.solutionsList.waterHeating')}
                   </span>
                 </li>
                 <li className={styles.solutionItem}>
                   <Award className={styles.solutionIcon} />
                   <span className={styles.solutionText}>
-                    Solar Pumps and Irrigation Systems
+                    {t('about.solutionsList.pumps')}
                   </span>
                 </li>
                 <li className={styles.solutionItem}>
                   <Award className={styles.solutionIcon} />
                   <span className={styles.solutionText}>
-                    System Design, Installation, and Maintenance
+                    {t('about.solutionsList.designInstall')}
                   </span>
                 </li>
               </ul>
@@ -134,7 +130,7 @@ export default function AboutPage() {
               {t('about.team')}
             </h2>
             <p className={styles.teamSubtitle}>
-              Meet the experts behind our success
+              {t('about.teamSubtitle')}
             </p>
           </div>
 
@@ -145,16 +141,12 @@ export default function AboutPage() {
                 className={styles.teamCard}
               >
                 <div className={styles.teamCardImage}>
-                  <Image
+                  <DefaultImage
                     src={member.photo}
                     alt={member.name}
                     fill
                     className="object-cover"
                     unoptimized
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect fill="#ddd" width="400" height="400"/><text fill="#999" font-family="sans-serif" font-size="20" dy="10.5" font-weight="bold" x="50%" y="50%" text-anchor="middle">${member.name}</text></svg>`)}`
-                    }}
                   />
                 </div>
                 <div className={styles.teamCardContent}>

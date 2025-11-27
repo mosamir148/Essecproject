@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import { useLanguage } from '@/hooks/useLanguage'
 import { MapPin, Calendar, Clock, Play, Image as ImageIcon } from 'lucide-react'
 import styles from './ProjectCard.module.css'
@@ -60,14 +60,11 @@ export default function ProjectCard({ id, name, location, year, duration, image,
           </div>
         )}
         <div className={`${styles.imageContainer} ${isHovered && video ? styles.imageContainerHidden : styles.imageContainerVisible}`}>
-          <Image
+          <DefaultImage
             src={image}
             alt={name}
             fill
             className={styles.image}
-            onError={(e) => {
-              e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="400"%3E%3Crect fill="%23ddd" width="600" height="400"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="18" dy="10.5" font-weight="bold" x="50%25" y="50%25" text-anchor="middle"%3E' + name + '%3C/text%3E%3C/svg%3E'
-            }}
           />
           <div className={styles.imageGradient} />
           {video && (

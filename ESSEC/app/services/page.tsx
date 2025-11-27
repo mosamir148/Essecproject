@@ -1,7 +1,7 @@
 'use client'
 
 import { useLanguage } from '@/hooks/useLanguage'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import { Settings, Wrench, Headphones, Truck } from 'lucide-react'
 import styles from './services.module.css'
 
@@ -69,8 +69,8 @@ export default function ServicesPage() {
               </p>
             </div>
             <div className={styles.heroImage}>
-              <Image
-                src="/se.jpg"
+              <DefaultImage
+                src="/ourservise.png"
                 alt="ESSEC Services"
                 fill
                 className={styles.heroImageContent}

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useLanguage } from '@/hooks/useLanguage'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import styles from './VideoHero.module.css'
 
 interface VideoHeroProps {
@@ -63,7 +63,7 @@ export default function VideoHero({ title, subtitle, videoSrc, imageSrc, fullHei
         </video>
       ) : imageSrc ? (
         <div className={styles.imageContainer} style={{ transform: `translateY(${parallaxOffset}px)` }}>
-          <Image
+          <DefaultImage
             src={imageSrc}
             alt={title}
             fill

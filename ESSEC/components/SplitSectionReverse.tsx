@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useLanguage } from '@/hooks/useLanguage'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import styles from './SplitSectionReverse.module.css'
 
 interface SplitSectionReverseProps {
@@ -43,7 +43,7 @@ export default function SplitSectionReverse({ scrollY = 0 }: SplitSectionReverse
         {/* Left Half - Image */}
         <div className={`${styles.imageHalf} ${isVisible ? styles.visible : styles.hidden}`}>
           <div className={styles.imageWrapper}>
-            <Image
+            <DefaultImage
               src="/se.jpg"
               alt={t('home.splitSectionReverse.imageAlt')}
               fill

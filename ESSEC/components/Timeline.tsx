@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import { useLanguage } from '@/hooks/useLanguage'
 import styles from './Timeline.module.css'
 
@@ -159,14 +159,11 @@ export default function Timeline({ scrollY = 0 }: TimelineProps) {
                     className={`${styles.stepImage} ${isEven ? styles.imageRight : styles.imageLeft}`}
                   >
                     <div className={styles.imageWrapper}>
-                      <Image
+                      <DefaultImage
                         src={step.image}
                         alt={t(`home.timeline.${step.titleKey}`)}
                         fill
                         className={styles.image}
-                        onError={(e) => {
-                          e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="400"%3E%3Crect fill="%23e2e8f0" width="600" height="400"/%3Ctext fill="%2364758b" font-family="sans-serif" font-size="20" dy="10.5" font-weight="600" x="50%25" y="50%25" text-anchor="middle"%3E' + encodeURIComponent(t(`home.timeline.${step.titleKey}`)) + '%3C/text%3E%3C/svg%3E'
-                        }}
                       />
                       <div className={styles.imageOverlay}></div>
                     </div>

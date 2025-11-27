@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import { api, auth } from '@/lib/api'
 import { Lock, Mail, User, LogIn, AlertCircle } from 'lucide-react'
 import styles from './login.module.css'
@@ -109,7 +109,7 @@ export default function AdminLogin() {
         {/* Logo Section */}
         <div className={styles.logoSection}>
           <div className={styles.logoContainer}>
-            <Image
+            <DefaultImage
               src={logoSrc}
               alt="ESSEC Logo"
               width={200}

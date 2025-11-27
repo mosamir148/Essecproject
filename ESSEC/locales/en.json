@@ -103,6 +103,23 @@
   },
   "solar": {
     "title": "Our Solar Energy Systems",
+    "subtitle": "Comprehensive solar energy solutions for every need",
+    "benefits": {
+      "title": "Why Choose Solar Energy?",
+      "subtitle": "Benefits of switching to renewable solar power",
+      "environmentallyFriendly": {
+        "title": "Environmentally Friendly",
+        "description": "Reduce your carbon footprint and contribute to a cleaner environment with zero-emission solar energy."
+      },
+      "costSavings": {
+        "title": "Cost Savings",
+        "description": "Significantly reduce or eliminate your electricity bills with long-term energy savings."
+      },
+      "lowMaintenance": {
+        "title": "Low Maintenance",
+        "description": "Solar systems require minimal maintenance and have a lifespan of 25+ years with reliable performance."
+      }
+    },
     "systems": {
       "onGrid": {
         "name": "Solar PV Power Generation – On-Grid",
@@ -168,12 +185,28 @@
   },
   "about": {
     "title": "About Us",
+    "heroSubtitle": "Leading the solar energy revolution",
+    "heroImageAlt": "About ESSEC Solar Engineering",
     "establishment": "Established",
     "solutions": "Solutions & Services",
     "team": "Our Team",
+    "teamSubtitle": "Meet the experts behind our success",
     "ceo": "Chief Executive Officer",
     "executiveDirector": "Executive Director",
-    "engineer": "Engineer"
+    "engineer": "Engineer",
+    "stats": {
+      "engineers": "Engineers",
+      "workers": "Workers",
+      "managers": "Managers"
+    },
+    "companyDescription1": "ESSEC Solar Engineering is a leading provider of comprehensive solar energy solutions, committed to delivering sustainable and efficient renewable energy systems. With years of experience in the industry, we specialize in designing, installing, and maintaining solar photovoltaic systems for residential, commercial, and industrial applications.",
+    "companyDescription2": "Our mission is to make clean, renewable energy accessible to everyone while providing exceptional service and support throughout the entire project lifecycle.",
+    "solutionsList": {
+      "solarPV": "Solar PV Power Generation Systems (On-Grid, Off-Grid, Net-Meter)",
+      "waterHeating": "Solar Water Heating Systems",
+      "pumps": "Solar Pumps and Irrigation Systems",
+      "designInstall": "System Design, Installation, and Maintenance"
+    }
   },
   "services": {
     "title": "Our Services",

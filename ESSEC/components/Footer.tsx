@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import { useLanguage } from '@/hooks/useLanguage'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
@@ -50,7 +50,7 @@ export default function Footer() {
           {/* Company Info */}
           <div className={styles.companySection}>
             <Link href="/" className={styles.logoLink}>
-              <Image
+              <DefaultImage
                 src={logoSrc}
                 alt="ESSEC Solar Engineering Logo"
                 width={200}

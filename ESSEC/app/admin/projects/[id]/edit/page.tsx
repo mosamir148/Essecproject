@@ -7,7 +7,7 @@ import { useTheme } from 'next-themes'
 import { api, auth } from '@/lib/api'
 import { Project } from '@/data/projects'
 import { ArrowLeft, Save, X, Plus, Upload } from 'lucide-react'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 
 export default function EditProjectPage() {
   const router = useRouter()
@@ -383,12 +383,11 @@ export default function EditProjectPage() {
             </div>
             {imagePreview && (
               <div className="mt-4 relative w-full h-64 rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600">
-                <Image
+                <DefaultImage
                   src={imagePreview}
                   alt="Preview"
                   fill
                   className="object-cover"
-                  onError={() => setImagePreview(null)}
                 />
                 <button
                   type="button"

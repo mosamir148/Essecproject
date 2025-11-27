@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { useLanguage } from '@/hooks/useLanguage'
 import { projects as staticProjects, Project } from '@/data/projects'
 import { api } from '@/lib/api'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import Link from 'next/link'
 import { ArrowLeft, MapPin, Calendar, Clock, CheckCircle, Lightbulb, Wrench, TrendingUp, FileText, Image as ImageIcon } from 'lucide-react'
 import styles from './page.module.css'
@@ -84,15 +84,12 @@ export default function ProjectDetailPage() {
               </p>
             </div>
             <div className={styles.heroImage}>
-              <Image
+              <DefaultImage
                 src={project.image}
                 alt={project.name}
                 fill
                 className={styles.heroImageContent}
                 priority
-                onError={(e) => {
-                  e.currentTarget.src = '/3 (2).jpg'
-                }}
               />
             </div>
           </div>
@@ -219,14 +216,11 @@ export default function ProjectDetailPage() {
                   <div className={styles.galleryGrid}>
                     {project.gallery.map((image, index) => (
                       <div key={index} className={styles.galleryItem}>
-                        <Image
+                        <DefaultImage
                           src={image}
                           alt={`${project.name} - Image ${index + 1}`}
                           fill
                           className={styles.galleryImage}
-                          onError={(e) => {
-                            e.currentTarget.src = '/3 (2).jpg'
-                          }}
                         />
                       </div>
                     ))}
@@ -281,14 +275,11 @@ export default function ProjectDetailPage() {
 
               {/* Sidebar Image */}
               <div className={styles.sidebarImage}>
-                <Image
+                <DefaultImage
                   src={project.image}
                   alt={project.name}
                   fill
                   className={styles.sidebarImageContent}
-                  onError={(e) => {
-                    e.currentTarget.src = '/3 (2).jpg'
-                  }}
                 />
               </div>
             </div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useLanguage } from '@/hooks/useLanguage'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import styles from './SplitSection.module.css'
 
 interface SplitSectionProps {
@@ -58,7 +58,7 @@ export default function SplitSection({ scrollY = 0 }: SplitSectionProps) {
         {/* Right Half - Image */}
         <div className={`${styles.imageHalf} ${isVisible ? styles.visible : styles.hidden}`}>
           <div className={styles.imageWrapper}>
-            <Image
+            <DefaultImage
               src="/Ex.jpg"
               alt={t('home.splitSection.imageAlt')}
               fill

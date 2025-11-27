@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { usePathname } from 'next/navigation'
-import Image from 'next/image'
+import DefaultImage from '@/components/DefaultImage'
 import styles from './LoadingPage.module.css'
 
 interface LoadingPageProps {
@@ -162,7 +162,7 @@ export default function LoadingPage({
         {/* Logo or Website Name */}
         <div className={styles.logoContainer}>
           {logo ? (
-            <Image 
+            <DefaultImage 
               src={logo} 
               alt={websiteName} 
               width={200} 

@@ -103,6 +103,23 @@
   },
   "solar": {
     "title": "Nos systèmes d'énergie solaire",
+    "subtitle": "Solutions complètes d'énergie solaire pour tous les besoins",
+    "benefits": {
+      "title": "Pourquoi choisir l'énergie solaire?",
+      "subtitle": "Avantages de passer à l'énergie solaire renouvelable",
+      "environmentallyFriendly": {
+        "title": "Respectueux de l'environnement",
+        "description": "Réduisez votre empreinte carbone et contribuez à un environnement plus propre avec une énergie solaire à zéro émission."
+      },
+      "costSavings": {
+        "title": "Économies de coûts",
+        "description": "Réduisez considérablement ou éliminez vos factures d'électricité avec des économies d'énergie à long terme."
+      },
+      "lowMaintenance": {
+        "title": "Maintenance faible",
+        "description": "Les systèmes solaires nécessitent une maintenance minimale et ont une durée de vie de 25+ ans avec des performances fiables."
+      }
+    },
     "systems": {
       "onGrid": {
         "name": "Génération d'énergie solaire PV – Sur réseau",
@@ -168,12 +185,28 @@
   },
   "about": {
     "title": "À propos de nous",
+    "heroSubtitle": "Diriger la révolution de l'énergie solaire",
+    "heroImageAlt": "À propos d'ESSEC Solar Engineering",
     "establishment": "Établi",
     "solutions": "Solutions et services",
     "team": "Notre équipe",
+    "teamSubtitle": "Rencontrez les experts derrière notre succès",
     "ceo": "Directeur général",
     "executiveDirector": "Directeur exécutif",
-    "engineer": "Ingénieur"
+    "engineer": "Ingénieur",
+    "stats": {
+      "engineers": "Ingénieurs",
+      "workers": "Ouvriers",
+      "managers": "Gestionnaires"
+    },
+    "companyDescription1": "ESSEC Solar Engineering est un fournisseur de premier plan de solutions complètes d'énergie solaire, engagé à fournir des systèmes d'énergie renouvelable durables et efficaces. Avec des années d'expérience dans l'industrie, nous nous spécialisons dans la conception, l'installation et la maintenance de systèmes photovoltaïques solaires pour les applications résidentielles, commerciales et industrielles.",
+    "companyDescription2": "Notre mission est de rendre l'énergie propre et renouvelable accessible à tous tout en fournissant un service et un support exceptionnels tout au long du cycle de vie du projet.",
+    "solutionsList": {
+      "solarPV": "Systèmes de génération d'énergie solaire PV (Sur réseau, Hors réseau, Compteur net)",
+      "waterHeating": "Systèmes de chauffage solaire de l'eau",
+      "pumps": "Pompes solaires et systèmes d'irrigation",
+      "designInstall": "Conception de système, installation et maintenance"
+    }
   },
   "services": {
     "title": "Nos services",

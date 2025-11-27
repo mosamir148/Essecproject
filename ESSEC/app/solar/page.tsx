@@ -2,6 +2,7 @@
 
 import { useLanguage } from '@/hooks/useLanguage'
 import VideoHero from '@/components/VideoHero'
+import DefaultImage from '@/components/DefaultImage'
 import { solarSystems } from '@/data/solarSystems'
 import Link from 'next/link'
 import { ArrowRight, Zap, Leaf, Wrench } from 'lucide-react'
@@ -14,8 +15,8 @@ export default function SolarPage() {
     <div className={styles.page}>
       <VideoHero
         title={t('solar.title')}
-        subtitle="Comprehensive solar energy solutions for every need"
-        imageSrc="/se.jpg"
+        subtitle={t('solar.subtitle')}
+        imageSrc="/solar.png"
         fullHeight={false}
       />
 
@@ -58,10 +59,10 @@ export default function SolarPage() {
         <div className={styles.benefitsContainer}>
           <div className={styles.benefitsHeader}>
             <h2 className={styles.benefitsTitle}>
-              Why Choose Solar Energy?
+              {t('solar.benefits.title')}
             </h2>
             <p className={styles.benefitsSubtitle}>
-              Benefits of switching to renewable solar power
+              {t('solar.benefits.subtitle')}
             </p>
           </div>
 
@@ -71,10 +72,10 @@ export default function SolarPage() {
                 <Leaf className={`${styles.benefitIcon} ${styles.benefitIconGreen}`} />
               </div>
               <h3 className={styles.benefitTitle}>
-                Environmentally Friendly
+                {t('solar.benefits.environmentallyFriendly.title')}
               </h3>
               <p className={styles.benefitText}>
-                Reduce your carbon footprint and contribute to a cleaner environment with zero-emission solar energy.
+                {t('solar.benefits.environmentallyFriendly.description')}
               </p>
             </div>
 
@@ -83,10 +84,10 @@ export default function SolarPage() {
                 <Zap className={`${styles.benefitIcon} ${styles.benefitIconBlue}`} />
               </div>
               <h3 className={styles.benefitTitle}>
-                Cost Savings
+                {t('solar.benefits.costSavings.title')}
               </h3>
               <p className={styles.benefitText}>
-                Significantly reduce or eliminate your electricity bills with long-term energy savings.
+                {t('solar.benefits.costSavings.description')}
               </p>
             </div>
 
@@ -95,10 +96,10 @@ export default function SolarPage() {
                 <Wrench className={`${styles.benefitIcon} ${styles.benefitIconPurple}`} />
               </div>
               <h3 className={styles.benefitTitle}>
-                Low Maintenance
+                {t('solar.benefits.lowMaintenance.title')}
               </h3>
               <p className={styles.benefitText}>
-                Solar systems require minimal maintenance and have a lifespan of 25+ years with reliable performance.
+                {t('solar.benefits.lowMaintenance.description')}
               </p>
             </div>
           </div>

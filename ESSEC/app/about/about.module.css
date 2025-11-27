@@ -8,7 +8,7 @@
   padding: 4rem 0;
   position: relative;
   overflow: hidden;
-  background-image: url('/3 (2).jpg');
+  background-image: url('/aboutus1.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -70,6 +70,16 @@
 
 @media (min-width: 1024px) {
   .heroContent {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+[dir='rtl'] .heroContent {
+  direction: rtl;
+}
+
+@media (min-width: 1024px) {
+  [dir='rtl'] .heroContent {
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -317,7 +327,7 @@
   padding: 5rem 0;
   position: relative;
   overflow: hidden;
-  background-image: url('/3 (2).jpg');
+  background-image: url('/all.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -372,6 +382,16 @@
 
 @media (min-width: 1024px) {
   .companyGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+[dir='rtl'] .companyGrid {
+  direction: rtl;
+}
+
+@media (min-width: 1024px) {
+  [dir='rtl'] .companyGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -707,5 +727,117 @@
 
 :global(.dark) .teamCardBio {
   color: #CCCCCC;
+}
+
+/* RTL Support for Arabic */
+[dir='rtl'] .heroText {
+  text-align: right;
+}
+
+[dir='rtl'] .heroTitle {
+  text-align: right;
+}
+
+[dir='rtl'] .heroSubtitle {
+  text-align: right;
+}
+
+[dir='rtl'] .statsGrid {
+  direction: rtl;
+}
+
+[dir='rtl'] .statCard {
+  text-align: center;
+  direction: rtl;
+}
+
+[dir='rtl'] .companyGrid {
+  direction: rtl;
+}
+
+[dir='rtl'] .companyContent {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir='rtl'] .companyTitle {
+  text-align: right;
+}
+
+[dir='rtl'] .companyText,
+[dir='rtl'] .companyTextLast {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir='rtl'] .establishmentInfo {
+  direction: rtl;
+  flex-direction: row-reverse;
+}
+
+[dir='rtl'] .solutionsBox {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir='rtl'] .solutionsTitle {
+  text-align: right;
+}
+
+[dir='rtl'] .solutionsList {
+  direction: rtl;
+}
+
+[dir='rtl'] .solutionItem {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+[dir='rtl'] .solutionIcon {
+  margin-top: 0.25rem;
+}
+
+[dir='rtl'] .solutionText {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir='rtl'] .teamHeader {
+  direction: rtl;
+  text-align: center;
+}
+
+[dir='rtl'] .teamTitle {
+  text-align: center;
+}
+
+[dir='rtl'] .teamSubtitle {
+  text-align: center;
+}
+
+[dir='rtl'] .teamGrid {
+  direction: rtl;
+}
+
+[dir='rtl'] .teamCard {
+  direction: rtl;
+}
+
+[dir='rtl'] .teamCardContent {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir='rtl'] .teamCardName {
+  text-align: right;
+}
+
+[dir='rtl'] .teamCardRole {
+  text-align: right;
+}
+
+[dir='rtl'] .teamCardBio {
+  text-align: right;
+  direction: rtl;
 }
 
