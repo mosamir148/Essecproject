@@ -90,7 +90,14 @@ export const api = {
   async getProject(id: string): Promise<Project> {
     const response = await fetch(`${API_BASE_URL}/projects/${id}`)
     if (!response.ok) {
-      throw new Error('Failed to fetch project')
+      const error = await response.json().catch(() => ({ error: 'Failed to fetch project' }))
+      if (response.status === 404) {
+        throw new Error('Project not found')
+      } else if (response.status === 400) {
+        throw new Error(error.error || 'Invalid project ID')
+      } else {
+        throw new Error(error.error || 'Failed to fetch project')
+      }
     }
     return response.json()
   },
@@ -117,8 +124,16 @@ export const api = {
       body: JSON.stringify(project),
     })
     if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.error || 'Failed to update project')
+      const error = await response.json().catch(() => ({ error: 'Failed to update project' }))
+      if (response.status === 404) {
+        throw new Error('Project not found')
+      } else if (response.status === 400) {
+        throw new Error(error.error || 'Invalid project data')
+      } else if (response.status === 401) {
+        throw new Error('Authentication required')
+      } else {
+        throw new Error(error.error || 'Failed to update project')
+      }
     }
     return response.json()
   },

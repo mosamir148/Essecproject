@@ -37,8 +37,10 @@ export default function NewProjectPage() {
   const [videoPreview, setVideoPreview] = useState<string | null>(null)
   const imageInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
+  const galleryInputRef = useRef<HTMLInputElement>(null)
   const [uploadingImage, setUploadingImage] = useState(false)
   const [uploadingVideo, setUploadingVideo] = useState(false)
+  const [uploadingGallery, setUploadingGallery] = useState(false)
 
   useEffect(() => {
     checkAuth()
@@ -227,6 +229,77 @@ export default function NewProjectPage() {
 
   const triggerVideoFileInput = () => {
     videoInputRef.current?.click()
+  }
+
+  const handleGalleryFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+
+    setUploadingGallery(true)
+
+    try {
+      const newGalleryImages: string[] = []
+      const maxSize = 10 * 1024 * 1024 // 10MB per image
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+
+        // Check if it's an image
+        if (!file.type.startsWith('image/')) {
+          alert(`File "${file.name}" is not an image. Skipping.`)
+          continue
+        }
+
+        // Check file size
+        if (file.size > maxSize) {
+          alert(`Image "${file.name}" is too large (max 10MB). Skipping.`)
+          continue
+        }
+
+        // Convert to base64
+        const base64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onloadend = () => {
+            try {
+              const result = reader.result as string
+              if (result) {
+                resolve(result)
+              } else {
+                reject(new Error('Failed to read file'))
+              }
+            } catch (error) {
+              reject(error)
+            }
+          }
+          reader.onerror = () => reject(new Error('Error reading file'))
+          reader.readAsDataURL(file)
+        })
+
+        newGalleryImages.push(base64)
+      }
+
+      // Add all new images to gallery
+      if (newGalleryImages.length > 0) {
+        setFormData({
+          ...formData,
+          gallery: [...(formData.gallery || []), ...newGalleryImages],
+        })
+        alert(`Successfully added ${newGalleryImages.length} image(s) to gallery`)
+      }
+    } catch (error) {
+      console.error('Error processing gallery images:', error)
+      alert('Error processing gallery images. Please try again.')
+    } finally {
+      setUploadingGallery(false)
+      // Reset input so same files can be selected again
+      if (galleryInputRef.current) {
+        galleryInputRef.current.value = ''
+      }
+    }
+  }
+
+  const triggerGalleryFileInput = () => {
+    galleryInputRef.current?.click()
   }
 
   if (loading || !authenticated) {
@@ -599,7 +672,7 @@ export default function NewProjectPage() {
             <div className={styles.section}>
               <h2 className={styles.sectionTitle}>{t('admin.gallery')}</h2>
               <div className={styles.arraySection}>
-                <div className={styles.arrayInputGroup}>
+                <div className={styles.uploadInputGroup}>
                   <input
                     type="text"
                     value={galleryInput}
@@ -610,34 +683,61 @@ export default function NewProjectPage() {
                         addArrayItem('gallery', galleryInput)
                       }
                     }}
-                    placeholder={t('admin.addGalleryImage')}
-                    className={`${styles.formInput} ${styles.arrayInput}`}
+                    placeholder="Image URL or upload multiple images"
+                    className={`${styles.formInput} ${styles.uploadInput}`}
+                  />
+                  <input
+                    type="file"
+                    ref={galleryInputRef}
+                    accept="image/*"
+                    multiple
+                    onChange={handleGalleryFileSelect}
+                    className={styles.hiddenInput}
                   />
                   <button
                     type="button"
                     onClick={() => addArrayItem('gallery', galleryInput)}
                     className={styles.arrayAddButton}
+                    disabled={!galleryInput.trim()}
                   >
                     <Plus className={styles.arrayAddButtonIcon} />
                   </button>
+                  <button
+                    type="button"
+                    onClick={triggerGalleryFileInput}
+                    disabled={uploadingGallery}
+                    className={styles.uploadButton}
+                  >
+                    <Upload className={styles.uploadButtonIcon} />
+                    {uploadingGallery ? t('admin.loading') : 'Upload Images'}
+                  </button>
                 </div>
-                <div className={styles.arrayItems}>
-                  {(formData.gallery || []).map((url, idx) => (
-                    <span
-                      key={idx}
-                      className={`${styles.arrayItem} ${styles.arrayItemGray}`}
-                    >
-                      Image {idx + 1}
-                      <button
-                        type="button"
-                        onClick={() => removeArrayItem('gallery', idx)}
-                        className={styles.arrayItemRemove}
-                      >
-                        <X className={styles.arrayItemRemoveIcon} />
-                      </button>
-                    </span>
-                  ))}
-                </div>
+                
+                {/* Gallery Images Grid */}
+                {(formData.gallery || []).length > 0 && (
+                  <div className={styles.galleryGrid}>
+                    {(formData.gallery || []).map((url, idx) => (
+                      <div key={idx} className={styles.galleryItem}>
+                        <div className={styles.galleryPreview}>
+                          <DefaultImage
+                            src={url}
+                            alt={`Gallery image ${idx + 1}`}
+                            fill
+                            className={styles.galleryPreviewImage}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeArrayItem('gallery', idx)}
+                            className={styles.galleryRemoveButton}
+                          >
+                            <X className={styles.removeButtonIcon} />
+                          </button>
+                        </div>
+                        <div className={styles.galleryItemLabel}>Image {idx + 1}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 

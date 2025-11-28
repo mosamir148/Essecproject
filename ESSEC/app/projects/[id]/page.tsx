@@ -272,16 +272,6 @@ export default function ProjectDetailPage() {
                   </div>
                 </div>
               </div>
-
-              {/* Sidebar Image */}
-              <div className={styles.sidebarImage}>
-                <DefaultImage
-                  src={project.image}
-                  alt={project.name}
-                  fill
-                  className={styles.sidebarImageContent}
-                />
-              </div>
             </div>
           </div>
         </div>

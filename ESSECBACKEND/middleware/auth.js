@@ -20,25 +20,38 @@ const authenticate = async (req, res, next) => {
     const token = authHeader.substring(7); // Remove 'Bearer ' prefix
 
     // Verify token
-    const decoded = jwt.verify(token, JWT_SECRET);
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET);
+    } catch (jwtError) {
+      if (jwtError.name === 'JsonWebTokenError') {
+        return res.status(401).json({ error: 'Invalid token' });
+      }
+      if (jwtError.name === 'TokenExpiredError') {
+        return res.status(401).json({ error: 'Token expired' });
+      }
+      throw jwtError;
+    }
 
     // Get admin from token
     const admin = await Admin.findById(decoded.id).select('-password');
     
     if (!admin) {
-      return res.status(401).json({ error: 'Token is not valid' });
+      return res.status(401).json({ error: 'Token is not valid - admin not found' });
     }
 
     req.admin = admin;
     next();
   } catch (error) {
+    console.error('Authentication error:', error);
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ error: 'Invalid token' });
     }
     if (error.name === 'TokenExpiredError') {
       return res.status(401).json({ error: 'Token expired' });
     }
-    res.status(500).json({ error: 'Server error during authentication' });
+    console.error('Unexpected authentication error:', error.stack);
+    return res.status(500).json({ error: 'Server error during authentication', details: error.message });
   }
 };
 
