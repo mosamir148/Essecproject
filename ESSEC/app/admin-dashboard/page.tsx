@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useLanguage } from '@/hooks/useLanguage'
 import { api, auth } from '@/lib/api'
 import { Project } from '@/data/projects'
-import { Plus, Edit, Trash2, Eye, LogOut, X, Video, Check, Upload, Home, FolderPlus, Menu, Users } from 'lucide-react'
+import { Plus, Edit, Trash2, Eye, LogOut, X, Video, Check, Upload, Home, FolderPlus, Menu, Users, Newspaper } from 'lucide-react'
 import styles from './admin-dashboard.module.css'
 
 interface HomepageVideo {
@@ -16,12 +16,24 @@ interface HomepageVideo {
   isActive: boolean
 }
 
+interface NewsItem {
+  id: string
+  title: string
+  mainImage: string
+  summary: string
+  fullText: string
+  additionalImages: string[]
+  publicationDate: string
+  displayOrder: number
+}
+
 export default function AdminDashboard() {
   const router = useRouter()
   const { t } = useLanguage()
   const [projects, setProjects] = useState<Project[]>([])
   const [homepageVideos, setHomepageVideos] = useState<HomepageVideo[]>([])
   const [teamMembers, setTeamMembers] = useState<any[]>([])
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([])
   const [loading, setLoading] = useState(true)
   const [authenticated, setAuthenticated] = useState(false)
   const [adminInfo, setAdminInfo] = useState<any>(null)
@@ -37,7 +49,7 @@ export default function AdminDashboard() {
     subtitle: '',
     isActive: true
   })
-  const [activeSection, setActiveSection] = useState<'homepage' | 'projects' | 'team'>('homepage')
+  const [activeSection, setActiveSection] = useState<'homepage' | 'projects' | 'team' | 'news'>('homepage')
   const [sidebarOpen, setSidebarOpen] = useState(true)
 
   useEffect(() => {
@@ -58,6 +70,7 @@ export default function AdminDashboard() {
       loadProjects()
       loadHomepageVideos()
       loadTeamMembers()
+      loadNews()
     } catch (err) {
       auth.removeToken()
       router.push('/admin/login')
@@ -104,6 +117,8 @@ export default function AdminDashboard() {
       router.push('/admin/projects/new')
     } else if (activeSection === 'team') {
       router.push('/admin/team/new')
+    } else if (activeSection === 'news') {
+      router.push('/admin/news/new')
     }
   }
 
@@ -135,6 +150,36 @@ export default function AdminDashboard() {
 
   const handleEditTeamMember = (member: any) => {
     router.push(`/admin/team/${member.id}/edit`)
+  }
+
+  const loadNews = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const data = await api.getNews('displayOrder')
+      setNewsItems(data)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load news')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteNews = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this news item?')) {
+      return
+    }
+
+    try {
+      await api.deleteNews(id)
+      await loadNews()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Failed to delete news item')
+    }
+  }
+
+  const handleEditNews = (news: NewsItem) => {
+    router.push(`/admin/news/${news.id}/edit`)
   }
 
   const loadHomepageVideos = async () => {
@@ -455,6 +500,19 @@ export default function AdminDashboard() {
               <Users className={styles.sidebarItemIcon} />
               {sidebarOpen && <span>Team Members</span>}
             </button>
+            
+            <button
+              onClick={() => {
+                setActiveSection('news')
+                if (window.innerWidth < 1024) {
+                  setSidebarOpen(false)
+                }
+              }}
+              className={`${styles.sidebarItem} ${activeSection === 'news' ? styles.sidebarItemActive : ''}`}
+            >
+              <Newspaper className={styles.sidebarItemIcon} />
+              {sidebarOpen && <span>News</span>}
+            </button>
           </nav>
           
           <div className={styles.sidebarFooter}>
@@ -485,14 +543,16 @@ export default function AdminDashboard() {
             <div className={styles.header}>
               <div className={styles.headerContent}>
                 <h1 className={styles.title}>
-                  {activeSection === 'homepage' ? 'Homepage Management' : activeSection === 'projects' ? 'Projects Management' : 'Team Management'}
+                  {activeSection === 'homepage' ? 'Homepage Management' : activeSection === 'projects' ? 'Projects Management' : activeSection === 'team' ? 'Team Management' : 'News Management'}
                 </h1>
                 <p className={styles.subtitle}>
                   {activeSection === 'homepage' 
                     ? 'Manage homepage video and content'
                     : activeSection === 'projects'
                     ? t('admin.manageProjects')
-                    : 'Manage team members'}
+                    : activeSection === 'team'
+                    ? 'Manage team members'
+                    : 'Manage news items'}
                   {adminInfo && (
                     <span className={styles.subtitleSpan}>
                       - {t('admin.loggedInAs')} <span className={styles.subtitleBold}>{adminInfo.name || adminInfo.email}</span>
@@ -631,7 +691,7 @@ export default function AdminDashboard() {
                       <div className={styles.videosGrid}>
                         {homepageVideos.map((video) => (
                           <div
-                            key={video.id}
+                            key={video.id || `video-${video.videoUrl}`}
                             className={`${styles.videoCard} ${video.isActive ? styles.videoCardActive : ''}`}
                           >
                             <div className={styles.videoCardHeader}>
@@ -725,14 +785,14 @@ export default function AdminDashboard() {
                       </thead>
                       <tbody>
                         {teamMembers.length === 0 ? (
-                          <tr className={styles.tableRow}>
+                          <tr key="empty-team" className={styles.tableRow}>
                             <td colSpan={4} className={`${styles.tableCell} ${styles.tableCellCenter}`}>
                               No team members added yet. Click "Add New Team Member" to get started.
                             </td>
                           </tr>
                         ) : (
                           teamMembers.map((member) => (
-                            <tr key={member.id} className={styles.tableRow}>
+                            <tr key={member.id || `member-${member.name}`} className={styles.tableRow}>
                               <td className={`${styles.tableCell} ${styles.tableCellName}`}>
                                 {member.name}
                               </td>
@@ -814,14 +874,14 @@ export default function AdminDashboard() {
                       </thead>
                       <tbody>
                         {projects.length === 0 ? (
-                          <tr className={styles.tableRow}>
+                          <tr key="empty-projects" className={styles.tableRow}>
                             <td colSpan={5} className={`${styles.tableCell} ${styles.tableCellCenter}`}>
                               {t('admin.noProjects')}
                             </td>
                           </tr>
                         ) : (
                           projects.map((project) => (
-                            <tr key={project.id} className={styles.tableRow}>
+                            <tr key={project.id || `project-${project.name}`} className={styles.tableRow}>
                               <td className={`${styles.tableCell} ${styles.tableCellName}`}>
                                 {project.name}
                               </td>
@@ -939,6 +999,92 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                 )}
+              </>
+            )}
+
+            {activeSection === 'news' && (
+              <>
+                {/* News Header with Add Button */}
+                <div className={styles.section}>
+                  <div className={styles.sectionHeader}>
+                    <h2 className={styles.sectionTitle}>
+                      <Newspaper className={styles.sectionIcon} />
+                      News Management
+                    </h2>
+                    <button
+                      onClick={handleAddNew}
+                      className={`${styles.button} ${styles.buttonPrimary}`}
+                    >
+                      <Plus className={styles.buttonIcon} />
+                      Add New News
+                    </button>
+                  </div>
+                </div>
+
+                {/* News Table */}
+                <div className={styles.tableContainer}>
+                  <div className={styles.tableWrapper}>
+                    <table className={styles.table}>
+                      <thead className={styles.tableHead}>
+                        <tr className={styles.tableRow}>
+                          <th className={styles.tableHeader}>
+                            Title
+                          </th>
+                          <th className={styles.tableHeader}>
+                            Publication Date
+                          </th>
+                          <th className={styles.tableHeader}>
+                            Display Order
+                          </th>
+                          <th className={`${styles.tableHeader} ${styles.tableHeaderRight}`}>
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {newsItems.length === 0 ? (
+                          <tr key="empty-news" className={styles.tableRow}>
+                            <td colSpan={4} className={`${styles.tableCell} ${styles.tableCellCenter}`}>
+                              No news items added yet. Click "Add New News" to get started.
+                            </td>
+                          </tr>
+                        ) : (
+                          newsItems.map((news) => (
+                            <tr key={news.id || `news-${news.title}`} className={styles.tableRow}>
+                              <td className={`${styles.tableCell} ${styles.tableCellName}`}>
+                                {news.title}
+                              </td>
+                              <td className={`${styles.tableCell} ${styles.tableCellText}`}>
+                                {new Date(news.publicationDate).toLocaleDateString()}
+                              </td>
+                              <td className={`${styles.tableCell} ${styles.tableCellText}`}>
+                                {news.displayOrder}
+                              </td>
+                              <td className={`${styles.tableCell} ${styles.tableCellRight}`}>
+                                <div className={styles.tableActions}>
+                                  <button
+                                    onClick={() => handleEditNews(news)}
+                                    className={`${styles.actionButton} ${styles.actionButtonGreen}`}
+                                    title="Edit"
+                                  >
+                                    <Edit className={styles.actionIcon} />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteNews(news.id)}
+                                    className={`${styles.actionButton} ${styles.actionButtonRed}`}
+                                    title="Delete"
+                                  >
+                                    <Trash2 className={styles.actionIcon} />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </>
             )}
 

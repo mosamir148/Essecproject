@@ -22,7 +22,10 @@ router.get('/active', async (req, res) => {
       return res.status(500).json({ error: 'Database model not available' });
     }
     
-    const video = await HomepageVideo.findOne({ isActive: true }).sort({ createdAt: -1 });
+    const video = await HomepageVideo.findOne({ isActive: true })
+      .sort({ createdAt: -1 })
+      .lean()
+      .maxTimeMS(3000); // 3 second timeout
     if (!video) {
       // Return default video if none is set
       return res.json({

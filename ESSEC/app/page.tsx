@@ -6,6 +6,7 @@ import { api } from '@/lib/api'
 import VideoHero from '@/components/VideoHero'
 import SplitSection from '@/components/SplitSection'
 import SplitSectionReverse from '@/components/SplitSectionReverse'
+import NewsSection from '@/components/NewsSection'
 import BenefitsSection from '@/components/BenefitsSection'
 import Timeline from '@/components/Timeline'
 import VisionSection from '@/components/VisionSection'
@@ -33,14 +34,10 @@ export default function Home() {
   useEffect(() => {
     const loadHomepageVideo = async () => {
       try {
-        // Add cache-busting parameter to ensure fresh data
         const videoData = await api.getActiveHomepageVideo()
         if (videoData.videoUrl) {
-          // Force video reload by adding timestamp to URL if it's not a data URL
-          const videoUrl = videoData.videoUrl.startsWith('data:') 
-            ? videoData.videoUrl 
-            : `${videoData.videoUrl}${videoData.videoUrl.includes('?') ? '&' : '?'}_t=${Date.now()}`
-          setVideoSrc(videoUrl)
+          // Use video URL directly - let browser handle caching
+          setVideoSrc(videoData.videoUrl)
         }
         if (videoData.title) {
           setVideoTitle(videoData.title)
@@ -63,12 +60,8 @@ export default function Home() {
     
     window.addEventListener('homepage_video_updated', handleVideoUpdate)
     
-    // Also check periodically (every 30 seconds) for updates
-    const interval = setInterval(loadHomepageVideo, 30000)
-    
     return () => {
       window.removeEventListener('homepage_video_updated', handleVideoUpdate)
-      clearInterval(interval)
     }
   }, [])
 
@@ -82,6 +75,7 @@ export default function Home() {
       />
       <SplitSection scrollY={scrollY} />
       <SplitSectionReverse scrollY={scrollY} />
+      <NewsSection scrollY={scrollY} />
       <VisionSection scrollY={scrollY} />
       <BenefitsSection scrollY={scrollY} />
       <Timeline scrollY={scrollY} />

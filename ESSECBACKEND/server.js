@@ -1,11 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const compression = require('compression');
 require('dotenv').config();
 
 const app = express();
 
 // Middleware
+app.use(compression()); // Enable gzip compression for all responses
 app.use(cors());
 // Increase body size limit to handle large base64 images/videos
 // Base64 encoding increases size by ~33%, so 50MB video becomes ~67MB
@@ -35,10 +37,12 @@ const projectRoutes = require('./routes/projects');
 const authRoutes = require('./routes/auth');
 const homepageVideoRoutes = require('./routes/homepageVideo');
 const teamRoutes = require('./routes/team');
+const newsRoutes = require('./routes/news');
 app.use('/api/projects', projectRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/homepage-video', homepageVideoRoutes);
 app.use('/api/team', teamRoutes);
+app.use('/api/news', newsRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

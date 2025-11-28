@@ -177,6 +177,16 @@ html * {
   }
 }
 
+/* Skeleton Loader Animation */
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 /* Dark mode glass morphism effect */
 .dark .glass {
   background: rgba(13, 17, 23, 0.7);

@@ -60,6 +60,9 @@ const projectSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// Add indexes for faster queries
+projectSchema.index({ createdAt: -1 }); // For sorting by creation date
+
 // Generate a URL-friendly ID from the name
 projectSchema.virtual('id').get(function() {
   return this._id.toHexString();

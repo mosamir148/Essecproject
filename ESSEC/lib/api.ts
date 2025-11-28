@@ -2,6 +2,48 @@ import { Project } from '@/data/projects'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
 
+// Simple in-memory cache with TTL
+interface CacheEntry<T> {
+  data: T
+  timestamp: number
+  ttl: number // Time to live in milliseconds
+}
+
+class SimpleCache {
+  private cache = new Map<string, CacheEntry<any>>()
+
+  set<T>(key: string, data: T, ttl: number = 60000): void {
+    this.cache.set(key, {
+      data,
+      timestamp: Date.now(),
+      ttl
+    })
+  }
+
+  get<T>(key: string): T | null {
+    const entry = this.cache.get(key)
+    if (!entry) return null
+
+    const now = Date.now()
+    if (now - entry.timestamp > entry.ttl) {
+      this.cache.delete(key)
+      return null
+    }
+
+    return entry.data as T
+  }
+
+  clear(): void {
+    this.cache.clear()
+  }
+
+  delete(key: string): void {
+    this.cache.delete(key)
+  }
+}
+
+const cache = new SimpleCache()
+
 // Token management
 export const auth = {
   getToken(): string | null {
@@ -25,6 +67,15 @@ export const auth = {
       'Content-Type': 'application/json',
       ...(token && { Authorization: `Bearer ${token}` }),
     }
+  }
+}
+
+// Cache invalidation helper
+export const invalidateCache = (key?: string) => {
+  if (key) {
+    cache.delete(key)
+  } else {
+    cache.clear()
   }
 }
 
@@ -77,13 +128,22 @@ export const api = {
   logout(): void {
     auth.removeToken()
   },
-  // Get all projects
+  // Get all projects (with caching - 10 minutes)
   async getProjects(): Promise<Project[]> {
-    const response = await fetch(`${API_BASE_URL}/projects`)
+    const cacheKey = 'projects'
+    const cached = cache.get<Project[]>(cacheKey)
+    if (cached) return cached
+
+    const response = await fetch(`${API_BASE_URL}/projects`, {
+      // Add cache headers for browser caching
+      cache: 'default'
+    })
     if (!response.ok) {
       throw new Error('Failed to fetch projects')
     }
-    return response.json()
+    const data = await response.json()
+    cache.set(cacheKey, data, 10 * 60 * 1000) // 10 minutes
+    return data
   },
 
   // Get a single project by ID
@@ -113,7 +173,9 @@ export const api = {
       const error = await response.json()
       throw new Error(error.error || 'Failed to create project')
     }
-    return response.json()
+    const data = await response.json()
+    invalidateCache('projects') // Invalidate cache
+    return data
   },
 
   // Update a project
@@ -135,7 +197,9 @@ export const api = {
         throw new Error(error.error || 'Failed to update project')
       }
     }
-    return response.json()
+    const data = await response.json()
+    invalidateCache('projects') // Invalidate cache
+    return data
   },
 
   // Delete a project
@@ -148,16 +212,26 @@ export const api = {
       const error = await response.json()
       throw new Error(error.error || 'Failed to delete project')
     }
+    invalidateCache('projects') // Invalidate cache
   },
 
   // Homepage Video Management
-  // Get active homepage video (public)
+  // Get active homepage video (public, with caching - 15 minutes)
   async getActiveHomepageVideo(): Promise<{ videoUrl: string; title?: string; subtitle?: string; isActive: boolean }> {
-    const response = await fetch(`${API_BASE_URL}/homepage-video/active`)
+    const cacheKey = 'homepage_video_active'
+    const cached = cache.get<{ videoUrl: string; title?: string; subtitle?: string; isActive: boolean }>(cacheKey)
+    if (cached) return cached
+
+    const response = await fetch(`${API_BASE_URL}/homepage-video/active`, {
+      // Add cache headers for browser caching
+      cache: 'default'
+    })
     if (!response.ok) {
       throw new Error('Failed to fetch homepage video')
     }
-    return response.json()
+    const data = await response.json()
+    cache.set(cacheKey, data, 15 * 60 * 1000) // 15 minutes
+    return data
   },
 
   // Get all homepage videos (protected)
@@ -232,13 +306,22 @@ export const api = {
   },
 
   // Team Management
-  // Get all team members (public)
+  // Get all team members (public, with caching - 10 minutes)
   async getTeamMembers(): Promise<any[]> {
-    const response = await fetch(`${API_BASE_URL}/team`)
+    const cacheKey = 'team_members'
+    const cached = cache.get<any[]>(cacheKey)
+    if (cached) return cached
+
+    const response = await fetch(`${API_BASE_URL}/team`, {
+      // Add cache headers for browser caching
+      cache: 'default'
+    })
     if (!response.ok) {
       throw new Error('Failed to fetch team members')
     }
-    return response.json()
+    const data = await response.json()
+    cache.set(cacheKey, data, 10 * 60 * 1000) // 10 minutes
+    return data
   },
 
   // Get a single team member by ID (public)
@@ -278,7 +361,9 @@ export const api = {
       const error = await response.json()
       throw new Error(error.error || 'Failed to create team member')
     }
-    return response.json()
+    const data = await response.json()
+    invalidateCache('team_members') // Invalidate cache
+    return data
   },
 
   // Update a team member (protected)
@@ -313,7 +398,9 @@ export const api = {
       }
       throw new Error(error.error || 'Failed to update team member')
     }
-    return response.json()
+    const data = await response.json()
+    invalidateCache('team_members') // Invalidate cache
+    return data
   },
 
   // Delete a team member (protected)
@@ -326,6 +413,147 @@ export const api = {
       const error = await response.json()
       throw new Error(error.error || 'Failed to delete team member')
     }
+    invalidateCache('team_members') // Invalidate cache
+  },
+
+  // News Management
+  // Get all news (public, with caching - 5 minutes)
+  async getNews(sortBy?: 'displayOrder' | 'date', limit?: number): Promise<any[]> {
+    const cacheKey = `news_${sortBy || 'default'}_${limit || 'all'}`
+    const cached = cache.get<any[]>(cacheKey)
+    if (cached) return cached
+    const limitParam = limit ? `&limit=${limit}` : ''
+    const url = sortBy 
+      ? `${API_BASE_URL}/news?sortBy=${sortBy}${limitParam}` 
+      : `${API_BASE_URL}/news${limitParam ? `?${limitParam.substring(1)}` : ''}`
+    
+    // Reduce timeout to 10 seconds for faster failure detection
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+    
+    try {
+      const response = await fetch(url, {
+        signal: controller.signal,
+        // Add headers to help with large responses
+        headers: {
+          'Accept': 'application/json',
+        },
+        cache: 'default'
+      })
+      clearTimeout(timeoutId)
+      if (!response.ok) {
+        throw new Error('Failed to fetch news')
+      }
+      const data = await response.json()
+      cache.set(cacheKey, data, 5 * 60 * 1000) // 5 minutes
+      return data
+    } catch (error) {
+      clearTimeout(timeoutId)
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new Error('Request timeout - response too large or network too slow')
+      }
+      throw error
+    }
+  },
+
+  // Get a single news item by ID (public)
+  async getNewsItem(id: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/news/${id}`)
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Failed to fetch news item' }))
+      if (response.status === 404) {
+        throw new Error('News item not found')
+      }
+      throw new Error(error.error || 'Failed to fetch news item')
+    }
+    return response.json()
+  },
+
+  // Create a new news item (protected)
+  async createNews(news: {
+    title: string
+    mainImage: string
+    summary: string
+    fullText: string
+    additionalImages?: string[]
+    publicationDate?: string | Date
+    displayOrder?: number
+    extraData?: any
+  }): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/news`, {
+      method: 'POST',
+      headers: auth.getAuthHeaders(),
+      body: JSON.stringify(news),
+    })
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Failed to create news item')
+    }
+    const data = await response.json()
+    // Invalidate all news caches (clear all keys starting with 'news_')
+    const keysToDelete: string[] = []
+    // Note: We can't iterate cache keys directly, so we'll clear common patterns
+    invalidateCache('news_displayOrder_all')
+    invalidateCache('news_displayOrder_5')
+    invalidateCache('news_date_all')
+    invalidateCache('news_date_5')
+    invalidateCache('news_default_all')
+    return data
+  },
+
+  // Update a news item (protected)
+  async updateNews(id: string, news: Partial<{
+    title: string
+    mainImage: string
+    summary: string
+    fullText: string
+    additionalImages?: string[]
+    publicationDate?: string | Date
+    displayOrder?: number
+    extraData?: any
+    removeMainImage?: boolean
+    removeAdditionalImages?: number[]
+  }>): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/news/${id}`, {
+      method: 'PUT',
+      headers: auth.getAuthHeaders(),
+      body: JSON.stringify(news),
+    })
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Failed to update news item' }))
+      if (response.status === 404) {
+        throw new Error('News item not found')
+      } else if (response.status === 401) {
+        throw new Error('Authentication required')
+      }
+      throw new Error(error.error || 'Failed to update news item')
+    }
+    const data = await response.json()
+    // Invalidate all news caches
+    invalidateCache('news_displayOrder_all')
+    invalidateCache('news_displayOrder_5')
+    invalidateCache('news_date_all')
+    invalidateCache('news_date_5')
+    invalidateCache('news_default_all')
+    return data
+  },
+
+  // Delete a news item (protected)
+  async deleteNews(id: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/news/${id}`, {
+      method: 'DELETE',
+      headers: auth.getAuthHeaders(),
+    })
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Failed to delete news item')
+    }
+    // Invalidate all news caches
+    invalidateCache('news_displayOrder_all')
+    invalidateCache('news_displayOrder_5')
+    invalidateCache('news_date_all')
+    invalidateCache('news_date_5')
+    invalidateCache('news_default_all')
   },
 }
 

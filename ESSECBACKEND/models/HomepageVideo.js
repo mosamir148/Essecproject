@@ -24,6 +24,9 @@ const homepageVideoSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// Add indexes for faster queries
+homepageVideoSchema.index({ isActive: 1, createdAt: -1 }); // For finding active video
+
 // Note: We handle the "only one active video" logic in the route handlers
 // instead of the pre-save hook to avoid circular reference issues
 

@@ -48,149 +48,518 @@ export default function LoadingPage({
 
     let isMounted = true
     let progressInterval: NodeJS.Timeout | null = null
-    let contentCheckInterval: NodeJS.Timeout | null = null
-    let fallbackTimeout: NodeJS.Timeout | null = null
     let completeTimeout: NodeJS.Timeout | null = null
     let finalTimeout: NodeJS.Timeout | null = null
 
-    // Calculate loading progress
-    const calculateProgress = () => {
-      if (typeof window === 'undefined' || !isMounted) return 0
+    // Wait for all images to load (including dynamically added ones)
+    const waitForImages = (): Promise<void> => {
+      return new Promise((resolve) => {
+        if (typeof window === 'undefined') {
+          resolve()
+          return
+        }
 
-      try {
-        let baseProgress = 50 // Start at 50% since document is usually already loaded in SPA
+        const trackedElements = new Set<HTMLElement>()
+        let resolved = false
+        let observer: MutationObserver | null = null
+        let checkInterval: NodeJS.Timeout | null = null
+        let timeout: NodeJS.Timeout | null = null
 
-        // Check if images are loaded
-        const images = document.querySelectorAll('img')
-        if (images.length > 0) {
-          let loadedImages = 0
-          images.forEach((img) => {
+        const checkElement = (element: HTMLElement) => {
+          if (trackedElements.has(element)) return
+          trackedElements.add(element)
+
+          if (element.tagName === 'IMG') {
+            const img = element as HTMLImageElement
             if (img.complete && img.naturalHeight !== 0) {
-              loadedImages++
+              return true
+            } else {
+              img.addEventListener('load', () => checkAllComplete(), { once: true })
+              img.addEventListener('error', () => checkAllComplete(), { once: true })
+              return false
             }
-          })
-          const imageProgress = (loadedImages / images.length) * 50
-          return Math.min(100, baseProgress + imageProgress)
-        }
-
-        return baseProgress
-      } catch (error) {
-        // If DOM access fails, return safe default
-        return 50
-      }
-    }
-
-    // Simulate smooth progress animation
-    let currentProgress = 0
-    const targetProgress = 100
-    progressInterval = setInterval(() => {
-      if (!isMounted) {
-        if (progressInterval) clearInterval(progressInterval)
-        return
-      }
-      // Gradually increase progress
-      if (currentProgress < targetProgress) {
-        currentProgress = Math.min(targetProgress, currentProgress + 2)
-        setProgress(currentProgress)
-      }
-    }, 50)
-
-    // Check for content readiness
-    const checkContentReady = () => {
-      if (typeof window === 'undefined' || !isMounted) return false
-      
-      try {
-        // Check if main content exists and images are loading/loaded
-        const main = document.querySelector('main')
-        const images = document.querySelectorAll('img')
-        
-        if (main && images.length > 0) {
-          let allImagesLoaded = true
-          images.forEach((img) => {
-            if (!img.complete || img.naturalHeight === 0) {
-              allImagesLoaded = false
+          } else if (element.tagName === 'VIDEO') {
+            const video = element as HTMLVideoElement
+            if (video.readyState >= 3) {
+              return true
+            } else {
+              video.addEventListener('loadeddata', () => checkAllComplete(), { once: true })
+              video.addEventListener('error', () => checkAllComplete(), { once: true })
+              return false
             }
-          })
-          return allImagesLoaded
-        }
-        
-        return main !== null
-      } catch (error) {
-        // If DOM access fails, return false
-        return false
-      }
-    }
-
-    // Handle completion
-    const handleComplete = () => {
-      if (isCompleteRef.current || !isMounted) return
-      
-      const elapsed = Date.now() - startTime.current
-      const remainingTime = Math.max(0, minDisplayTime - elapsed)
-      
-      completeTimeout = setTimeout(() => {
-        if (isCompleteRef.current || !isMounted) return
-        isCompleteRef.current = true
-        
-        if (isMounted) {
-          setProgress(100)
-        }
-        
-        if (progressInterval) {
-          clearInterval(progressInterval)
-          progressInterval = null
-        }
-        
-        finalTimeout = setTimeout(() => {
-          if (isMounted) {
-            setIsVisible(false)
-            if (onComplete) {
-              setTimeout(() => {
-                if (isMounted && onComplete) {
-                  onComplete()
-                }
-              }, 500)
+          } else if (element.tagName === 'IFRAME') {
+            const iframe = element as HTMLIFrameElement
+            if (iframe.contentDocument?.readyState === 'complete') {
+              return true
+            } else {
+              iframe.addEventListener('load', () => checkAllComplete(), { once: true })
+              iframe.addEventListener('error', () => checkAllComplete(), { once: true })
+              return false
             }
           }
-        }, 300)
-      }, remainingTime)
+          return true
+        }
+
+        const checkAllComplete = () => {
+          if (resolved) return
+
+          const images = Array.from(document.querySelectorAll('img'))
+          const videos = Array.from(document.querySelectorAll('video'))
+          const iframes = Array.from(document.querySelectorAll('iframe'))
+          const allElements = [...images, ...videos, ...iframes] as HTMLElement[]
+
+          if (allElements.length === 0) {
+            // No media elements, resolve
+            if (!resolved) {
+              resolved = true
+              cleanup()
+              resolve()
+            }
+            return
+          }
+
+          // Check all elements
+          let allLoaded = true
+          allElements.forEach((el) => {
+            if (!checkElement(el)) {
+              allLoaded = false
+            }
+          })
+
+          // If all are loaded and we've given them time to render
+          if (allLoaded && allElements.length > 0) {
+            // Wait a bit more to ensure no new elements are added
+            setTimeout(() => {
+              if (!resolved) {
+                const finalImages = Array.from(document.querySelectorAll('img'))
+                const finalVideos = Array.from(document.querySelectorAll('video'))
+                const finalIframes = Array.from(document.querySelectorAll('iframe'))
+                
+                // Check if any new elements were added
+                if (finalImages.length === images.length && 
+                    finalVideos.length === videos.length && 
+                    finalIframes.length === iframes.length) {
+                  resolved = true
+                  cleanup()
+                  resolve()
+                }
+              }
+            }, 500)
+          }
+        }
+
+        const cleanup = () => {
+          if (observer) {
+            observer.disconnect()
+            observer = null
+          }
+          if (checkInterval) {
+            clearInterval(checkInterval)
+            checkInterval = null
+          }
+          if (timeout) {
+            clearTimeout(timeout)
+            timeout = null
+          }
+        }
+
+        // Watch for new elements being added
+        observer = new MutationObserver(() => {
+          checkAllComplete()
+        })
+
+        try {
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true
+          })
+        } catch (error) {
+          // If observer fails, fall back to interval checking
+        }
+
+        // Check periodically
+        checkInterval = setInterval(checkAllComplete, 200)
+
+        // Initial check
+        checkAllComplete()
+
+        // Fallback timeout
+        timeout = setTimeout(() => {
+          if (!resolved) {
+            resolved = true
+            cleanup()
+            resolve()
+          }
+        }, 15000) // 15 second max wait
+      })
     }
 
-    // Check content readiness periodically
-    contentCheckInterval = setInterval(() => {
-      if (!isMounted) {
-        if (contentCheckInterval) {
-          clearInterval(contentCheckInterval)
-          contentCheckInterval = null
+    // Wait for fonts to load
+    const waitForFonts = (): Promise<void> => {
+      return new Promise((resolve) => {
+        if (typeof document === 'undefined' || !('fonts' in document)) {
+          resolve()
+          return
         }
-        return
-      }
-      
-      if (checkContentReady() && currentProgress >= 90) {
-        if (contentCheckInterval) {
-          clearInterval(contentCheckInterval)
-          contentCheckInterval = null
-        }
-        handleComplete()
-      }
-    }, 100)
 
-    // Fallback: complete after reasonable time even if content check doesn't trigger
-    fallbackTimeout = setTimeout(() => {
-      if (!isCompleteRef.current && isMounted) {
-        if (contentCheckInterval) {
-          clearInterval(contentCheckInterval)
-          contentCheckInterval = null
+        try {
+          // Check if fonts are loaded
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready
+              .then(() => {
+                // Additional small delay to ensure fonts are rendered
+                setTimeout(resolve, 100)
+              })
+              .catch(() => resolve())
+          } else {
+            resolve()
+          }
+        } catch (error) {
+          resolve()
         }
-        handleComplete()
+      })
+    }
+
+    // Calculate loading progress based on actual resource loading
+    const updateProgress = () => {
+      if (typeof window === 'undefined' || !isMounted) return
+
+      try {
+        let progress = 0
+        const images = document.querySelectorAll('img')
+        const videos = document.querySelectorAll('video')
+        const totalMedia = images.length + videos.length
+
+        if (totalMedia > 0) {
+          let loadedCount = 0
+          images.forEach((img) => {
+            if (img.complete && img.naturalHeight !== 0) {
+              loadedCount++
+            }
+          })
+          videos.forEach((video) => {
+            if (video.readyState >= 3) {
+              loadedCount++
+            }
+          })
+          progress = Math.min(95, (loadedCount / totalMedia) * 90)
+        } else {
+          // If no media, progress based on DOM readiness
+          if (document.readyState === 'complete') {
+            progress = 90
+          } else if (document.readyState === 'interactive') {
+            progress = 50
+          } else {
+            progress = 20
+          }
+        }
+
+        setProgress(progress)
+      } catch (error) {
+        // Silent fail
       }
-    }, Math.max(minDisplayTime, 1500))
+    }
+
+    // Update progress periodically
+    progressInterval = setInterval(updateProgress, 100)
+
+    // Wait for content to be loaded (check for loading states and empty content)
+    const waitForContentLoaded = (): Promise<void> => {
+      return new Promise((resolve) => {
+        if (typeof window === 'undefined') return resolve()
+
+        let checkCount = 0
+        const maxChecks = 150 // 15 seconds max (100ms intervals)
+        let checkInterval: NodeJS.Timeout | null = null
+        let stabilityCount = 0
+        const requiredStability = 3 // Content must be stable for 300ms
+
+        const checkContent = () => {
+          checkCount++
+          
+          try {
+            const main = document.querySelector('main')
+            if (!main) {
+              if (checkCount >= maxChecks) {
+                if (checkInterval) clearInterval(checkInterval)
+                resolve()
+              }
+              return
+            }
+
+            // Check for loading indicators
+            const loadingSelectors = [
+              '[class*="loading"]',
+              '[class*="Loading"]',
+              '[class*="spinner"]',
+              '[class*="Spinner"]',
+              '[class*="skeleton"]',
+              '[class*="Skeleton"]'
+            ]
+            
+            let hasLoadingIndicator = false
+            for (const selector of loadingSelectors) {
+              const elements = main.querySelectorAll(selector)
+              // Filter out the LoadingPage component itself
+              const filtered = Array.from(elements).filter(el => {
+                const classes = el.className
+                if (typeof classes === 'string') {
+                  return !classes.includes('loadingContainer') && 
+                         !classes.includes('LoadingPage')
+                }
+                return true
+              })
+              if (filtered.length > 0) {
+                hasLoadingIndicator = true
+                break
+              }
+            }
+
+            // Check if main content has children and is not empty
+            const hasChildren = main.children.length > 0
+            const hasText = main.textContent && main.textContent.trim().length > 20 // At least some content
+            
+            // Check for common empty state indicators
+            const emptyStates = main.querySelectorAll('[class*="empty"], [class*="Empty"]')
+            const isEmptyState = emptyStates.length > 0 && emptyStates[0].textContent?.includes('No') || false
+
+            // Content is ready if:
+            // 1. Has children OR has text
+            // 2. No loading indicators
+            // 3. Not in empty state (unless it's intentionally showing "No projects")
+            const isReady = (hasChildren || hasText) && !hasLoadingIndicator
+
+            if (isReady) {
+              stabilityCount++
+              if (stabilityCount >= requiredStability) {
+                if (checkInterval) clearInterval(checkInterval)
+                resolve()
+              }
+            } else {
+              stabilityCount = 0
+            }
+
+            // Timeout after max checks
+            if (checkCount >= maxChecks) {
+              if (checkInterval) clearInterval(checkInterval)
+              resolve()
+            }
+          } catch (error) {
+            // If check fails, resolve after timeout
+            if (checkCount >= maxChecks) {
+              if (checkInterval) clearInterval(checkInterval)
+              resolve()
+            }
+          }
+        }
+
+        // Start checking after a short delay to let React render
+        setTimeout(() => {
+          checkInterval = setInterval(checkContent, 100)
+          checkContent() // Initial check
+        }, 500)
+      })
+    }
+
+    // Wait for dynamically loaded content using MutationObserver
+    const waitForDynamicContent = (): Promise<void> => {
+      return new Promise((resolve) => {
+        if (typeof window === 'undefined') return resolve()
+
+        let observer: MutationObserver | null = null
+        let stabilityCheckCount = 0
+        const requiredStabilityChecks = 5 // Content must be stable for 500ms
+        let checkInterval: NodeJS.Timeout | null = null
+
+        const checkContentStability = () => {
+          const main = document.querySelector('main')
+          const hasContent = main && main.children.length > 0
+          
+          // Check for common loading indicators
+          const loadingIndicators = document.querySelectorAll('[class*="loading"], [class*="spinner"], [class*="Loading"]')
+          const hasLoadingIndicators = loadingIndicators.length > 0
+
+          // Check for empty content areas that might be loading
+          const emptyContainers = Array.from(document.querySelectorAll('div, section')).filter(el => {
+            const hasChildren = el.children.length > 0
+            const hasText = el.textContent && el.textContent.trim().length > 0
+            const isVisible = el.offsetHeight > 0
+            return isVisible && !hasChildren && !hasText
+          })
+
+          if (hasContent && !hasLoadingIndicators && emptyContainers.length === 0) {
+            stabilityCheckCount++
+            if (stabilityCheckCount >= requiredStabilityChecks) {
+              if (observer) observer.disconnect()
+              if (checkInterval) clearInterval(checkInterval)
+              resolve()
+            }
+          } else {
+            stabilityCheckCount = 0
+          }
+        }
+
+        // Watch for DOM changes
+        observer = new MutationObserver(() => {
+          stabilityCheckCount = 0 // Reset stability counter on any change
+        })
+
+        try {
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class']
+          })
+        } catch (error) {
+          // If observer fails, just resolve after a delay
+          setTimeout(resolve, 1000)
+          return
+        }
+
+        // Check stability every 100ms
+        checkInterval = setInterval(checkContentStability, 100)
+
+        // Fallback timeout
+        setTimeout(() => {
+          if (observer) observer.disconnect()
+          if (checkInterval) clearInterval(checkInterval)
+          resolve()
+        }, 10000)
+      })
+    }
+
+    // Main loading check - wait for everything
+    const checkFullPageLoad = async () => {
+      if (!isMounted) return
+
+      try {
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+          await new Promise<void>((resolve) => {
+            if (document.readyState !== 'loading') {
+              resolve()
+            } else {
+              document.addEventListener('DOMContentLoaded', () => resolve(), { once: true })
+            }
+          })
+        }
+
+        // Wait for window.onload (all initial resources loaded)
+        if (document.readyState !== 'complete') {
+          await new Promise<void>((resolve) => {
+            if (document.readyState === 'complete') {
+              resolve()
+            } else {
+              window.addEventListener('load', () => resolve(), { once: true })
+              // Fallback timeout
+              setTimeout(resolve, 5000)
+            }
+          })
+        }
+
+        // Wait for content to be loaded (checks for loading states and empty content)
+        await waitForContentLoaded()
+
+        // Wait for dynamically loaded content to stabilize
+        await waitForDynamicContent()
+
+        // Wait for all images, videos, and iframes (including dynamically added ones)
+        await waitForImages()
+
+        // Wait for fonts
+        await waitForFonts()
+
+        // Additional check: ensure main content exists and is populated
+        let mainCheckCount = 0
+        while (mainCheckCount < 20) {
+          const main = document.querySelector('main')
+          const hasContent = main && main.children.length > 0
+          
+          // Check for loading states
+          const loadingElements = main?.querySelectorAll('[class*="loading"], [class*="spinner"]')
+          const isLoading = loadingElements && loadingElements.length > 0
+          
+          if (hasContent && !isLoading) {
+            break
+          }
+          await new Promise(resolve => setTimeout(resolve, 100))
+          mainCheckCount++
+        }
+
+        // Small delay to ensure everything is rendered
+        await new Promise(resolve => setTimeout(resolve, 300))
+
+        if (!isMounted) return
+
+        setProgress(100)
+
+        // Ensure minimum display time
+        const elapsed = Date.now() - startTime.current
+        const remainingTime = Math.max(0, minDisplayTime - elapsed)
+
+        completeTimeout = setTimeout(() => {
+          if (!isMounted || isCompleteRef.current) return
+          isCompleteRef.current = true
+
+          if (progressInterval) {
+            clearInterval(progressInterval)
+            progressInterval = null
+          }
+
+          finalTimeout = setTimeout(() => {
+            if (isMounted) {
+              setIsVisible(false)
+              if (onComplete) {
+                setTimeout(() => {
+                  if (isMounted && onComplete) {
+                    onComplete()
+                  }
+                }, 500)
+              }
+            }
+          }, 300)
+        }, remainingTime)
+
+      } catch (error) {
+        // If anything fails, still complete after minimum time
+        if (!isMounted || isCompleteRef.current) return
+        
+        const elapsed = Date.now() - startTime.current
+        const remainingTime = Math.max(0, minDisplayTime - elapsed)
+        
+        completeTimeout = setTimeout(() => {
+          if (!isMounted || isCompleteRef.current) return
+          isCompleteRef.current = true
+          setProgress(100)
+          
+          if (progressInterval) {
+            clearInterval(progressInterval)
+            progressInterval = null
+          }
+          
+          finalTimeout = setTimeout(() => {
+            if (isMounted) {
+              setIsVisible(false)
+              if (onComplete) {
+                setTimeout(() => {
+                  if (isMounted && onComplete) {
+                    onComplete()
+                  }
+                }, 500)
+              }
+            }
+          }, 300)
+        }, remainingTime)
+      }
+    }
+
+    // Start the full page load check
+    checkFullPageLoad()
 
     return () => {
       isMounted = false
       if (progressInterval) clearInterval(progressInterval)
-      if (contentCheckInterval) clearInterval(contentCheckInterval)
-      if (fallbackTimeout) clearTimeout(fallbackTimeout)
       if (completeTimeout) clearTimeout(completeTimeout)
       if (finalTimeout) clearTimeout(finalTimeout)
     }

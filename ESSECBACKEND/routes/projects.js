@@ -7,7 +7,11 @@ const { authenticate } = require('../middleware/auth');
 // GET all projects
 router.get('/', async (req, res) => {
   try {
-    const projects = await Project.find().sort({ createdAt: -1 });
+    // Use lean() for faster queries and add timeout
+    const projects = await Project.find()
+      .sort({ createdAt: -1 })
+      .lean()
+      .maxTimeMS(5000); // 5 second timeout
     res.json(projects);
   } catch (error) {
     res.status(500).json({ error: error.message });

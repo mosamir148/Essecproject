@@ -28,6 +28,12 @@
       "button": "En savoir plus",
       "imageAlt": "Technologie avancée de l'énergie solaire"
     },
+    "news": {
+      "title": "Dernières Nouvelles",
+      "readMore": "Lire la suite",
+      "publishedOn": "Publié le",
+      "backToNews": "Retour aux nouvelles"
+    },
     "vision": {
       "title": "Notre Vision",
       "subtitle": "Façonner l'avenir de l'énergie renouvelable",

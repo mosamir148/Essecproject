@@ -180,9 +180,27 @@ export default function AboutPage() {
           </div>
 
           {loading ? (
-            <div className={styles.loadingContainer}>
-              <div className={styles.spinner}></div>
-              <p className={styles.loadingText}>Loading team members...</p>
+            <div className={styles.teamGrid}>
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className={styles.teamCard} style={{ opacity: 0.8 }}>
+                  <div className={styles.teamCardImage}>
+                    <div style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      background: 'linear-gradient(90deg, rgba(9, 168, 107, 0.1) 0%, rgba(16, 119, 217, 0.15) 50%, rgba(9, 168, 107, 0.1) 100%)', 
+                      backgroundSize: '200% 100%', 
+                      animation: 'skeletonShimmer 2s ease-in-out infinite',
+                      borderRadius: '8px'
+                    }}></div>
+                  </div>
+                  <div className={styles.teamCardContent}>
+                    <div style={{ height: '1.5rem', width: '70%', background: 'linear-gradient(90deg, rgba(9, 168, 107, 0.1) 0%, rgba(16, 119, 217, 0.15) 50%, rgba(9, 168, 107, 0.1) 100%)', backgroundSize: '200% 100%', animation: 'skeletonShimmer 2s ease-in-out infinite', borderRadius: '4px', marginBottom: '0.5rem' }}></div>
+                    <div style={{ height: '1rem', width: '50%', background: 'linear-gradient(90deg, rgba(9, 168, 107, 0.1) 0%, rgba(16, 119, 217, 0.15) 50%, rgba(9, 168, 107, 0.1) 100%)', backgroundSize: '200% 100%', animation: 'skeletonShimmer 2s ease-in-out infinite', borderRadius: '4px', marginBottom: '0.75rem' }}></div>
+                    <div style={{ height: '0.875rem', width: '100%', background: 'linear-gradient(90deg, rgba(9, 168, 107, 0.1) 0%, rgba(16, 119, 217, 0.15) 50%, rgba(9, 168, 107, 0.1) 100%)', backgroundSize: '200% 100%', animation: 'skeletonShimmer 2s ease-in-out infinite', borderRadius: '4px', marginBottom: '0.5rem' }}></div>
+                    <div style={{ height: '0.875rem', width: '90%', background: 'linear-gradient(90deg, rgba(9, 168, 107, 0.1) 0%, rgba(16, 119, 217, 0.15) 50%, rgba(9, 168, 107, 0.1) 100%)', backgroundSize: '200% 100%', animation: 'skeletonShimmer 2s ease-in-out infinite', borderRadius: '4px' }}></div>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : error ? (
             <div className={styles.errorContainer}>

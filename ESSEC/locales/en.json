@@ -28,6 +28,12 @@
       "button": "Learn More",
       "imageAlt": "Advanced solar energy technology"
     },
+    "news": {
+      "title": "Latest News",
+      "readMore": "Read More",
+      "publishedOn": "Published on",
+      "backToNews": "Back to News"
+    },
     "vision": {
       "title": "Our Vision",
       "subtitle": "Shaping the future of renewable energy",
