@@ -13,7 +13,7 @@ interface LoadingPageProps {
 }
 
 export default function LoadingPage({ 
-  logo, 
+  logo = '/logo.PNG', 
   websiteName = 'ESSEC',
   onComplete,
   minDisplayTime = 2000 
@@ -161,19 +161,15 @@ export default function LoadingPage({
       <div className={styles.content}>
         {/* Logo or Website Name */}
         <div className={styles.logoContainer}>
-          {logo ? (
-            <DefaultImage 
-              src={logo} 
-              alt={websiteName} 
-              width={200} 
-              height={70}
-              className={styles.logo}
-              priority
-              style={{ width: 'auto', height: 'auto' }}
-            />
-          ) : (
-            <h1 className={styles.websiteName}>{websiteName}</h1>
-          )}
+          <DefaultImage 
+            src={logo} 
+            alt={websiteName} 
+            width={200} 
+            height={70}
+            className={styles.logo}
+            priority
+            style={{ width: 'auto', height: 'auto' }}
+          />
         </div>
 
         {/* Animated Loader */}

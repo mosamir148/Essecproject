@@ -1,18 +1,70 @@
 'use client'
 
-import Image, { ImageProps } from 'next/image'
+import Image, { ImageProps, StaticImageData } from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 
 const DEFAULT_IMAGE = '/all.png'
 
 /**
- * Utility function to get the default image if the provided image is empty/null/undefined
+ * Type for image source that can be a string, StaticImageData, or null/undefined
  */
-export function getDefaultImage(src: string | undefined | null): string {
-  if (!src || src.trim() === '') {
+type ImageSource = string | StaticImageData | undefined | null
+
+/**
+ * Extracts the string path from an image source
+ */
+function getImagePath(src: ImageSource): string {
+  if (!src) {
     return DEFAULT_IMAGE
   }
-  return src
+  
+  // If it's a StaticImageData object, extract the src property
+  if (typeof src === 'object' && 'src' in src) {
+    const srcString = src.src
+    if (!srcString || (typeof srcString === 'string' && srcString.trim() === '')) {
+      return DEFAULT_IMAGE
+    }
+    return srcString
+  }
+  
+  // If it's a string, validate it
+  if (typeof src === 'string') {
+    if (src.trim() === '') {
+      return DEFAULT_IMAGE
+    }
+    return src
+  }
+  
+  return DEFAULT_IMAGE
+}
+
+/**
+ * Utility function to get the default image if the provided image is empty/null/undefined
+ * Returns the original src if valid, or DEFAULT_IMAGE if invalid
+ */
+export function getDefaultImage(src: ImageSource): string | StaticImageData {
+  if (!src) {
+    return DEFAULT_IMAGE
+  }
+  
+  // If it's a StaticImageData object, return it as-is (it's valid)
+  if (typeof src === 'object' && 'src' in src) {
+    const srcString = src.src
+    if (!srcString || (typeof srcString === 'string' && srcString.trim() === '')) {
+      return DEFAULT_IMAGE
+    }
+    return src
+  }
+  
+  // If it's a string, validate it
+  if (typeof src === 'string') {
+    if (src.trim() === '') {
+      return DEFAULT_IMAGE
+    }
+    return src
+  }
+  
+  return DEFAULT_IMAGE
 }
 
 /**
@@ -24,9 +76,11 @@ export function getDefaultImage(src: string | undefined | null): string {
  * - If src is provided but fails to load → fallback to default image
  * - If src is provided and loads successfully → keep the original
  * - Prevents flickering by maintaining visibility once loaded
+ * - Supports both string paths and StaticImageData (imported images)
  */
 export default function DefaultImage({ src, onError, onLoad, className, style, ...props }: ImageProps) {
-  const [imageSrc, setImageSrc] = useState<string>(getDefaultImage(src))
+  const [imageSrc, setImageSrc] = useState<string | StaticImageData>(getDefaultImage(src))
+  const [currentPath, setCurrentPath] = useState<string>(getImagePath(src))
   const [hasErrored, setHasErrored] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
   const hasLoadedRef = useRef(false)
@@ -34,7 +88,9 @@ export default function DefaultImage({ src, onError, onLoad, className, style, .
   // Update imageSrc when src prop changes (but only if we haven't errored)
   useEffect(() => {
     if (!hasErrored) {
-      setImageSrc(getDefaultImage(src))
+      const newSrc = getDefaultImage(src)
+      setImageSrc(newSrc)
+      setCurrentPath(getImagePath(newSrc))
       // Reset loaded state when src changes
       if (hasLoadedRef.current) {
         setIsLoaded(false)
@@ -56,9 +112,10 @@ export default function DefaultImage({ src, onError, onLoad, className, style, .
 
   const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     // If the image fails to load and it's not already the default image, use the default
-    if (imageSrc !== DEFAULT_IMAGE) {
+    if (currentPath !== DEFAULT_IMAGE) {
       setHasErrored(true)
       setImageSrc(DEFAULT_IMAGE)
+      setCurrentPath(DEFAULT_IMAGE)
       // Reset loaded state when error occurs
       setIsLoaded(false)
       hasLoadedRef.current = false
