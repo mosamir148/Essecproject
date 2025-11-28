@@ -36,17 +36,16 @@ function getImagePath(src: ImageSource): string {
   }
   
   // If it's a StaticRequire object (has default property), extract from default
-  if (typeof src === 'object' && 'default' in src) {
-    const defaultSrc = src.default
+  if (typeof src === 'object' && src !== null && 'default' in src) {
+    const defaultSrc = (src as { default: unknown }).default
     if (typeof defaultSrc === 'string') {
       return defaultSrc.trim() === '' ? DEFAULT_IMAGE : defaultSrc
     }
-    if (typeof defaultSrc === 'object' && defaultSrc && 'src' in defaultSrc) {
-      const srcString = defaultSrc.src
-      if (!srcString || (typeof srcString === 'string' && srcString.trim() === '')) {
-        return DEFAULT_IMAGE
+    if (typeof defaultSrc === 'object' && defaultSrc !== null && 'src' in defaultSrc) {
+      const srcString = (defaultSrc as { src: unknown }).src
+      if (typeof srcString === 'string') {
+        return srcString.trim() === '' ? DEFAULT_IMAGE : srcString
       }
-      return srcString
     }
   }
   
@@ -80,21 +79,21 @@ export function getDefaultImage(src: ImageSource): ImageSource {
   }
   
   // If it's a StaticRequire object (has default property), return the default
-  if (typeof src === 'object' && 'default' in src) {
-    const defaultSrc = src.default
+  if (typeof src === 'object' && src !== null && 'default' in src) {
+    const defaultSrc = (src as { default: unknown }).default
     if (typeof defaultSrc === 'string') {
       return defaultSrc.trim() === '' ? DEFAULT_IMAGE : defaultSrc
     }
-    if (typeof defaultSrc === 'object' && defaultSrc && 'src' in defaultSrc) {
-      const srcString = defaultSrc.src
-      if (!srcString || (typeof srcString === 'string' && srcString.trim() === '')) {
-        return DEFAULT_IMAGE
+    if (typeof defaultSrc === 'object' && defaultSrc !== null && 'src' in defaultSrc) {
+      const srcString = (defaultSrc as { src: unknown }).src
+      if (typeof srcString === 'string' && srcString.trim() !== '') {
+        return defaultSrc as StaticImageData
       }
-      return defaultSrc
+      return DEFAULT_IMAGE
     }
     // If default is a valid StaticImageData, return it
-    if (typeof defaultSrc === 'object' && defaultSrc) {
-      return defaultSrc
+    if (typeof defaultSrc === 'object' && defaultSrc !== null) {
+      return defaultSrc as StaticImageData
     }
   }
   
