@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react'
 import styles from './Footer.module.css'
 
 export default function Footer() {
-  const { t } = useLanguage()
+  const { t, dir } = useLanguage()
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -44,7 +44,7 @@ export default function Footer() {
   const logoSrc = isDarkMode ? '/logo w.PNG' : '/logo.PNG'
 
   return (
-    <footer className={styles.footer}>
+    <footer className={styles.footer} dir={dir}>
       <div className={styles.container}>
         <div className={styles.grid}>
           {/* Company Info */}
@@ -52,22 +52,22 @@ export default function Footer() {
             <Link href="/" className={styles.logoLink}>
               <DefaultImage
                 src={logoSrc}
-                alt="ESSEC Solar Engineering Logo"
+                alt={t('footer.logoAlt')}
                 width={200}
                 height={70}
                 className={styles.logoImage}
                 priority
               />
             </Link>
-            <h3 className={styles.companyTitle}>ESSEC Solar Engineering</h3>
+            <h3 className={styles.companyTitle}>{t('footer.companyName')}</h3>
             <p className={styles.companyDescription}>
-              Leading provider of solar energy solutions, committed to sustainable and efficient renewable energy systems.
+              {t('footer.companyDescription')}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className={styles.sectionTitle}>Quick Links</h4>
+            <h4 className={styles.sectionTitle}>{t('footer.quickLinks')}</h4>
             <ul className={styles.linksList}>
               <li>
                 <Link href="/" className={styles.link}>
@@ -94,17 +94,26 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className={styles.sectionTitle}>{t('nav.contact')}</h4>
+            <h4 className={styles.sectionTitle}>{t('footer.contact')}</h4>
             <ul className={styles.contactList}>
-              <li>Email: info@essec-solar.com</li>
-              <li>Phone: +123 456 7890</li>
-              <li>Address: Solar Energy District</li>
+              <li>
+                <span className={styles.contactLabel}>{t('footer.email')}: </span>
+                {t('footer.emailValue')}
+              </li>
+              <li>
+                <span className={styles.contactLabel}>{t('footer.phone')}: </span>
+                {t('footer.phoneValue')}
+              </li>
+              <li>
+                <span className={styles.contactLabel}>{t('footer.address')}: </span>
+                {t('footer.addressValue')}
+              </li>
             </ul>
           </div>
         </div>
 
         <div className={styles.copyright}>
-          <p>&copy; {new Date().getFullYear()} ESSEC Solar Engineering. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {t('footer.companyName')}. {t('footer.copyright')}</p>
         </div>
       </div>
     </footer>

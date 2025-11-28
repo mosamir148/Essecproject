@@ -123,35 +123,235 @@
     "systems": {
       "onGrid": {
         "name": "Génération d'énergie solaire PV – Sur réseau",
-        "summary": "Systèmes solaires connectés au réseau qui renvoient l'énergie excédentaire au réseau électrique"
+        "summary": "Systèmes solaires connectés au réseau qui renvoient l'énergie excédentaire au réseau électrique",
+        "description": "Les systèmes solaires PV sur réseau sont connectés au réseau électrique local, vous permettant de renvoyer l'électricité excédentaire au réseau et de puiser de l'énergie en cas de besoin. Ce système est idéal pour les emplacements avec une infrastructure de réseau fiable et offre l'avantage du comptage net, où vous pouvez gagner des crédits pour la production d'énergie excédentaire.",
+        "howItWorks": "Les panneaux solaires convertissent la lumière du soleil en électricité CC, qui est ensuite convertie en CA par l'onduleur connecté au réseau. L'énergie CA est utilisée pour alimenter votre maison ou votre entreprise. L'électricité excédentaire retourne au réseau via le compteur net, le faisant tourner à l'envers et vous rapportant des crédits. Lorsque la production solaire est insuffisante, vous puisez de l'énergie du réseau comme d'habitude.",
+        "technicalDetails": {
+          "0": "Onduleur connecté au réseau avec protection anti-îlotage",
+          "1": "Interrupteur de déconnexion CA pour la sécurité",
+          "2": "Compteur net pour le flux d'énergie bidirectionnel",
+          "3": "Surveillance du système et suivi des performances",
+          "4": "Compatible avec les systèmes de réseau 220V/380V",
+          "5": "Taux d'efficacité: 95-98%"
+        },
+        "benefits": {
+          "0": "Réduit considérablement les factures d'électricité",
+          "1": "Gagnez des crédits grâce au comptage net",
+          "2": "Faibles exigences de maintenance",
+          "3": "Source d'énergie respectueuse de l'environnement",
+          "4": "Longue durée de vie (25+ ans)",
+          "5": "Augmente la valeur de la propriété"
+        },
+        "usageScenarios": {
+          "0": "Maisons résidentielles avec connexion au réseau",
+          "1": "Bâtiments commerciaux et bureaux",
+          "2": "Installations industrielles",
+          "3": "Écoles et établissements d'enseignement",
+          "4": "Hôpitaux et établissements de santé"
+        }
       },
       "offGrid": {
         "name": "Génération d'énergie solaire PV – Hors réseau",
-        "summary": "Systèmes solaires indépendants avec stockage de batterie pour une autonomie énergétique complète"
+        "summary": "Systèmes solaires indépendants avec stockage de batterie pour une autonomie énergétique complète",
+        "description": "Les systèmes solaires hors réseau fonctionnent indépendamment du réseau électrique, ce qui les rend parfaits pour les emplacements éloignés ou les zones avec un accès au réseau peu fiable. Ces systèmes incluent un stockage de batterie pour assurer un approvisionnement en énergie continu même lorsque le soleil ne brille pas.",
+        "howItWorks": "Les panneaux solaires génèrent de l'électricité CC pendant les heures de jour. Le contrôleur de charge régule la charge des batteries, empêchant la surcharge. Les batteries stockent l'énergie excédentaire pour une utilisation la nuit ou pendant les jours nuageux. L'onduleur convertit l'énergie CC stockée en énergie CA pour vos appareils. Lorsque les batteries sont faibles, un générateur de secours peut compléter l'alimentation s'il est inclus.",
+        "technicalDetails": {
+          "0": "Panneaux solaires avec cellules à haute efficacité",
+          "1": "Contrôleur de charge pour la gestion des batteries",
+          "2": "Batteries à cycle profond (plomb-acide ou lithium)",
+          "3": "Onduleur hors réseau pour la conversion CA",
+          "4": "Générateur de secours (optionnel)",
+          "5": "Capacité du système: 1kW à 100kW+"
+        },
+        "benefits": {
+          "0": "Indépendance énergétique complète",
+          "1": "Aucune facture d'électricité mensuelle",
+          "2": "Fonctionne dans les emplacements éloignés",
+          "3": "Protection contre les pannes de réseau",
+          "4": "Durable et renouvelable",
+          "5": "Dimensionnement du système personnalisable"
+        },
+        "usageScenarios": {
+          "0": "Cabanes et chalets éloignés",
+          "1": "Maisons rurales sans accès au réseau",
+          "2": "Opérations agricoles et d'élevage",
+          "3": "Tours de télécommunication",
+          "4": "Systèmes de secours d'urgence"
+        }
       },
       "netMeter": {
         "name": "Génération d'énergie solaire PV – Système de comptage net",
-        "summary": "Système de comptage intelligent qui suit la production et la consommation d'énergie"
+        "summary": "Système de comptage intelligent qui suit la production et la consommation d'énergie",
+        "description": "Les systèmes de comptage net utilisent des compteurs intelligents avancés pour suivre à la fois la production et la consommation d'énergie en temps réel. Cela permet une facturation précise et une gestion optimale de l'énergie, garantissant que vous obtenez une valeur maximale de votre investissement solaire.",
+        "howItWorks": "Le compteur net intelligent mesure continuellement le flux d'électricité dans les deux sens. Lorsque votre système solaire produit plus d'énergie que vous n'en consommez, l'excédent s'écoule vers le réseau et le compteur l'enregistre. Lorsque vous avez besoin de plus d'énergie que le solaire ne fournit, vous puisez du réseau. À la fin de la période de facturation, vous ne payez que pour l'énergie nette consommée, ou recevez des crédits pour la production excédentaire.",
+        "technicalDetails": {
+          "0": "Compteur intelligent bidirectionnel",
+          "1": "Surveillance de l'énergie en temps réel",
+          "2": "Enregistrement des données et analyses",
+          "3": "Capacités de surveillance à distance",
+          "4": "Intégration avec les systèmes d'utilité",
+          "5": "Suivi précis du kWh"
+        },
+        "benefits": {
+          "0": "Comptabilité énergétique précise",
+          "1": "Surveillance des performances en temps réel",
+          "2": "Utilisation optimisée de l'énergie",
+          "3": "Rapports de consommation détaillés",
+          "4": "Détection précoce des problèmes",
+          "5": "Rendements financiers maximaux"
+        },
+        "usageScenarios": {
+          "0": "Maisons à consommation d'énergie élevée",
+          "1": "Entreprises avec charges variables",
+          "2": "Propriétés avec tarifs d'utilisation temporelle",
+          "3": "Bâtiments multi-locataires",
+          "4": "Consommateurs soucieux de l'énergie"
+        }
       },
       "centralHeating": {
         "name": "Systèmes de chauffage solaire de l'eau – Central",
-        "summary": "Chauffage solaire de l'eau centralisé pour les grands bâtiments et complexes"
+        "summary": "Chauffage solaire de l'eau centralisé pour les grands bâtiments et complexes",
+        "description": "Les systèmes de chauffage solaire de l'eau centraux sont conçus pour les grands bâtiments, hôtels, hôpitaux et complexes résidentiels. Ces systèmes utilisent un réseau de collecteurs centralisé et un système de stockage pour fournir de l'eau chaude à plusieurs unités efficacement.",
+        "howItWorks": "Les collecteurs solaires sur le toit absorbent la lumière du soleil et chauffent un fluide de transfert (généralement de l'eau ou du glycol). Ce fluide chauffé est pompé vers un réservoir de stockage central où il transfère la chaleur à l'approvisionnement en eau. Le système comprend un chauffage de secours pour les jours nuageux. L'eau chaude est distribuée à toutes les unités via le système de plomberie du bâtiment.",
+        "technicalDetails": {
+          "0": "Collecteurs solaires à grande échelle",
+          "1": "Réservoirs de stockage centraux (500L à 10,000L+)",
+          "2": "Pompes de circulation et contrôles",
+          "3": "Échangeurs de chaleur",
+          "4": "Système de chauffage de secours",
+          "5": "Surveillance et contrôle de la température"
+        },
+        "benefits": {
+          "0": "Rentable pour les grands bâtiments",
+          "1": "Réduit les coûts d'eau chaude de 60-80%",
+          "2": "Faibles coûts d'exploitation",
+          "3": "Respectueux de l'environnement",
+          "4": "Longue durée de vie (20+ ans)",
+          "5": "Maintenance minimale"
+        },
+        "usageScenarios": {
+          "0": "Hôtels et stations balnéaires",
+          "1": "Hôpitaux et cliniques",
+          "2": "Complexes d'appartements",
+          "3": "Universités et dortoirs",
+          "4": "Installations industrielles"
+        }
       },
       "waterHeater": {
         "name": "Chauffe-eau solaire",
-        "summary": "Solutions efficaces de chauffage solaire de l'eau pour résidentiel et commercial"
+        "summary": "Solutions efficaces de chauffage solaire de l'eau pour résidentiel et commercial",
+        "description": "Les chauffe-eau solaires résidentiels et commerciaux offrent un moyen efficace et économique de chauffer l'eau en utilisant l'énergie solaire. Ces systèmes peuvent réduire les coûts de chauffage de l'eau jusqu'à 80% et sont disponibles dans diverses configurations pour répondre à différents besoins.",
+        "howItWorks": "Les collecteurs solaires montés sur le toit absorbent le rayonnement solaire et chauffent un fluide de transfert. Le fluide chauffé circule à travers un échangeur de chaleur dans le réservoir de stockage, réchauffant l'eau. Un élément de chauffage électrique de secours assure la disponibilité d'eau chaude pendant les périodes nuageuses prolongées. Le système fonctionne automatiquement avec une intervention minimale de l'utilisateur.",
+        "technicalDetails": {
+          "0": "Collecteurs à plaque plate ou tubes sous vide",
+          "1": "Réservoir de stockage (80L à 500L)",
+          "2": "Système de transfert de chaleur",
+          "3": "Contrôleur de température",
+          "4": "Élément électrique de secours",
+          "5": "Isolation et protection météorologique"
+        },
+        "benefits": {
+          "0": "Économies importantes sur l'eau chaude",
+          "1": "Respectueux de l'environnement",
+          "2": "Maintenance faible",
+          "3": "Longue durée de vie (15-20 ans)",
+          "4": "Fonctionne dans divers climats",
+          "5": "Incitations gouvernementales disponibles"
+        },
+        "usageScenarios": {
+          "0": "Maisons unifamiliales",
+          "1": "Petites entreprises",
+          "2": "Restaurants et cafés",
+          "3": "Gymnases et centres de fitness",
+          "4": "Laveries automatiques"
+        }
       },
       "pump": {
         "name": "Pompe solaire",
-        "summary": "Systèmes de pompage d'eau à énergie solaire pour l'irrigation et l'approvisionnement en eau"
+        "summary": "Systèmes de pompage d'eau à énergie solaire pour l'irrigation et l'approvisionnement en eau",
+        "description": "Les pompes à eau solaires sont idéales pour l'irrigation, l'abreuvement du bétail et l'approvisionnement en eau dans les zones éloignées. Ces systèmes éliminent le besoin d'électricité du réseau ou de carburant, ce qui les rend parfaits pour l'agriculture durable et l'approvisionnement en eau rural.",
+        "howItWorks": "Les panneaux solaires génèrent de l'électricité CC qui alimente le moteur de la pompe directement ou via un onduleur pour les pompes CA. La pompe tire l'eau d'un puits, d'un forage ou d'une source de surface et la livre à un réservoir de stockage ou directement au système d'irrigation. Le système fonctionne automatiquement lorsque la lumière du soleil est disponible, avec une batterie de secours optionnelle pour un fonctionnement continu.",
+        "technicalDetails": {
+          "0": "Pompes solaires CC ou CA",
+          "1": "Pompes submersibles ou de surface",
+          "2": "Réseau de panneaux solaires",
+          "3": "Système de contrôle et de protection",
+          "4": "Réservoir de stockage d'eau",
+          "5": "Débit: 1,000 à 50,000 L/jour"
+        },
+        "benefits": {
+          "0": "Aucun coût d'électricité ou de carburant",
+          "1": "Faibles coûts d'exploitation",
+          "2": "Durable sur le plan environnemental",
+          "3": "Fonctionne dans les emplacements éloignés",
+          "4": "Maintenance faible",
+          "5": "Approvisionnement en eau fiable"
+        },
+        "usageScenarios": {
+          "0": "Irrigation agricole",
+          "1": "Abreuvement du bétail",
+          "2": "Approvisionnement en eau des villages",
+          "3": "Irrigation des jardins et paysages",
+          "4": "Systèmes de fontaines et d'étangs"
+        }
       },
       "inverter": {
         "name": "Onduleur d'énergie solaire",
-        "summary": "Onduleurs avancés convertissant l'énergie solaire CC en énergie CA utilisable"
+        "summary": "Onduleurs avancés convertissant l'énergie solaire CC en énergie CA utilisable",
+        "description": "Les onduleurs solaires sont le cœur de tout système solaire PV, convertissant l'électricité CC des panneaux solaires en électricité CA pour une utilisation dans les maisons et les entreprises. Les onduleurs modernes offrent une surveillance avancée, un suivi du point de puissance maximale (MPPT) et des capacités d'intégration au réseau.",
+        "howItWorks": "Les panneaux solaires produisent de l'électricité CC avec une tension et un courant variables selon les conditions d'ensoleillement. L'onduleur utilise le MPPT (suivi du point de puissance maximale) pour ajuster et extraire continuellement la puissance maximale des panneaux. Il convertit ensuite cette puissance CC en puissance CA stable correspondant à la fréquence et à la tension du réseau. Les onduleurs avancés surveillent également les performances du système, détectent les défauts et peuvent se déconnecter du réseau pendant les pannes pour la sécurité.",
+        "technicalDetails": {
+          "0": "Technologie MPPT pour une efficacité maximale",
+          "1": "Configurations connectées au réseau ou hors réseau",
+          "2": "Efficacité: 95-98%",
+          "3": "Surveillance à distance via application/cloud",
+          "4": "Protection contre la surcharge et les courts-circuits",
+          "5": "Gamme de puissance: 1kW à 1MW+"
+        },
+        "benefits": {
+          "0": "Efficacité de conversion d'énergie maximale",
+          "1": "Surveillance des performances en temps réel",
+          "2": "Synchronisation du réseau",
+          "3": "Protection contre les défauts électriques",
+          "4": "Garantie longue (5-10 ans)",
+          "5": "Installation et maintenance faciles"
+        },
+        "usageScenarios": {
+          "0": "Installations solaires résidentielles",
+          "1": "Systèmes solaires commerciaux",
+          "2": "Projets solaires industriels",
+          "3": "Fermes solaires à l'échelle des services publics",
+          "4": "Systèmes solaires hybrides"
+        }
       },
       "battery": {
         "name": "Stockage de batterie solaire",
-        "summary": "Systèmes de batteries haute capacité pour le stockage d'énergie et l'alimentation de secours"
+        "summary": "Systèmes de batteries haute capacité pour le stockage d'énergie et l'alimentation de secours",
+        "description": "Les systèmes de stockage de batteries solaires vous permettent de stocker l'énergie solaire excédentaire pour une utilisation pendant la nuit, les jours nuageux ou les pannes de courant. Les batteries lithium-ion modernes offrent une efficacité élevée, une longue durée de vie et sont essentielles pour les systèmes hors réseau et les applications d'alimentation de secours.",
+        "howItWorks": "Pendant les heures de jour, l'énergie solaire excédentaire charge la banque de batteries via un contrôleur de charge qui régule la tension et le courant pour éviter la surcharge. Le système de gestion de batterie (BMS) surveille la santé des cellules, la température et l'état de charge. Lorsque la production solaire est insuffisante ou pendant les pannes, l'énergie stockée est déchargée via un onduleur pour alimenter vos charges. Les systèmes modernes peuvent prioriser les charges critiques et optimiser la charge/décharge en fonction des modèles d'utilisation.",
+        "technicalDetails": {
+          "0": "Technologie lithium-ion ou plomb-acide",
+          "1": "Capacité: 2kWh à 100kWh+",
+          "2": "Profondeur de décharge: 80-90%",
+          "3": "Système de gestion de batterie (BMS)",
+          "4": "Durée de vie: 3,000-6,000 cycles",
+          "5": "Efficacité: 85-95%"
+        },
+        "benefits": {
+          "0": "Indépendance énergétique",
+          "1": "Alimentation de secours pendant les pannes",
+          "2": "Décalage temporel de l'utilisation de l'énergie solaire",
+          "3": "Réduire la dépendance au réseau",
+          "4": "Longue durée de vie",
+          "5": "Maintenance faible"
+        },
+        "usageScenarios": {
+          "0": "Systèmes solaires hors réseau",
+          "1": "Alimentation de secours pour charges critiques",
+          "2": "Réduction des pics pour les entreprises",
+          "3": "Optimisation du temps d'utilisation",
+          "4": "Systèmes d'alimentation d'urgence"
+        }
       }
     },
     "detail": {
@@ -159,7 +359,18 @@
       "technicalDetails": "Détails techniques",
       "benefits": "Avantages",
       "usageScenarios": "Scénarios d'utilisation",
-      "howItWorks": "Comment ça fonctionne"
+      "howItWorks": "Comment ça fonctionne",
+      "loading": "Chargement du système...",
+      "notFound": "Système introuvable",
+      "notFoundMessage": "Le système solaire que vous recherchez n'existe pas.",
+      "backToSolar": "Retour aux systèmes solaires",
+      "gallery": "Galerie",
+      "systemInformation": "Informations sur le système",
+      "systemType": "Type de système",
+      "category": "Catégorie",
+      "powerGeneration": "Génération d'énergie",
+      "waterHeating": "Chauffage de l'eau",
+      "waterSystems": "Systèmes d'eau"
     }
   },
   "projects": {
@@ -184,7 +395,8 @@
       "backToProjects": "Retour aux projets",
       "loading": "Chargement du projet...",
       "notFound": "Projet introuvable",
-      "notFoundMessage": "Le projet que vous recherchez n'existe pas."
+      "notFoundMessage": "Le projet que vous recherchez n'existe pas.",
+      "projectInformation": "Informations sur le projet"
     }
   },
   "about": {
@@ -216,9 +428,34 @@
     "title": "Nos services",
     "subtitle": "Solutions complètes d'énergie solaire",
     "systemDesign": "Conception de système",
+    "systemDesignDesc": "Nos ingénieurs experts conçoivent des systèmes solaires personnalisés adaptés à vos besoins énergétiques spécifiques, votre emplacement et votre budget. Nous effectuons des évaluations de site complètes et fournissons des spécifications de système détaillées.",
     "installation": "Installation, maintenance et garantie",
+    "installationDesc": "Installation professionnelle par des techniciens certifiés avec une couverture de garantie complète. Nous nous assurons que tous les systèmes respectent les codes et normes locaux, avec un support de maintenance continu pour maximiser les performances.",
     "aftersale": "Service après-vente",
-    "delivery": "Livraison"
+    "aftersaleDesc": "Support après-vente complet comprenant la surveillance du système, le dépannage et la maintenance régulière. Notre équipe est disponible 24/7 pour répondre à toute préoccupation et assurer des performances optimales du système.",
+    "delivery": "Livraison",
+    "deliveryDesc": "Services de livraison et de logistique fiables garantissant que tous les composants arrivent à temps et en parfait état. Nous coordonnons avec les fournisseurs pour garantir un équipement de qualité et l'achèvement du projet en temps opportun.",
+    "process": {
+      "title": "Notre processus",
+      "subtitle": "De la consultation à l'achèvement, nous vous guidons à chaque étape",
+      "step1": {
+        "title": "Consultation",
+        "description": "Évaluation initiale et analyse des besoins énergétiques"
+      },
+      "step2": {
+        "title": "Conception",
+        "description": "Conception de système personnalisé et proposition"
+      },
+      "step3": {
+        "title": "Installation",
+        "description": "Installation professionnelle et tests"
+      },
+      "step4": {
+        "title": "Support",
+        "description": "Surveillance continue et maintenance"
+      }
+    },
+    "heroImageAlt": "Services ESSEC"
   },
   "contact": {
     "title": "Contactez-nous",
@@ -256,6 +493,20 @@
     "viewDetails": "Voir les détails",
     "back": "Retour",
     "readMore": "Lire la suite"
+  },
+  "footer": {
+    "companyName": "ESSEC Solar Engineering",
+    "companyDescription": "Fournisseur de premier plan de solutions d'énergie solaire, engagé à fournir des systèmes d'énergie renouvelable durables et efficaces.",
+    "quickLinks": "Liens rapides",
+    "contact": "Contact",
+    "email": "Email",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "emailValue": "info@essec-solar.com",
+    "phoneValue": "+123 456 7890",
+    "addressValue": "Quartier de l'énergie solaire",
+    "copyright": "Tous droits réservés.",
+    "logoAlt": "Logo ESSEC Solar Engineering"
   },
   "admin": {
     "dashboard": "Tableau de bord administrateur",

@@ -263,7 +263,7 @@
 
 @media (max-width: 1024px) {
   .stepsContainer {
-    min-height: 1800px;
+    min-height: 1325px;
     height: auto;
   }
 }
@@ -695,7 +695,7 @@
   }
   
   .stepsContainer {
-    min-height: 1600px;
+    min-height: 1440px;
   }
 }
 

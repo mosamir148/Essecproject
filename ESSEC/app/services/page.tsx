@@ -6,31 +6,31 @@ import { Settings, Wrench, Headphones, Truck } from 'lucide-react'
 import styles from './services.module.css'
 
 export default function ServicesPage() {
-  const { t } = useLanguage()
+  const { t, dir } = useLanguage()
 
   const services = [
     {
       icon: Settings,
       title: t('services.systemDesign'),
-      description: 'Our expert engineers design custom solar systems tailored to your specific energy needs, location, and budget. We conduct comprehensive site assessments and provide detailed system specifications.',
+      description: t('services.systemDesignDesc'),
       color: 'blue',
     },
     {
       icon: Wrench,
       title: t('services.installation'),
-      description: 'Professional installation by certified technicians with full warranty coverage. We ensure all systems meet local codes and standards, with ongoing maintenance support to maximize performance.',
+      description: t('services.installationDesc'),
       color: 'green',
     },
     {
       icon: Headphones,
       title: t('services.aftersale'),
-      description: 'Comprehensive after-sales support including system monitoring, troubleshooting, and regular maintenance. Our team is available 24/7 to address any concerns and ensure optimal system performance.',
+      description: t('services.aftersaleDesc'),
       color: 'purple',
     },
     {
       icon: Truck,
       title: t('services.delivery'),
-      description: 'Reliable delivery and logistics services ensuring all components arrive on time and in perfect condition. We coordinate with suppliers to guarantee quality equipment and timely project completion.',
+      description: t('services.deliveryDesc'),
       color: 'orange',
     },
   ]
@@ -55,7 +55,7 @@ export default function ServicesPage() {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} dir={dir}>
       {/* Hero Section with Photo */}
       <section className={styles.heroSection}>
         <div className={styles.heroContainer}>
@@ -71,7 +71,7 @@ export default function ServicesPage() {
             <div className={styles.heroImage}>
               <DefaultImage
                 src="/ourservise.png"
-                alt="ESSEC Services"
+                alt={t('services.heroImageAlt')}
                 fill
                 className={styles.heroImageContent}
                 priority
@@ -124,29 +124,29 @@ export default function ServicesPage() {
         <div className={styles.container}>
           <div className={styles.processHeader}>
             <h2 className={styles.processTitle}>
-              Our Process
+              {t('services.process.title')}
             </h2>
             <p className={styles.processSubtitle}>
-              From consultation to completion, we guide you every step of the way
+              {t('services.process.subtitle')}
             </p>
           </div>
 
           <div className={styles.processGrid}>
             {[
-              { step: '1', title: 'Consultation', desc: 'Initial assessment and energy needs analysis' },
-              { step: '2', title: 'Design', desc: 'Custom system design and proposal' },
-              { step: '3', title: 'Installation', desc: 'Professional installation and testing' },
-              { step: '4', title: 'Support', desc: 'Ongoing monitoring and maintenance' },
+              { step: '1', titleKey: 'step1.title', descKey: 'step1.description' },
+              { step: '2', titleKey: 'step2.title', descKey: 'step2.description' },
+              { step: '3', titleKey: 'step3.title', descKey: 'step3.description' },
+              { step: '4', titleKey: 'step4.title', descKey: 'step4.description' },
             ].map((item, index) => (
               <div key={index} className={styles.processItem}>
                 <div className={styles.processStep}>
                   {item.step}
                 </div>
                 <h3 className={styles.processItemTitle}>
-                  {item.title}
+                  {t(`services.process.${item.titleKey}`)}
                 </h3>
                 <p className={styles.processItemDesc}>
-                  {item.desc}
+                  {t(`services.process.${item.descKey}`)}
                 </p>
               </div>
             ))}

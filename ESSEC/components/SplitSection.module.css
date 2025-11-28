@@ -171,6 +171,27 @@
   transform: translateY(30px);
 }
 
+/* Mobile fallback: Ensure text becomes visible on small screens */
+/* This is a safety net in case JavaScript visibility detection fails */
+@media (max-width: 768px) {
+  .textHalf.hidden {
+    /* After 1.2s, force visibility on mobile as fallback */
+    animation: fadeInMobileFallback 0.6s ease-out 1.2s forwards;
+  }
+  
+  .textContent {
+    /* Ensure text content is always accessible */
+    min-height: 200px;
+  }
+}
+
+@keyframes fadeInMobileFallback {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .textHalf.visible {
   transition-delay: 0.1s;
 }
@@ -239,6 +260,8 @@
     box-sizing: border-box;
     overflow-x: hidden;
     margin: 0;
+    position: relative;
+    z-index: 1;
   }
 
   .textContent {
@@ -334,6 +357,8 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    position: relative;
+    z-index: 1;
   }
 
   .textContent {
@@ -390,6 +415,54 @@
 
 [dir='rtl'] .imageHalf {
   order: 1;
+}
+
+/* RTL + Mobile: Ensure RTL doesn't break mobile column layout */
+@media (max-width: 768px) {
+  [dir='rtl'] .container {
+    flex-direction: column; /* Override row-reverse on mobile */
+  }
+  
+  [dir='rtl'] .textHalf {
+    order: 2; /* Keep text second on mobile */
+    text-align: right; /* RTL text alignment */
+    direction: rtl;
+  }
+  
+  [dir='rtl'] .imageHalf {
+    order: 1; /* Keep image first on mobile */
+  }
+  
+  [dir='rtl'] .textContent {
+    text-align: right;
+    direction: rtl;
+  }
+  
+  [dir='rtl'] .heading,
+  [dir='rtl'] .paragraph {
+    text-align: right;
+    direction: rtl;
+  }
+  
+  /* Ensure text is visible on RTL mobile - use faster animation */
+  [dir='rtl'] .textHalf.hidden {
+    animation: fadeInMobileFallback 0.6s ease-out 0.8s forwards;
+  }
+  
+  /* Ensure text content is always accessible on RTL mobile */
+  [dir='rtl'] .textContent {
+    min-height: 200px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* Make sure text elements are visible on RTL mobile */
+  [dir='rtl'] .heading,
+  [dir='rtl'] .paragraph,
+  [dir='rtl'] .button {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 /* Dark Mode Styles */

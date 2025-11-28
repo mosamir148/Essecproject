@@ -123,35 +123,235 @@
     "systems": {
       "onGrid": {
         "name": "Solar PV Power Generation – On-Grid",
-        "summary": "Grid-connected solar systems that feed excess energy back to the utility grid"
+        "summary": "Grid-connected solar systems that feed excess energy back to the utility grid",
+        "description": "On-grid solar PV systems are connected to the local utility grid, allowing you to feed excess electricity back to the grid and draw power when needed. This system is ideal for locations with reliable grid infrastructure and offers the benefit of net metering, where you can earn credits for excess energy production.",
+        "howItWorks": "Solar panels convert sunlight into DC electricity, which is then converted to AC by the grid-tied inverter. The AC power is used to power your home or business. Excess electricity flows back to the grid through the net meter, spinning it backwards and earning you credits. When solar production is insufficient, you draw power from the grid as usual.",
+        "technicalDetails": {
+          "0": "Grid-tied inverter with anti-islanding protection",
+          "1": "AC disconnect switch for safety",
+          "2": "Net meter for bidirectional energy flow",
+          "3": "System monitoring and performance tracking",
+          "4": "Compatible with 220V/380V grid systems",
+          "5": "Efficiency rating: 95-98%"
+        },
+        "benefits": {
+          "0": "Reduces electricity bills significantly",
+          "1": "Earn credits through net metering",
+          "2": "Low maintenance requirements",
+          "3": "Environmentally friendly energy source",
+          "4": "Long lifespan (25+ years)",
+          "5": "Increases property value"
+        },
+        "usageScenarios": {
+          "0": "Residential homes with grid connection",
+          "1": "Commercial buildings and offices",
+          "2": "Industrial facilities",
+          "3": "Schools and educational institutions",
+          "4": "Hospitals and healthcare facilities"
+        }
       },
       "offGrid": {
         "name": "Solar PV Power Generation – Off-Grid",
-        "summary": "Independent solar systems with battery storage for complete energy autonomy"
+        "summary": "Independent solar systems with battery storage for complete energy autonomy",
+        "description": "Off-grid solar systems operate independently from the utility grid, making them perfect for remote locations or areas with unreliable grid access. These systems include battery storage to ensure continuous power supply even when the sun is not shining.",
+        "howItWorks": "Solar panels generate DC electricity during daylight hours. The charge controller regulates the charging of batteries, preventing overcharging. The batteries store excess energy for use at night or during cloudy days. The inverter converts stored DC energy to AC power for your appliances. When batteries are low, a backup generator can supplement power if included.",
+        "technicalDetails": {
+          "0": "Solar panels with high efficiency cells",
+          "1": "Charge controller for battery management",
+          "2": "Deep-cycle batteries (lead-acid or lithium)",
+          "3": "Off-grid inverter for AC conversion",
+          "4": "Backup generator (optional)",
+          "5": "System capacity: 1kW to 100kW+"
+        },
+        "benefits": {
+          "0": "Complete energy independence",
+          "1": "No monthly electricity bills",
+          "2": "Works in remote locations",
+          "3": "Protection against grid outages",
+          "4": "Sustainable and renewable",
+          "5": "Customizable system sizing"
+        },
+        "usageScenarios": {
+          "0": "Remote cabins and cottages",
+          "1": "Rural homes without grid access",
+          "2": "Agricultural and farming operations",
+          "3": "Telecommunication towers",
+          "4": "Emergency backup systems"
+        }
       },
       "netMeter": {
         "name": "Solar PV Power Generation – Net-Meter-System",
-        "summary": "Smart metering system that tracks energy production and consumption"
+        "summary": "Smart metering system that tracks energy production and consumption",
+        "description": "Net metering systems use advanced smart meters to track both energy production and consumption in real-time. This allows for precise billing and optimal energy management, ensuring you get maximum value from your solar investment.",
+        "howItWorks": "The smart net meter continuously measures electricity flow in both directions. When your solar system produces more power than you consume, the excess flows to the grid and the meter records it. When you need more power than solar provides, you draw from the grid. At the end of the billing period, you pay only for the net energy consumed, or receive credits for excess production.",
+        "technicalDetails": {
+          "0": "Smart bidirectional meter",
+          "1": "Real-time energy monitoring",
+          "2": "Data logging and analytics",
+          "3": "Remote monitoring capabilities",
+          "4": "Integration with utility systems",
+          "5": "Precise kWh tracking"
+        },
+        "benefits": {
+          "0": "Accurate energy accounting",
+          "1": "Real-time performance monitoring",
+          "2": "Optimized energy usage",
+          "3": "Detailed consumption reports",
+          "4": "Early problem detection",
+          "5": "Maximum financial returns"
+        },
+        "usageScenarios": {
+          "0": "Homes with high energy consumption",
+          "1": "Businesses with variable loads",
+          "2": "Properties with time-of-use rates",
+          "3": "Multi-tenant buildings",
+          "4": "Energy-conscious consumers"
+        }
       },
       "centralHeating": {
         "name": "Solar Water Heating Systems – Central",
-        "summary": "Centralized solar water heating for large buildings and complexes"
+        "summary": "Centralized solar water heating for large buildings and complexes",
+        "description": "Central solar water heating systems are designed for large buildings, hotels, hospitals, and residential complexes. These systems use a centralized collector array and storage system to provide hot water for multiple units efficiently.",
+        "howItWorks": "Solar collectors on the roof absorb sunlight and heat a transfer fluid (usually water or glycol). This heated fluid is pumped to a central storage tank where it transfers heat to the water supply. The system includes backup heating for cloudy days. Hot water is distributed to all units through the building's plumbing system.",
+        "technicalDetails": {
+          "0": "Large-scale solar collectors",
+          "1": "Central storage tanks (500L to 10,000L+)",
+          "2": "Circulation pumps and controls",
+          "3": "Heat exchangers",
+          "4": "Backup heating system",
+          "5": "Temperature monitoring and control"
+        },
+        "benefits": {
+          "0": "Cost-effective for large buildings",
+          "1": "Reduces hot water costs by 60-80%",
+          "2": "Low operating costs",
+          "3": "Environmentally friendly",
+          "4": "Long service life (20+ years)",
+          "5": "Minimal maintenance"
+        },
+        "usageScenarios": {
+          "0": "Hotels and resorts",
+          "1": "Hospitals and clinics",
+          "2": "Apartment complexes",
+          "3": "Universities and dormitories",
+          "4": "Industrial facilities"
+        }
       },
       "waterHeater": {
         "name": "Solar Water Heater",
-        "summary": "Efficient residential and commercial solar water heating solutions"
+        "summary": "Efficient residential and commercial solar water heating solutions",
+        "description": "Residential and commercial solar water heaters provide an efficient and cost-effective way to heat water using solar energy. These systems can reduce water heating costs by up to 80% and are available in various configurations to suit different needs.",
+        "howItWorks": "Solar collectors mounted on the roof absorb solar radiation and heat a transfer fluid. The heated fluid circulates through a heat exchanger in the storage tank, warming the water. A backup electric heating element ensures hot water availability during extended cloudy periods. The system operates automatically with minimal user intervention.",
+        "technicalDetails": {
+          "0": "Flat-plate or evacuated tube collectors",
+          "1": "Storage tank (80L to 500L)",
+          "2": "Heat transfer system",
+          "3": "Temperature controller",
+          "4": "Backup electric element",
+          "5": "Insulation and weather protection"
+        },
+        "benefits": {
+          "0": "Significant cost savings on hot water",
+          "1": "Environmentally friendly",
+          "2": "Low maintenance",
+          "3": "Long lifespan (15-20 years)",
+          "4": "Works in various climates",
+          "5": "Government incentives available"
+        },
+        "usageScenarios": {
+          "0": "Single-family homes",
+          "1": "Small businesses",
+          "2": "Restaurants and cafes",
+          "3": "Gyms and fitness centers",
+          "4": "Laundromats"
+        }
       },
       "pump": {
         "name": "Solar Pump",
-        "summary": "Solar-powered water pumping systems for irrigation and water supply"
+        "summary": "Solar-powered water pumping systems for irrigation and water supply",
+        "description": "Solar-powered water pumps are ideal for irrigation, livestock watering, and water supply in remote areas. These systems eliminate the need for grid electricity or fuel, making them perfect for sustainable agriculture and rural water supply.",
+        "howItWorks": "Solar panels generate DC electricity that powers the pump motor directly or through an inverter for AC pumps. The pump draws water from a well, borehole, or surface source and delivers it to a storage tank or directly to the irrigation system. The system operates automatically when sunlight is available, with optional battery backup for continuous operation.",
+        "technicalDetails": {
+          "0": "DC or AC solar pumps",
+          "1": "Submersible or surface pumps",
+          "2": "Solar panel array",
+          "3": "Controller and protection system",
+          "4": "Water storage tank",
+          "5": "Flow rate: 1,000 to 50,000 L/day"
+        },
+        "benefits": {
+          "0": "No electricity or fuel costs",
+          "1": "Low operating costs",
+          "2": "Environmentally sustainable",
+          "3": "Works in remote locations",
+          "4": "Low maintenance",
+          "5": "Reliable water supply"
+        },
+        "usageScenarios": {
+          "0": "Agricultural irrigation",
+          "1": "Livestock watering",
+          "2": "Village water supply",
+          "3": "Garden and landscape irrigation",
+          "4": "Fountain and pond systems"
+        }
       },
       "inverter": {
         "name": "Solar Energy Inverter",
-        "summary": "Advanced inverters converting DC solar energy to usable AC power"
+        "summary": "Advanced inverters converting DC solar energy to usable AC power",
+        "description": "Solar inverters are the heart of any solar PV system, converting DC electricity from solar panels into AC electricity for use in homes and businesses. Modern inverters feature advanced monitoring, maximum power point tracking (MPPT), and grid integration capabilities.",
+        "howItWorks": "Solar panels produce DC electricity with variable voltage and current depending on sunlight conditions. The inverter uses MPPT (Maximum Power Point Tracking) to continuously adjust and extract the maximum power from the panels. It then converts this DC power to stable AC power matching the grid frequency and voltage. Advanced inverters also monitor system performance, detect faults, and can disconnect from the grid during outages for safety.",
+        "technicalDetails": {
+          "0": "MPPT technology for maximum efficiency",
+          "1": "Grid-tied or off-grid configurations",
+          "2": "Efficiency: 95-98%",
+          "3": "Remote monitoring via app/cloud",
+          "4": "Overload and short-circuit protection",
+          "5": "Power range: 1kW to 1MW+"
+        },
+        "benefits": {
+          "0": "Maximum energy conversion efficiency",
+          "1": "Real-time performance monitoring",
+          "2": "Grid synchronization",
+          "3": "Protection against electrical faults",
+          "4": "Long warranty (5-10 years)",
+          "5": "Easy installation and maintenance"
+        },
+        "usageScenarios": {
+          "0": "Residential solar installations",
+          "1": "Commercial solar systems",
+          "2": "Industrial solar projects",
+          "3": "Utility-scale solar farms",
+          "4": "Hybrid solar systems"
+        }
       },
       "battery": {
         "name": "Solar Battery Storage",
-        "summary": "High-capacity battery systems for energy storage and backup power"
+        "summary": "High-capacity battery systems for energy storage and backup power",
+        "description": "Solar battery storage systems allow you to store excess solar energy for use during nighttime, cloudy days, or power outages. Modern lithium-ion batteries offer high efficiency, long lifespan, and are essential for off-grid systems and backup power applications.",
+        "howItWorks": "During daylight hours, excess solar energy charges the battery bank through a charge controller that regulates voltage and current to prevent overcharging. The battery management system (BMS) monitors cell health, temperature, and state of charge. When solar production is insufficient or during outages, the stored energy is discharged through an inverter to power your loads. Modern systems can prioritize critical loads and optimize charging/discharging based on usage patterns.",
+        "technicalDetails": {
+          "0": "Lithium-ion or lead-acid technology",
+          "1": "Capacity: 2kWh to 100kWh+",
+          "2": "Depth of discharge: 80-90%",
+          "3": "Battery management system (BMS)",
+          "4": "Cycle life: 3,000-6,000 cycles",
+          "5": "Efficiency: 85-95%"
+        },
+        "benefits": {
+          "0": "Energy independence",
+          "1": "Backup power during outages",
+          "2": "Time-shift solar energy usage",
+          "3": "Reduce grid dependence",
+          "4": "Long lifespan",
+          "5": "Low maintenance"
+        },
+        "usageScenarios": {
+          "0": "Off-grid solar systems",
+          "1": "Backup power for critical loads",
+          "2": "Peak shaving for businesses",
+          "3": "Time-of-use optimization",
+          "4": "Emergency power systems"
+        }
       }
     },
     "detail": {
@@ -159,7 +359,18 @@
       "technicalDetails": "Technical Details",
       "benefits": "Benefits",
       "usageScenarios": "Usage Scenarios",
-      "howItWorks": "How It Works"
+      "howItWorks": "How It Works",
+      "loading": "Loading system...",
+      "notFound": "System Not Found",
+      "notFoundMessage": "The solar system you're looking for doesn't exist.",
+      "backToSolar": "Back to Solar Systems",
+      "gallery": "Gallery",
+      "systemInformation": "System Information",
+      "systemType": "System Type",
+      "category": "Category",
+      "powerGeneration": "Power Generation",
+      "waterHeating": "Water Heating",
+      "waterSystems": "Water Systems"
     }
   },
   "projects": {
@@ -184,7 +395,8 @@
       "backToProjects": "Back to Projects",
       "loading": "Loading project...",
       "notFound": "Project Not Found",
-      "notFoundMessage": "The project you're looking for doesn't exist."
+      "notFoundMessage": "The project you're looking for doesn't exist.",
+      "projectInformation": "Project Information"
     }
   },
   "about": {
@@ -216,9 +428,34 @@
     "title": "Our Services",
     "subtitle": "Comprehensive solar energy solutions",
     "systemDesign": "System Design",
+    "systemDesignDesc": "Our expert engineers design custom solar systems tailored to your specific energy needs, location, and budget. We conduct comprehensive site assessments and provide detailed system specifications.",
     "installation": "Installation, Maintenance & Warranty",
+    "installationDesc": "Professional installation by certified technicians with full warranty coverage. We ensure all systems meet local codes and standards, with ongoing maintenance support to maximize performance.",
     "aftersale": "Aftersale Service",
-    "delivery": "Delivery"
+    "aftersaleDesc": "Comprehensive after-sales support including system monitoring, troubleshooting, and regular maintenance. Our team is available 24/7 to address any concerns and ensure optimal system performance.",
+    "delivery": "Delivery",
+    "deliveryDesc": "Reliable delivery and logistics services ensuring all components arrive on time and in perfect condition. We coordinate with suppliers to guarantee quality equipment and timely project completion.",
+    "process": {
+      "title": "Our Process",
+      "subtitle": "From consultation to completion, we guide you every step of the way",
+      "step1": {
+        "title": "Consultation",
+        "description": "Initial assessment and energy needs analysis"
+      },
+      "step2": {
+        "title": "Design",
+        "description": "Custom system design and proposal"
+      },
+      "step3": {
+        "title": "Installation",
+        "description": "Professional installation and testing"
+      },
+      "step4": {
+        "title": "Support",
+        "description": "Ongoing monitoring and maintenance"
+      }
+    },
+    "heroImageAlt": "ESSEC Services"
   },
   "contact": {
     "title": "Contact Us",
@@ -256,6 +493,20 @@
     "viewDetails": "View Details",
     "back": "Back",
     "readMore": "Read More"
+  },
+  "footer": {
+    "companyName": "ESSEC Solar Engineering",
+    "companyDescription": "Leading provider of solar energy solutions, committed to sustainable and efficient renewable energy systems.",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "emailValue": "info@essec-solar.com",
+    "phoneValue": "+123 456 7890",
+    "addressValue": "Solar Energy District",
+    "copyright": "All rights reserved.",
+    "logoAlt": "ESSEC Solar Engineering Logo"
   },
   "admin": {
     "dashboard": "Admin Dashboard",

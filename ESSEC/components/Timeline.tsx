@@ -121,7 +121,7 @@ export default function Timeline({ scrollY = 0 }: TimelineProps) {
                 </feMerge>
               </filter>
             </defs>
-            <path 
+            <path
               id="sWave" 
               d="M 600 50 
                  C 800 150, 800 250, 600 300
@@ -144,7 +144,7 @@ export default function Timeline({ scrollY = 0 }: TimelineProps) {
             <circle cx="600" cy="1700" r="8" fill="#457B9D" opacity="0.8"/>
           </svg>
 
-            {/* Timeline steps */}
+          {/* Timeline steps */}
           <div className={styles.stepsContainer}>
             {timelineSteps.map((step, index) => {
               // Calculate connection height in percentage (20px out of 2000px = 1%)
@@ -181,7 +181,7 @@ export default function Timeline({ scrollY = 0 }: TimelineProps) {
                   />
 
                   {/* Circular image - centered on the connection line */}
-                  <div 
+                  <div
                     className={`${styles.stepImage} ${styles[step.position]}`}
                   >
                     <div className={styles.imageWrapper}>

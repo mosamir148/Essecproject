@@ -509,3 +509,48 @@
   color: rgb(209, 213, 219);
 }
 
+/* RTL Support for Arabic */
+.page[dir="rtl"] {
+  direction: rtl;
+}
+
+.page[dir="rtl"] .heroText,
+.page[dir="rtl"] .servicesHeader,
+.page[dir="rtl"] .processHeader {
+  text-align: right;
+}
+
+.page[dir="rtl"] .serviceCard {
+  text-align: right;
+}
+
+.page[dir="rtl"] .processItem {
+  text-align: center;
+}
+
+/* LTR Support (default) */
+.page[dir="ltr"] .heroText,
+.page[dir="ltr"] .servicesHeader,
+.page[dir="ltr"] .processHeader {
+  text-align: left;
+}
+
+.page[dir="ltr"] .serviceCard {
+  text-align: left;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 767px) {
+  .page[dir="rtl"] .heroText,
+  .page[dir="rtl"] .servicesHeader,
+  .page[dir="rtl"] .processHeader {
+    text-align: center;
+  }
+  
+  .page[dir="ltr"] .heroText,
+  .page[dir="ltr"] .servicesHeader,
+  .page[dir="ltr"] .processHeader {
+    text-align: center;
+  }
+}
+

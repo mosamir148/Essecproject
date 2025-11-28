@@ -12,7 +12,7 @@ import styles from './page.module.css'
 
 export default function ProjectDetailPage() {
   const params = useParams()
-  const { t } = useLanguage()
+  const { t, dir } = useLanguage()
   const projectId = params?.id as string
   const [project, setProject] = useState<Project | null>(null)
   const [loading, setLoading] = useState(true)
@@ -70,7 +70,7 @@ export default function ProjectDetailPage() {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} dir={dir}>
       {/* Hero Section */}
       <section className={styles.heroSection} style={{ backgroundImage: `url('${project.image}')` }}>
         <div className={styles.heroContainer}>
@@ -234,7 +234,7 @@ export default function ProjectDetailPage() {
               {/* Info Card */}
               <div className={styles.infoCard}>
                 <h3 className={styles.infoCardTitle}>
-                  Project Information
+                  {t('projects.detail.projectInformation')}
                 </h3>
                 <div className={styles.infoList}>
                   <div className={styles.infoItem}>

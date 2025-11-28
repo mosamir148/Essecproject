@@ -11,7 +11,7 @@ import styles from './page.module.css'
 
 export default function SolarSystemDetailPage() {
   const params = useParams()
-  const { t } = useLanguage()
+  const { t, dir } = useLanguage()
   const systemId = params?.id as string
   const [system, setSystem] = useState<SolarSystem | null>(null)
   const [loading, setLoading] = useState(true)
@@ -26,10 +26,10 @@ export default function SolarSystemDetailPage() {
 
   if (loading) {
     return (
-      <div className={styles.loadingContainer}>
+      <div className={styles.loadingContainer} dir={dir}>
         <div className={styles.loadingContent}>
           <div className={styles.spinner}></div>
-          <p className={styles.loadingText}>Loading system...</p>
+          <p className={styles.loadingText}>{t('solar.detail.loading')}</p>
         </div>
       </div>
     )
@@ -37,21 +37,32 @@ export default function SolarSystemDetailPage() {
 
   if (!system) {
     return (
-      <div className={styles.errorContainer}>
+      <div className={styles.errorContainer} dir={dir}>
         <div className={styles.errorContent}>
-          <h1 className={styles.errorTitle}>System Not Found</h1>
-          <p className={styles.errorText}>The solar system you're looking for doesn't exist.</p>
+          <h1 className={styles.errorTitle}>{t('solar.detail.notFound')}</h1>
+          <p className={styles.errorText}>{t('solar.detail.notFoundMessage')}</p>
           <Link href="/solar" className={styles.errorLink}>
             <ArrowLeft className={styles.errorLinkIcon} />
-            Back to Solar Systems
+            {t('solar.detail.backToSolar')}
           </Link>
         </div>
       </div>
     )
   }
 
+  // Determine category based on system ID
+  const getCategory = () => {
+    if (system.id.includes('grid') || system.id.includes('meter') || system.id.includes('inverter') || system.id.includes('battery')) {
+      return t('solar.detail.powerGeneration')
+    } else if (system.id.includes('heating') || system.id.includes('heater')) {
+      return t('solar.detail.waterHeating')
+    } else {
+      return t('solar.detail.waterSystems')
+    }
+  }
+
   return (
-    <div className={styles.page}>
+    <div className={styles.page} dir={dir}>
       {/* Hero Section */}
       <section className={styles.heroSection}>
         <div className={styles.heroContainer}>
@@ -94,7 +105,7 @@ export default function SolarSystemDetailPage() {
         <div className={styles.backContainer}>
           <Link href="/solar" className={styles.backLink}>
             <ArrowLeft className={styles.backIcon} />
-            {t('common.back')} to Solar Systems
+            {t('solar.detail.backToSolar')}
           </Link>
         </div>
       </div>
@@ -116,7 +127,7 @@ export default function SolarSystemDetailPage() {
                   </h2>
                 </div>
                 <p className={styles.sectionText}>
-                  {system.description}
+                  {t(`solar.${system.descriptionKey}`)}
                 </p>
               </div>
 
@@ -131,7 +142,7 @@ export default function SolarSystemDetailPage() {
                   </h2>
                 </div>
                 <p className={styles.sectionText}>
-                  {system.howItWorks}
+                  {t(`solar.${system.howItWorksKey}`)}
                 </p>
               </div>
 
@@ -146,10 +157,10 @@ export default function SolarSystemDetailPage() {
                   </h2>
                 </div>
                 <ul className={styles.list}>
-                  {system.technicalDetails.map((detail, index) => (
+                  {system.technicalDetailsKeys.map((detailKey, index) => (
                     <li key={index} className={styles.listItem}>
                       <span className={styles.listBulletBlue}>•</span>
-                      <span className={styles.listText}>{detail}</span>
+                      <span className={styles.listText}>{t(`solar.${detailKey}`)}</span>
                     </li>
                   ))}
                 </ul>
@@ -166,10 +177,10 @@ export default function SolarSystemDetailPage() {
                   </h2>
                 </div>
                 <ul className={styles.list}>
-                  {system.benefits.map((benefit, index) => (
+                  {system.benefitsKeys.map((benefitKey, index) => (
                     <li key={index} className={styles.listItem}>
                       <CheckCircle className={styles.listIcon} />
-                      <span className={styles.listText}>{benefit}</span>
+                      <span className={styles.listText}>{t(`solar.${benefitKey}`)}</span>
                     </li>
                   ))}
                 </ul>
@@ -186,10 +197,10 @@ export default function SolarSystemDetailPage() {
                   </h2>
                 </div>
                 <ul className={styles.list}>
-                  {system.usageScenarios.map((scenario, index) => (
+                  {system.usageScenariosKeys.map((scenarioKey, index) => (
                     <li key={index} className={styles.listItem}>
                       <span className={styles.listBulletPurple}>•</span>
-                      <span className={styles.listText}>{scenario}</span>
+                      <span className={styles.listText}>{t(`solar.${scenarioKey}`)}</span>
                     </li>
                   ))}
                 </ul>
@@ -203,7 +214,7 @@ export default function SolarSystemDetailPage() {
                       <ImageIcon className={styles.sectionIconSvg} />
                     </div>
                     <h2 className={styles.sectionTitle}>
-                      Gallery
+                      {t('solar.detail.gallery')}
                     </h2>
                   </div>
                   <div className={styles.galleryGrid}>
@@ -227,13 +238,13 @@ export default function SolarSystemDetailPage() {
               {/* Info Card */}
               <div className={styles.infoCard}>
                 <h3 className={styles.infoCardTitle}>
-                  System Information
+                  {t('solar.detail.systemInformation')}
                 </h3>
                 <div className={styles.infoList}>
                   <div className={styles.infoItem}>
                     <Zap className={styles.infoIcon} />
                     <div className={styles.infoContent}>
-                      <p className={styles.infoLabel}>System Type</p>
+                      <p className={styles.infoLabel}>{t('solar.detail.systemType')}</p>
                       <p className={styles.infoValue}>
                         {t(`solar.${system.nameKey}`)}
                       </p>
@@ -242,13 +253,9 @@ export default function SolarSystemDetailPage() {
                   <div className={styles.infoItem}>
                     <Lightbulb className={styles.infoIcon} />
                     <div className={styles.infoContent}>
-                      <p className={styles.infoLabel}>Category</p>
+                      <p className={styles.infoLabel}>{t('solar.detail.category')}</p>
                       <p className={styles.infoValue}>
-                        {system.id.includes('grid') || system.id.includes('meter') || system.id.includes('inverter') || system.id.includes('battery')
-                          ? 'Power Generation'
-                          : system.id.includes('heating') || system.id.includes('heater')
-                          ? 'Water Heating'
-                          : 'Water Systems'}
+                        {getCategory()}
                       </p>
                     </div>
                   </div>

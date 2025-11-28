@@ -171,6 +171,32 @@
   transform: translateY(30px);
 }
 
+/* Mobile fallback: Ensure image and text become visible on small screens */
+/* This is a safety net in case JavaScript visibility detection fails */
+@media (max-width: 768px) {
+  .imageHalf.hidden {
+    /* After 1.2s, force visibility on mobile as fallback */
+    animation: fadeInMobileFallback 0.6s ease-out 1.2s forwards;
+  }
+  
+  .textHalf.hidden {
+    /* After 1.2s, force visibility on mobile as fallback */
+    animation: fadeInMobileFallback 0.6s ease-out 1.2s forwards;
+  }
+  
+  .textContent {
+    /* Ensure text content is always accessible */
+    min-height: 200px;
+  }
+}
+
+@keyframes fadeInMobileFallback {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .imageHalf.visible {
   transition-delay: 0.1s;
 }
@@ -205,6 +231,8 @@
     order: 1;
     box-sizing: border-box;
     overflow: hidden;
+    position: relative;
+    z-index: 1;
   }
 
   .imageWrapper {
@@ -239,6 +267,8 @@
     box-sizing: border-box;
     overflow-x: hidden;
     margin: 0;
+    position: relative;
+    z-index: 1;
   }
 
   .textContent {
@@ -400,6 +430,63 @@
 [dir='rtl'] .textContent {
   text-align: right;
   direction: rtl;
+}
+
+/* RTL + Mobile: Ensure image is on top and text is on bottom */
+@media (max-width: 768px) {
+  [dir='rtl'] .container {
+    flex-direction: column; /* Override row-reverse on mobile */
+  }
+  
+  /* Image should be on top (order: 1) */
+  [dir='rtl'] .imageHalf {
+    order: 1 !important; /* Force image to top on mobile RTL */
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  /* Text should be on bottom (order: 2) */
+  [dir='rtl'] .textHalf {
+    order: 2 !important; /* Force text to bottom on mobile RTL */
+    text-align: right; /* RTL text alignment */
+    direction: rtl;
+    padding: 4rem 2rem; /* Use mobile padding */
+    justify-content: center; /* Center on mobile */
+  }
+  
+  [dir='rtl'] .textContent {
+    text-align: right;
+    direction: rtl;
+  }
+  
+  [dir='rtl'] .heading,
+  [dir='rtl'] .paragraph {
+    text-align: right;
+    direction: rtl;
+  }
+  
+  /* Ensure image is visible on RTL mobile - use faster animation */
+  [dir='rtl'] .imageHalf.hidden {
+    animation: fadeInMobileFallback 0.6s ease-out 0.8s forwards;
+  }
+  
+  /* Ensure text is visible on RTL mobile */
+  [dir='rtl'] .textHalf.hidden {
+    animation: fadeInMobileFallback 0.6s ease-out 0.8s forwards;
+  }
+  
+  /* Ensure image wrapper is visible and properly sized on RTL mobile */
+  [dir='rtl'] .imageWrapper {
+    min-height: 400px;
+    width: 100%;
+    position: relative;
+  }
+  
+  /* Make sure image elements are visible on RTL mobile */
+  [dir='rtl'] .image {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 /* Dark Mode Styles */

@@ -297,6 +297,9 @@
   padding: 2rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 :global(.dark) .section {
@@ -408,6 +411,9 @@
   color: rgb(75 85 99);
   line-height: 1.75;
   transition: color 0.3s ease;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 :global(.dark) .sectionText {
@@ -456,6 +462,10 @@
 .listText {
   color: rgb(75 85 99);
   transition: color 0.3s ease;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  flex: 1;
 }
 
 :global(.dark) .listText {
@@ -760,6 +770,468 @@
   width: 1.25rem;
   height: 1.25rem;
   margin-right: 0.5rem;
+}
+
+/* ============================================
+   COMPREHENSIVE RTL SUPPORT FOR ARABIC
+   ============================================ */
+
+/* Root RTL Direction */
+.page[dir="rtl"] {
+  direction: rtl;
+}
+
+/* Hero Section RTL */
+.page[dir="rtl"] .heroText {
+  text-align: right;
+  direction: rtl;
+}
+
+.page[dir="rtl"] .heroTitle,
+.page[dir="rtl"] .heroSubtitle {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Section Cards RTL - Complete RTL transformation */
+.page[dir="rtl"] .section {
+  text-align: right;
+  direction: rtl;
+  /* Ensure all child elements inherit RTL */
+}
+
+/* Force RTL on all nested elements within cards */
+.page[dir="rtl"] .section * {
+  direction: rtl;
+}
+
+.page[dir="rtl"] .section > * {
+  text-align: right;
+  direction: rtl;
+}
+
+/* All headings in cards - h1 through h6 */
+.page[dir="rtl"] .section h1,
+.page[dir="rtl"] .section h2,
+.page[dir="rtl"] .section h3,
+.page[dir="rtl"] .section h4,
+.page[dir="rtl"] .section h5,
+.page[dir="rtl"] .section h6,
+.page[dir="rtl"] .sectionTitle,
+.page[dir="rtl"] .heroTitle,
+.page[dir="rtl"] .heroSubtitle {
+  text-align: right;
+  direction: rtl;
+}
+
+.page[dir="rtl"] .sectionHeader {
+  flex-direction: row-reverse;
+  text-align: right;
+  direction: rtl;
+}
+
+.page[dir="rtl"] .sectionIcon {
+  margin-right: 0;
+  margin-left: 1rem;
+  order: 2; /* Icon appears on the right in RTL */
+}
+
+.page[dir="rtl"] .sectionTitle {
+  text-align: right;
+  direction: rtl;
+  order: 1; /* Title appears on the left in RTL */
+}
+
+.page[dir="rtl"] .sectionText {
+  text-align: right;
+  direction: rtl;
+}
+
+/* All paragraphs and text content */
+.page[dir="rtl"] .section p {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Lists RTL - Complete reversal */
+.page[dir="rtl"] .list {
+  text-align: right;
+  direction: rtl;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.page[dir="rtl"] .listItem {
+  flex-direction: row-reverse;
+  text-align: right;
+  direction: rtl;
+  justify-content: flex-start;
+}
+
+.page[dir="rtl"] .listBullet,
+.page[dir="rtl"] .listBulletBlue,
+.page[dir="rtl"] .listBulletPurple {
+  margin-right: 0;
+  margin-left: 0.75rem;
+  order: 2; /* Bullet on the right */
+}
+
+.page[dir="rtl"] .listIcon {
+  margin-right: 0;
+  margin-left: 0.75rem;
+  order: 2; /* Icon on the right */
+  /* Icons like CheckCircle don't need flipping, but directional icons do */
+}
+
+.page[dir="rtl"] .listText {
+  text-align: right;
+  direction: rtl;
+  order: 1; /* Text on the left */
+  flex: 1;
+}
+
+/* Sidebar Info Card RTL - Complete RTL transformation */
+.page[dir="rtl"] .infoCard {
+  text-align: right;
+  direction: rtl;
+}
+
+.page[dir="rtl"] .infoCard * {
+  direction: rtl;
+}
+
+.page[dir="rtl"] .infoCardTitle {
+  text-align: right;
+  direction: rtl;
+}
+
+.page[dir="rtl"] .infoCard h1,
+.page[dir="rtl"] .infoCard h2,
+.page[dir="rtl"] .infoCard h3,
+.page[dir="rtl"] .infoCard h4,
+.page[dir="rtl"] .infoCard h5,
+.page[dir="rtl"] .infoCard h6 {
+  text-align: right;
+  direction: rtl;
+}
+
+.page[dir="rtl"] .infoList {
+  text-align: right;
+  direction: rtl;
+}
+
+.page[dir="rtl"] .infoItem {
+  flex-direction: row-reverse;
+  text-align: right;
+  direction: rtl;
+}
+
+.page[dir="rtl"] .infoIcon {
+  margin-left: 0;
+  margin-right: 0;
+  order: 2; /* Icon on the right */
+}
+
+.page[dir="rtl"] .infoContent {
+  text-align: right;
+  direction: rtl;
+  order: 1; /* Content on the left */
+}
+
+.page[dir="rtl"] .infoLabel {
+  text-align: right;
+  direction: rtl;
+}
+
+.page[dir="rtl"] .infoValue {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Gallery RTL */
+.page[dir="rtl"] .galleryGrid {
+  direction: rtl;
+}
+
+/* Back Link RTL - Flip directional icon */
+.page[dir="rtl"] .backLink {
+  direction: rtl;
+  text-align: right;
+  flex-direction: row-reverse;
+}
+
+.page[dir="rtl"] .backIcon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+  transform: scaleX(-1); /* Flip ArrowLeft to point right */
+  order: 2; /* Icon on the right */
+}
+
+/* Error Link RTL */
+.page[dir="rtl"] .errorLink {
+  direction: rtl;
+}
+
+.page[dir="rtl"] .errorLinkIcon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Main Content RTL */
+.page[dir="rtl"] .mainContent {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Content Grid RTL - Keep layout but reverse if needed */
+.page[dir="rtl"] .contentGrid {
+  direction: rtl;
+}
+
+/* Sidebar RTL */
+.page[dir="rtl"] .sidebar {
+  direction: rtl;
+  text-align: right;
+}
+
+/* ============================================
+   LTR SUPPORT FOR ENGLISH & FRENCH (DEFAULT)
+   ============================================ */
+
+.page[dir="ltr"] {
+  direction: ltr;
+}
+
+/* Hero Section LTR */
+.page[dir="ltr"] .heroText {
+  text-align: left;
+  direction: ltr;
+}
+
+.page[dir="ltr"] .heroTitle,
+.page[dir="ltr"] .heroSubtitle {
+  text-align: left;
+  direction: ltr;
+}
+
+/* Section Cards LTR - Complete LTR transformation */
+.page[dir="ltr"] .section {
+  text-align: left;
+  direction: ltr;
+}
+
+.page[dir="ltr"] .section * {
+  direction: ltr;
+}
+
+/* All headings in cards - h1 through h6 */
+.page[dir="ltr"] .section h1,
+.page[dir="ltr"] .section h2,
+.page[dir="ltr"] .section h3,
+.page[dir="ltr"] .section h4,
+.page[dir="ltr"] .section h5,
+.page[dir="ltr"] .section h6,
+.page[dir="ltr"] .sectionTitle {
+  text-align: left;
+  direction: ltr;
+}
+
+.page[dir="ltr"] .sectionHeader {
+  flex-direction: row;
+  text-align: left;
+  direction: ltr;
+}
+
+.page[dir="ltr"] .sectionIcon {
+  order: 1; /* Icon on the left */
+}
+
+.page[dir="ltr"] .sectionTitle {
+  order: 2; /* Title on the right */
+}
+
+.page[dir="ltr"] .sectionText,
+.page[dir="ltr"] .section p {
+  text-align: left;
+  direction: ltr;
+}
+
+/* Lists LTR */
+.page[dir="ltr"] .list {
+  text-align: left;
+  direction: ltr;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.page[dir="ltr"] .listItem {
+  flex-direction: row;
+  text-align: left;
+  direction: ltr;
+}
+
+.page[dir="ltr"] .listBullet,
+.page[dir="ltr"] .listBulletBlue,
+.page[dir="ltr"] .listBulletPurple {
+  order: 1; /* Bullet on the left */
+}
+
+.page[dir="ltr"] .listIcon {
+  order: 1; /* Icon on the left */
+}
+
+.page[dir="ltr"] .listText {
+  order: 2; /* Text on the right */
+  text-align: left;
+  direction: ltr;
+}
+
+.page[dir="ltr"] .section ul,
+.page[dir="ltr"] .section ol {
+  text-align: left;
+  direction: ltr;
+  padding-left: 1.5rem;
+  padding-right: 0;
+}
+
+.page[dir="ltr"] .section li {
+  text-align: left;
+  direction: ltr;
+}
+
+.page[dir="ltr"] .section span {
+  text-align: left;
+  direction: ltr;
+}
+
+/* Info Card LTR */
+.page[dir="ltr"] .infoCard {
+  text-align: left;
+  direction: ltr;
+}
+
+.page[dir="ltr"] .infoCard * {
+  direction: ltr;
+}
+
+.page[dir="ltr"] .infoCard h3,
+.page[dir="ltr"] .infoCardTitle {
+  text-align: left;
+  direction: ltr;
+}
+
+.page[dir="ltr"] .infoCard p,
+.page[dir="ltr"] .infoLabel,
+.page[dir="ltr"] .infoValue {
+  text-align: left;
+  direction: ltr;
+}
+
+.page[dir="ltr"] .infoItem {
+  flex-direction: row;
+}
+
+.page[dir="ltr"] .infoIcon {
+  order: 1;
+}
+
+.page[dir="ltr"] .infoContent {
+  order: 2;
+}
+
+/* Back Link LTR */
+.page[dir="ltr"] .backLink {
+  direction: ltr;
+  text-align: left;
+  flex-direction: row;
+}
+
+.page[dir="ltr"] .backIcon {
+  order: 1;
+  transform: none;
+}
+
+/* Main Content LTR */
+.page[dir="ltr"] .mainContent,
+.page[dir="ltr"] .sidebar {
+  text-align: left;
+  direction: ltr;
+}
+
+.page[dir="ltr"] .contentGrid {
+  direction: ltr;
+}
+
+/* Additional RTL enforcement for all card content */
+.page[dir="rtl"] .section ul,
+.page[dir="rtl"] .section ol {
+  text-align: right;
+  direction: rtl;
+  padding-right: 0;
+  padding-left: 1.5rem;
+  list-style-position: inside;
+}
+
+.page[dir="rtl"] .section li {
+  text-align: right;
+  direction: rtl;
+}
+
+.page[dir="rtl"] .section span,
+.page[dir="rtl"] .section div {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Ensure SVG icons in section headers respect RTL */
+.page[dir="rtl"] .sectionIconSvg {
+  /* Icons like FileText, Settings, Wrench, etc. don't need flipping */
+  /* But ensure they're positioned correctly */
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 767px) {
+  .page[dir="rtl"] .heroText,
+  .page[dir="ltr"] .heroText {
+    text-align: center;
+  }
+  
+  .page[dir="rtl"] .section,
+  .page[dir="ltr"] .section {
+    text-align: center;
+  }
+  
+  .page[dir="rtl"] .sectionTitle,
+  .page[dir="ltr"] .sectionTitle {
+    text-align: center;
+  }
+  
+  .page[dir="rtl"] .sectionText,
+  .page[dir="ltr"] .sectionText {
+    text-align: center;
+  }
+  
+  .page[dir="rtl"] .infoCard,
+  .page[dir="ltr"] .infoCard {
+    text-align: center;
+  }
+  
+  .page[dir="rtl"] .section p,
+  .page[dir="rtl"] .section h1,
+  .page[dir="rtl"] .section h2,
+  .page[dir="rtl"] .section h3,
+  .page[dir="rtl"] .section h4,
+  .page[dir="rtl"] .section h5,
+  .page[dir="rtl"] .section h6,
+  .page[dir="ltr"] .section p,
+  .page[dir="ltr"] .section h1,
+  .page[dir="ltr"] .section h2,
+  .page[dir="ltr"] .section h3,
+  .page[dir="ltr"] .section h4,
+  .page[dir="ltr"] .section h5,
+  .page[dir="ltr"] .section h6 {
+    text-align: center;
+  }
 }
 
 

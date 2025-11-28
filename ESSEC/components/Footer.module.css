@@ -107,6 +107,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .link {
@@ -126,6 +129,14 @@
   gap: 0.5rem;
   font-size: 0.875rem;
   color: #4a5568;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contactLabel {
+  font-weight: 600;
+  color: #1a1a1a;
 }
 
 .copyright {
@@ -193,5 +204,64 @@
 :global(.dark) .copyright {
   border-top: 1px solid rgba(0, 176, 255, 0.2);
   color: #B0B0B0 !important;
+}
+
+:global(.dark) .contactLabel {
+  color: #E5E5E5 !important;
+}
+
+/* RTL Support for Arabic */
+.footer[dir="rtl"] {
+  direction: rtl;
+}
+
+.footer[dir="rtl"] .link:hover {
+  transform: translateX(-4px);
+}
+
+.footer[dir="rtl"] .grid {
+  direction: rtl;
+}
+
+.footer[dir="rtl"] .linksList,
+.footer[dir="rtl"] .contactList {
+  text-align: right;
+}
+
+.footer[dir="rtl"] .companyDescription {
+  text-align: right;
+}
+
+.footer[dir="rtl"] .companySection {
+  text-align: right;
+}
+
+/* LTR Support (default) */
+.footer[dir="ltr"] .linksList,
+.footer[dir="ltr"] .contactList {
+  text-align: left;
+}
+
+.footer[dir="ltr"] .companyDescription {
+  text-align: left;
+}
+
+.footer[dir="ltr"] .companySection {
+  text-align: left;
+}
+
+/* Responsive improvements */
+@media (max-width: 767px) {
+  .footer[dir="rtl"] .linksList,
+  .footer[dir="rtl"] .contactList,
+  .footer[dir="ltr"] .linksList,
+  .footer[dir="ltr"] .contactList {
+    text-align: left;
+  }
+  
+  .footer[dir="rtl"] .companyDescription,
+  .footer[dir="ltr"] .companyDescription {
+    text-align: left;
+  }
 }
 

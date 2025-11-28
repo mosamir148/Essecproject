@@ -762,3 +762,77 @@
   margin-right: 0.5rem;
 }
 
+/* RTL Support for Arabic */
+.page[dir="rtl"] {
+  direction: rtl;
+}
+
+.page[dir="rtl"] .heroText {
+  text-align: right;
+}
+
+.page[dir="rtl"] .sectionHeader,
+.page[dir="rtl"] .sectionTitle,
+.page[dir="rtl"] .sectionText {
+  text-align: right;
+}
+
+.page[dir="rtl"] .listItem {
+  flex-direction: row-reverse;
+}
+
+.page[dir="rtl"] .listBullet,
+.page[dir="rtl"] .listBulletBlue,
+.page[dir="rtl"] .listIcon {
+  margin-right: 0;
+  margin-left: 0.75rem;
+}
+
+.page[dir="rtl"] .infoItem {
+  flex-direction: row-reverse;
+}
+
+.page[dir="rtl"] .infoIcon {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.page[dir="rtl"] .errorLinkIcon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+.page[dir="rtl"] .backIcon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+  transform: scaleX(-1);
+}
+
+.page[dir="rtl"] .sectionHeader {
+  flex-direction: row-reverse;
+}
+
+.page[dir="rtl"] .sectionIcon {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+/* LTR Support (default) */
+.page[dir="ltr"] .heroText {
+  text-align: left;
+}
+
+.page[dir="ltr"] .sectionHeader,
+.page[dir="ltr"] .sectionTitle,
+.page[dir="ltr"] .sectionText {
+  text-align: left;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 767px) {
+  .page[dir="rtl"] .heroText,
+  .page[dir="ltr"] .heroText {
+    text-align: center;
+  }
+}
+
