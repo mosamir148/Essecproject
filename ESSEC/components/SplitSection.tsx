@@ -13,61 +13,66 @@ export default function SplitSection({ scrollY = 0 }: SplitSectionProps) {
   const { t, dir } = useLanguage()
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
+  const hasBeenVisibleRef = useRef(false)
+  const rafIdRef = useRef<number | null>(null)
 
-  // Function to check if element is in viewport
+  // Optimized visibility check using requestAnimationFrame
   const checkVisibility = useCallback(() => {
-    if (sectionRef.current) {
-      const rect = sectionRef.current.getBoundingClientRect()
-      const windowHeight = window.innerHeight || document.documentElement.clientHeight
-      const windowWidth = window.innerWidth || document.documentElement.clientWidth
-      
-      // More lenient check for mobile - if any part is visible or close to viewport
-      const isInViewport = 
-        rect.top < windowHeight + 200 && // 200px buffer for mobile
-        rect.bottom > -200 && // Allow elements slightly above viewport
-        rect.left < windowWidth + 200 &&
-        rect.right > -200
-      
-      if (isInViewport) {
-        setIsVisible(true)
-        return true
-      }
+    if (hasBeenVisibleRef.current || !sectionRef.current) {
+      return
     }
-    return false
+
+    const rect = sectionRef.current.getBoundingClientRect()
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight
+    
+    // Check if section is in or near viewport
+    const isInViewport = rect.top < windowHeight + 100 && rect.bottom > -100
+    
+    if (isInViewport && !hasBeenVisibleRef.current) {
+      hasBeenVisibleRef.current = true
+      setIsVisible(true)
+    }
   }, [])
 
   useEffect(() => {
-    // Check initial visibility immediately and after delays
-    // This handles cases where the layout hasn't fully rendered yet
+    // Initial check
     checkVisibility()
     
-    const timeouts: NodeJS.Timeout[] = []
-    
-    // Multiple checks to ensure visibility on mobile
-    timeouts.push(setTimeout(() => checkVisibility(), 50))
-    timeouts.push(setTimeout(() => checkVisibility(), 200))
-    timeouts.push(setTimeout(() => checkVisibility(), 500))
-    
-    // Fallback: ensure visibility after 1 second on mobile devices
-    // This prevents text from staying hidden if IntersectionObserver fails
-    const isMobile = window.innerWidth <= 768
-    if (isMobile) {
-      timeouts.push(setTimeout(() => {
-        setIsVisible(true)
-      }, 1000))
+    // Use requestAnimationFrame for smooth performance
+    const scheduleCheck = () => {
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current)
+      }
+      rafIdRef.current = requestAnimationFrame(() => {
+        checkVisibility()
+        rafIdRef.current = null
+      })
     }
 
+    // Check on scroll with throttling
+    const handleScroll = () => {
+      if (!hasBeenVisibleRef.current) {
+        scheduleCheck()
+      }
+    }
+
+    // IntersectionObserver for better performance
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !hasBeenVisibleRef.current) {
+            hasBeenVisibleRef.current = true
             setIsVisible(true)
+            // Once visible, disconnect observer
+            if (sectionRef.current) {
+              observer.unobserve(sectionRef.current)
+            }
           }
         })
       },
       { 
-        threshold: 0.1, 
-        rootMargin: isMobile ? '100px' : '50px' // Larger margin on mobile
+        threshold: 0.05,
+        rootMargin: '50px'
       }
     )
 
@@ -75,34 +80,38 @@ export default function SplitSection({ scrollY = 0 }: SplitSectionProps) {
       observer.observe(sectionRef.current)
     }
 
+    // Fallback: ensure visibility after a short delay on mobile
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
+    const fallbackTimeout = isMobile ? setTimeout(() => {
+      if (!hasBeenVisibleRef.current) {
+        hasBeenVisibleRef.current = true
+        setIsVisible(true)
+      }
+    }, 800) : null
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
     return () => {
-      timeouts.forEach(timeout => clearTimeout(timeout))
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current)
+      }
+      window.removeEventListener('scroll', handleScroll)
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current)
+      }
+      if (fallbackTimeout) {
+        clearTimeout(fallbackTimeout)
       }
     }
   }, [checkVisibility])
 
-  // Re-check visibility when language/direction changes
+  // Re-check visibility when language/direction changes (only if not already visible)
   useEffect(() => {
-    // Multiple checks with delays to handle RTL layout changes
-    // This is especially important on mobile where layout changes can be more dramatic
-    const timeouts: NodeJS.Timeout[] = []
-    
-    timeouts.push(setTimeout(() => checkVisibility(), 100))
-    timeouts.push(setTimeout(() => checkVisibility(), 300))
-    timeouts.push(setTimeout(() => checkVisibility(), 600))
-    
-    // On mobile + RTL, ensure visibility after layout settles
-    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
-    if (isMobile) {
-      timeouts.push(setTimeout(() => {
-        setIsVisible(true)
-      }, 1200))
-    }
-
-    return () => {
-      timeouts.forEach(timeout => clearTimeout(timeout))
+    if (!hasBeenVisibleRef.current) {
+      const timeout = setTimeout(() => {
+        checkVisibility()
+      }, 100)
+      return () => clearTimeout(timeout)
     }
   }, [dir, checkVisibility])
 
