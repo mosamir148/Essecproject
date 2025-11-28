@@ -6,9 +6,9 @@ import { useState, useEffect, useRef } from 'react'
 const DEFAULT_IMAGE = '/all.png'
 
 /**
- * Type for image source that can be a string, StaticImageData, or null/undefined
+ * Type for image source that matches Next.js Image src prop type
  */
-type ImageSource = string | StaticImageData | undefined | null
+type ImageSource = ImageProps['src']
 
 /**
  * Extracts the string path from an image source
@@ -16,6 +16,14 @@ type ImageSource = string | StaticImageData | undefined | null
 function getImagePath(src: ImageSource): string {
   if (!src) {
     return DEFAULT_IMAGE
+  }
+  
+  // If it's a string, validate it
+  if (typeof src === 'string') {
+    if (src.trim() === '') {
+      return DEFAULT_IMAGE
+    }
+    return src
   }
   
   // If it's a StaticImageData object, extract the src property
@@ -27,12 +35,19 @@ function getImagePath(src: ImageSource): string {
     return srcString
   }
   
-  // If it's a string, validate it
-  if (typeof src === 'string') {
-    if (src.trim() === '') {
-      return DEFAULT_IMAGE
+  // If it's a StaticRequire object (has default property), extract from default
+  if (typeof src === 'object' && 'default' in src) {
+    const defaultSrc = src.default
+    if (typeof defaultSrc === 'string') {
+      return defaultSrc.trim() === '' ? DEFAULT_IMAGE : defaultSrc
     }
-    return src
+    if (typeof defaultSrc === 'object' && defaultSrc && 'src' in defaultSrc) {
+      const srcString = defaultSrc.src
+      if (!srcString || (typeof srcString === 'string' && srcString.trim() === '')) {
+        return DEFAULT_IMAGE
+      }
+      return srcString
+    }
   }
   
   return DEFAULT_IMAGE
@@ -42,9 +57,17 @@ function getImagePath(src: ImageSource): string {
  * Utility function to get the default image if the provided image is empty/null/undefined
  * Returns the original src if valid, or DEFAULT_IMAGE if invalid
  */
-export function getDefaultImage(src: ImageSource): string | StaticImageData {
+export function getDefaultImage(src: ImageSource): ImageSource {
   if (!src) {
     return DEFAULT_IMAGE
+  }
+  
+  // If it's a string, validate it
+  if (typeof src === 'string') {
+    if (src.trim() === '') {
+      return DEFAULT_IMAGE
+    }
+    return src
   }
   
   // If it's a StaticImageData object, return it as-is (it's valid)
@@ -56,12 +79,23 @@ export function getDefaultImage(src: ImageSource): string | StaticImageData {
     return src
   }
   
-  // If it's a string, validate it
-  if (typeof src === 'string') {
-    if (src.trim() === '') {
-      return DEFAULT_IMAGE
+  // If it's a StaticRequire object (has default property), return the default
+  if (typeof src === 'object' && 'default' in src) {
+    const defaultSrc = src.default
+    if (typeof defaultSrc === 'string') {
+      return defaultSrc.trim() === '' ? DEFAULT_IMAGE : defaultSrc
     }
-    return src
+    if (typeof defaultSrc === 'object' && defaultSrc && 'src' in defaultSrc) {
+      const srcString = defaultSrc.src
+      if (!srcString || (typeof srcString === 'string' && srcString.trim() === '')) {
+        return DEFAULT_IMAGE
+      }
+      return defaultSrc
+    }
+    // If default is a valid StaticImageData, return it
+    if (typeof defaultSrc === 'object' && defaultSrc) {
+      return defaultSrc
+    }
   }
   
   return DEFAULT_IMAGE
@@ -79,7 +113,7 @@ export function getDefaultImage(src: ImageSource): string | StaticImageData {
  * - Supports both string paths and StaticImageData (imported images)
  */
 export default function DefaultImage({ src, onError, onLoad, className, style, ...props }: ImageProps) {
-  const [imageSrc, setImageSrc] = useState<string | StaticImageData>(getDefaultImage(src))
+  const [imageSrc, setImageSrc] = useState<ImageSource>(getDefaultImage(src))
   const [currentPath, setCurrentPath] = useState<string>(getImagePath(src))
   const [hasErrored, setHasErrored] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
