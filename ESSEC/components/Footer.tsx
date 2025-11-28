@@ -57,6 +57,7 @@ export default function Footer() {
                 height={70}
                 className={styles.logoImage}
                 priority
+                style={{ width: 'auto', height: 'auto' }}
               />
             </Link>
             <h3 className={styles.companyTitle}>{t('footer.companyName')}</h3>

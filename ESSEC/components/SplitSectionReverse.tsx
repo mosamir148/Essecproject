@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useLanguage } from '@/hooks/useLanguage'
-import DefaultImage from '@/components/DefaultImage'
+import Image from 'next/image'
 import styles from './SplitSectionReverse.module.css'
 
 interface SplitSectionReverseProps {
@@ -87,7 +87,7 @@ export default function SplitSectionReverse({ scrollY = 0 }: SplitSectionReverse
         hasBeenVisibleRef.current = true
         setIsVisible(true)
       }
-    }, 800) : null
+    }, 300) : null
 
     window.addEventListener('scroll', handleScroll, { passive: true })
 
@@ -115,19 +115,83 @@ export default function SplitSectionReverse({ scrollY = 0 }: SplitSectionReverse
     }
   }, [dir, checkVisibility])
 
+  // Force images to always be visible - DOM manipulation as final safety
+  useEffect(() => {
+    const forceImageVisible = () => {
+      const imageHalf = sectionRef.current?.querySelector(`.${styles.imageHalf}`)
+      const imageWrapper = imageHalf?.querySelector(`.${styles.imageWrapper}`)
+      const image = imageWrapper?.querySelector('img') as HTMLImageElement | null
+      
+      if (image) {
+        // Force visibility via inline styles - these override everything
+        image.style.opacity = '1'
+        image.style.visibility = 'visible'
+        image.style.transition = 'none'
+        image.style.display = 'block'
+        image.style.transform = 'translateY(0) translateZ(0)'
+      }
+    }
+
+    // Apply immediately
+    forceImageVisible()
+
+    // Monitor for any changes and re-apply
+    const observer = new MutationObserver(() => {
+      forceImageVisible()
+    })
+
+    const imageHalf = sectionRef.current?.querySelector(`.${styles.imageHalf}`)
+    const image = imageHalf?.querySelector('img')
+
+    if (image) {
+      observer.observe(image, {
+        attributes: true,
+        attributeFilter: ['style', 'class']
+      })
+      
+      // Also observe parent containers
+      if (imageHalf) {
+        observer.observe(imageHalf, {
+          attributes: true,
+          attributeFilter: ['class']
+        })
+      }
+    }
+
+    // Re-apply on scroll/resize as safety
+    const handleChange = () => {
+      forceImageVisible()
+    }
+    window.addEventListener('scroll', handleChange, { passive: true })
+    window.addEventListener('resize', handleChange, { passive: true })
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('scroll', handleChange)
+      window.removeEventListener('resize', handleChange)
+    }
+  }, [styles.imageHalf, styles.imageWrapper])
+
   return (
     <section ref={sectionRef} className={styles.section}>
       <div className={styles.container}>
-        {/* Left Half - Image */}
-        <div className={`${styles.imageHalf} ${isVisible ? styles.visible : styles.hidden}`}>
+        {/* Left Half - Image - Always visible and static */}
+        <div className={styles.imageHalf}>
           <div className={styles.imageWrapper}>
-            <DefaultImage
+            <Image
               src="/se.jpg"
               alt={t('home.splitSectionReverse.imageAlt')}
               fill
               className={styles.image}
               priority
               sizes="(max-width: 768px) 100vw, 50vw"
+              style={{
+                opacity: 1,
+                visibility: 'visible',
+                transition: 'none',
+                objectFit: 'cover',
+                objectPosition: 'center'
+              }}
             />
             <div className={styles.imageOverlay}></div>
           </div>

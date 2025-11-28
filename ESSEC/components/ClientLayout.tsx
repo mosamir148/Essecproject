@@ -7,6 +7,7 @@ import ScrollToTop from '@/components/ScrollToTop'
 import LoadingPage from '@/components/LoadingPage'
 import { ReactNode } from 'react'
 import { useTheme } from 'next-themes'
+import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
 function LoadingPageWithTheme() {
@@ -20,24 +21,47 @@ function LoadingPageWithTheme() {
 
   // Update isDarkMode when resolvedTheme changes
   useEffect(() => {
-    if (mounted) {
-      const checkDarkMode = () => {
+    if (!mounted) return
+    
+    let observer: MutationObserver | null = null
+    
+    const checkDarkMode = () => {
+      if (typeof document === 'undefined') return
+      try {
         const dark = resolvedTheme === 'dark' || 
-                    (typeof document !== 'undefined' && document.documentElement.classList.contains('dark'))
+                    document.documentElement.classList.contains('dark')
         setIsDarkMode(dark)
+      } catch (error) {
+        // Silently handle any DOM access errors
+        console.error('Error checking dark mode:', error)
       }
-      checkDarkMode()
-      
-      // Also listen for DOM changes in case the class is updated asynchronously
-      const observer = new MutationObserver(checkDarkMode)
-      if (typeof document !== 'undefined') {
+    }
+    
+    checkDarkMode()
+    
+    // Also listen for DOM changes in case the class is updated asynchronously
+    try {
+      if (typeof document !== 'undefined' && document.documentElement) {
+        observer = new MutationObserver(checkDarkMode)
         observer.observe(document.documentElement, {
           attributes: true,
           attributeFilter: ['class']
         })
       }
-      
-      return () => observer.disconnect()
+    } catch (error) {
+      // Silently handle observer creation errors
+      console.error('Error creating MutationObserver:', error)
+    }
+    
+    return () => {
+      if (observer) {
+        try {
+          observer.disconnect()
+        } catch (error) {
+          // Silently handle disconnect errors
+        }
+        observer = null
+      }
     }
   }, [mounted, resolvedTheme])
 
@@ -48,6 +72,9 @@ function LoadingPageWithTheme() {
 }
 
 export function ClientLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname()
+  const isAdminPage = pathname?.startsWith('/admin')
+  
   return (
     <Providers>
       <LoadingPageWithTheme />
@@ -55,7 +82,7 @@ export function ClientLayout({ children }: { children: ReactNode }) {
       <main className="pt-20">
         {children}
       </main>
-      <Footer />
+      {!isAdminPage && <Footer />}
       <ScrollToTop />
     </Providers>
   )

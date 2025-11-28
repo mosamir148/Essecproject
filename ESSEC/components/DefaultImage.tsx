@@ -164,11 +164,12 @@ export default function DefaultImage({ src, onError, onLoad, className, style, .
     ? `${className || ''} image-loaded`.trim()
     : className
 
-  // Combine styles
+  // Combine styles - show priority images immediately, especially on mobile
   const combinedStyle = {
     ...style,
-    opacity: isLoaded ? 1 : (props.priority ? 1 : 0),
-    transition: isLoaded ? 'opacity 0.3s ease-in-out' : 'none',
+    opacity: isLoaded ? 1 : (props.priority ? 1 : 0.3),
+    transition: isLoaded ? 'opacity 0.3s ease-in-out' : 'opacity 0.2s ease-in-out',
+    visibility: props.priority ? 'visible' : (isLoaded ? 'visible' : 'visible'),
   }
 
   return (

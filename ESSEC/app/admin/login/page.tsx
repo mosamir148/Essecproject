@@ -25,7 +25,7 @@ export default function AdminLogin() {
     setMounted(true)
     // Check if already logged in
     if (auth.getToken()) {
-      router.push('/admin')
+      router.push('/admin-dashboard')
     }
   }, [router])
 
@@ -62,7 +62,7 @@ export default function AdminLogin() {
         if (result.token) {
           // Clear form on success
           setFormData({ email: '', password: '', name: '' })
-          router.push('/admin')
+          router.push('/admin-dashboard')
         }
       } else {
         const result = await api.register(
@@ -73,7 +73,7 @@ export default function AdminLogin() {
         if (result.token) {
           // Clear form on success
           setFormData({ email: '', password: '', name: '' })
-          router.push('/admin')
+          router.push('/admin-dashboard')
         }
       }
     } catch (err) {
@@ -114,7 +114,7 @@ export default function AdminLogin() {
               alt="ESSEC Logo"
               width={200}
               height={70}
-              style={{ objectFit: 'contain' }}
+              className={styles.logoImage}
               priority
             />
           </div>
@@ -246,7 +246,7 @@ export default function AdminLogin() {
 
             {/* Toggle Login/Register */}
             <div className={styles.toggleSection}>
-              <button
+           {/*   <button
                 type="button"
                 onClick={() => {
                   setIsLogin(!isLogin)
@@ -259,7 +259,7 @@ export default function AdminLogin() {
                 {isLogin
                   ? "Don't have an account? Create one"
                   : 'Already have an account? Sign in'}
-              </button>
+              </button>*/}
             </div>
           </form>
         </div>

@@ -1,17 +1,36 @@
 /* Split Section Reverse - Modern 50/50 Layout (Image Left, Text Right) */
+
+/* CRITICAL: Images must ALWAYS be visible - highest priority override */
+/* This rule must come first to ensure images never disappear */
+.section .imageHalf,
+.section .imageHalf.visible,
+.section .imageHalf.hidden,
+.section .imageWrapper,
+.section .imageWrapper.visible,
+.section .imageWrapper.hidden,
+.section .imageHalf .image,
+.section .imageWrapper .image,
+.section .imageHalf img,
+.section .imageWrapper img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) translateZ(0) !important;
+  transition: none !important;
+  animation: none !important;
+  display: block !important;
+}
+
 .section {
   width: 100%;
   max-width: 100vw;
   margin: 0;
   padding: 0;
   position: relative;
-  overflow: hidden;
   overflow-x: hidden;
-  overflow-y: visible;
+  overflow-y: hidden;
   background: linear-gradient(135deg, #FFFFFF 0%, rgba(249, 250, 251, 0.98) 50%, #FFFFFF 100%);
   min-height: 600px;
   box-sizing: border-box;
-  contain: layout style paint;
   will-change: auto;
 }
 
@@ -25,12 +44,11 @@
   padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
-  overflow-y: visible;
+  overflow-y: hidden;
   position: relative;
-  contain: layout style;
 }
 
-/* Left Half - Image */
+/* Left Half - Image - Always visible and static */
 .imageHalf {
   flex: 0 0 50%;
   width: 50%;
@@ -41,9 +59,15 @@
   overflow-y: hidden;
   background: linear-gradient(135deg, rgba(249, 250, 251, 0.5) 0%, #FFFFFF 100%);
   box-sizing: border-box;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  will-change: transform, opacity;
+  /* Always visible - no animations - override all parent states */
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) translateZ(0) !important;
+  transition: none !important;
+  animation: none !important;
+  will-change: auto !important;
+  /* Prevent any inheritance from parent hidden states */
+  contain: layout style paint;
 }
 
 .imageWrapper {
@@ -57,8 +81,11 @@
   transform: translateZ(0);
   backface-visibility: hidden;
   will-change: auto;
-  contain: layout style paint;
   aspect-ratio: auto;
+  /* Always visible - no animations */
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) translateZ(0) !important;
 }
 
 .image {
@@ -70,11 +97,62 @@
   backface-visibility: hidden;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
-  display: block;
+  display: block !important;
   max-width: 100%;
   overflow: hidden;
   overflow-x: hidden;
   overflow-y: hidden;
+  /* Always visible and static - override DefaultImage component styles */
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) translateZ(0) !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Override any inline styles from DefaultImage component - highest specificity */
+.imageHalf .image[style],
+.imageWrapper .image[style],
+.imageHalf .image[style*="opacity"],
+.imageWrapper .image[style*="opacity"],
+.imageHalf img,
+.imageWrapper img,
+.imageHalf img[style],
+.imageWrapper img[style],
+.imageHalf .image img,
+.imageWrapper .image img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: none !important;
+  display: block !important;
+}
+
+/* Target Next.js Image component's img element directly - force always visible */
+.imageHalf img,
+.imageWrapper img,
+.imageHalf .image img,
+.imageWrapper .image img,
+.imageHalf img[style],
+.imageWrapper img[style] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) translateZ(0) !important;
+  transition: none !important;
+  animation: none !important;
+  display: block !important;
+}
+
+/* Ensure image-loaded class is always applied */
+.imageHalf .image,
+.imageWrapper .image {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.imageHalf .image.image-loaded,
+.imageWrapper .image.image-loaded {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 /* Ensure loaded images stay visible */
@@ -113,7 +191,7 @@
   z-index: 1;
   box-sizing: border-box;
   overflow-x: hidden;
-  overflow-y: visible;
+  overflow-y: hidden;
   transform: translateZ(0);
   will-change: transform, opacity;
 }
@@ -185,6 +263,9 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(16, 119, 217, 0.3),
               0 4px 8px rgba(9, 168, 107, 0.15);
+  /* Prevent overflow from transform */
+  position: relative;
+  z-index: 1;
 }
 
 .button:active {
@@ -208,25 +289,102 @@
   visibility: hidden;
 }
 
-/* Ensure images stay visible once loaded - prevent flickering */
+/* CRITICAL: Override hidden class for images - images NEVER use hidden state */
+.hidden .imageHalf,
+.hidden .imageWrapper,
+.hidden .imageHalf .image,
+.hidden .imageWrapper .image,
+.hidden .imageHalf img,
+.hidden .imageWrapper img,
+.imageHalf.hidden,
+.imageWrapper.hidden {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) translateZ(0) !important;
+  transition: none !important;
+  animation: none !important;
+  display: block !important;
+}
+
+/* Images always visible - override all parent states and inline styles */
+.imageHalf .image,
 .imageHalf.visible .image,
+.imageHalf.hidden .image,
+.imageWrapper .image,
 .imageWrapper.visible .image,
+.imageWrapper.hidden .image,
 .imageHalf .image.image-loaded,
-.imageHalf .image[src] {
+.imageHalf .image[src],
+.section .image,
+.container .image,
+.imageHalf .image[style],
+.imageWrapper .image[style] {
   opacity: 1 !important;
   visibility: visible !important;
-  transform: translateZ(0);
+  transform: translateY(0) translateZ(0) !important;
+  transition: none !important;
+  animation: none !important;
+  display: block !important;
 }
 
-/* Prevent image flickering during scroll - once visible, stay visible */
-.imageHalf.visible {
+/* Override Next.js Image component's img element - highest priority */
+.imageHalf img,
+.imageWrapper img,
+.imageHalf img[style],
+.imageWrapper img[style],
+.imageHalf .image img,
+.imageWrapper .image img {
   opacity: 1 !important;
   visibility: visible !important;
+  transform: translateY(0) translateZ(0) !important;
+  transition: none !important;
+  animation: none !important;
+  display: block !important;
 }
 
-.imageWrapper.visible {
+/* Images are always visible - no visibility toggling - highest priority */
+/* Override ALL possible parent states and classes */
+.imageHalf,
+.imageHalf.visible,
+.imageHalf.hidden,
+.section .imageHalf,
+.section .imageHalf.visible,
+.section .imageHalf.hidden,
+.container .imageHalf,
+.container .imageHalf.visible,
+.container .imageHalf.hidden,
+.section.hidden .imageHalf,
+.section.visible .imageHalf,
+.container.hidden .imageHalf,
+.container.visible .imageHalf {
   opacity: 1 !important;
   visibility: visible !important;
+  transform: translateY(0) translateZ(0) !important;
+  transition: none !important;
+  animation: none !important;
+  will-change: auto !important;
+  display: flex !important;
+}
+
+.imageWrapper,
+.imageWrapper.visible,
+.imageWrapper.hidden,
+.imageHalf .imageWrapper,
+.imageHalf.visible .imageWrapper,
+.imageHalf.hidden .imageWrapper,
+.section .imageWrapper,
+.container .imageWrapper,
+.section.hidden .imageWrapper,
+.section.visible .imageWrapper,
+.container.hidden .imageWrapper,
+.container.visible .imageWrapper {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) translateZ(0) !important;
+  transition: none !important;
+  animation: none !important;
+  will-change: auto !important;
+  display: block !important;
 }
 
 /* Priority images should be visible immediately */
@@ -239,14 +397,52 @@
 /* Mobile fallback: Ensure image and text become visible on small screens */
 /* This is a safety net in case JavaScript visibility detection fails */
 @media (max-width: 768px) {
-  .imageHalf.hidden {
-    /* After 1.2s, force visibility on mobile as fallback */
-    animation: fadeInMobileFallback 0.6s ease-out 1.2s forwards;
+  /* Images are always visible - no animations on mobile */
+  .imageHalf,
+  .imageHalf.hidden,
+  .imageHalf.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) translateZ(0) !important;
+    animation: none !important;
+  }
+  
+  .imageWrapper,
+  .imageWrapper.hidden,
+  .imageWrapper.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) translateZ(0) !important;
+    animation: none !important;
+  }
+  
+  .image {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) translateZ(0) !important;
+    transition: none !important;
+    animation: none !important;
+    display: block !important;
+  }
+  
+  /* Override img elements on mobile */
+  .imageHalf img,
+  .imageWrapper img,
+  .imageHalf .image img,
+  .imageWrapper .image img,
+  .imageHalf img[style],
+  .imageWrapper img[style] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) translateZ(0) !important;
+    transition: none !important;
+    animation: none !important;
+    display: block !important;
   }
   
   .textHalf.hidden {
-    /* After 1.2s, force visibility on mobile as fallback */
-    animation: fadeInMobileFallback 0.6s ease-out 1.2s forwards;
+    /* After 0.5s, force visibility on mobile as fallback */
+    animation: fadeInMobileFallback 0.4s ease-out 0.5s forwards;
   }
   
   .textContent {
@@ -262,8 +458,12 @@
   }
 }
 
-.imageHalf.visible {
-  transition-delay: 0.1s;
+/* Images don't use transitions - always visible */
+.imageHalf,
+.imageHalf.visible,
+.imageHalf.hidden {
+  transition: none !important;
+  transition-delay: 0s !important;
 }
 
 .textHalf.visible {
@@ -278,15 +478,24 @@
 }
 
 @media (max-width: 768px) {
+  .section {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    position: relative;
+    height: auto;
+    min-height: auto;
+  }
+  
   .container {
     flex-direction: column;
     min-height: auto;
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
-    overflow-y: visible;
+    overflow-y: hidden;
     box-sizing: border-box;
     position: relative;
+    height: auto;
   }
 
   /* Reorder: Image first, Text second on mobile */
@@ -326,6 +535,17 @@
     overflow: hidden;
     overflow-x: hidden;
     overflow-y: hidden;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  /* Images always visible on mobile */
+  .imageHalf .image,
+  .imageHalf.visible .image,
+  .imageHalf.hidden .image {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) translateZ(0) !important;
   }
 
   .textHalf {
@@ -340,7 +560,7 @@
     justify-content: center;
     box-sizing: border-box;
     overflow-x: hidden;
-    overflow-y: visible;
+    overflow-y: hidden;
     margin: 0;
     position: relative;
     z-index: 1;
@@ -393,11 +613,20 @@
 }
 
 @media (max-width: 480px) {
+  .section {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: auto;
+    min-height: auto;
+  }
+  
   .container {
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    overflow-y: hidden;
     box-sizing: border-box;
+    height: auto;
   }
 
   .imageHalf {
@@ -553,9 +782,14 @@
     direction: rtl;
   }
   
-  /* Ensure image is visible on RTL mobile - use faster animation */
-  [dir='rtl'] .imageHalf.hidden {
-    animation: fadeInMobileFallback 0.6s ease-out 0.8s forwards;
+  /* Images always visible on RTL mobile - no animations */
+  [dir='rtl'] .imageHalf,
+  [dir='rtl'] .imageHalf.hidden,
+  [dir='rtl'] .imageHalf.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) translateZ(0) !important;
+    animation: none !important;
   }
   
   /* Ensure text is visible on RTL mobile */
@@ -618,8 +852,7 @@
   background: radial-gradient(circle at 50% 50%, rgba(0, 230, 118, 0.06) 0%, transparent 70%);
   pointer-events: none;
   z-index: 1;
-  animation: energyPulse 10s ease-in-out infinite;
-  animation-delay: -2s;
+  /* Animation removed - static element */
 }
 
 :global(.dark) .textHalf {
@@ -640,7 +873,7 @@
   background: radial-gradient(circle, rgba(0, 230, 118, 0.08) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
-  animation: energyPulse 8s ease-in-out infinite;
+  /* Animation removed - static element */
   filter: blur(40px);
   overflow: hidden;
 }
@@ -732,7 +965,7 @@
 }
 
 :global(.dark) .button:hover {
-  transform: translateY(-3px) scale(1.02);
+  transform: translateY(-3px);
   box-shadow: 
     0 8px 30px rgba(0, 230, 118, 0.5),
     0 4px 15px rgba(0, 176, 255, 0.4),
@@ -740,6 +973,8 @@
     inset 0 0 30px rgba(0, 230, 118, 0.15);
   filter: brightness(1.15);
   border-color: rgba(0, 230, 118, 0.5);
+  position: relative;
+  z-index: 1;
 }
 
 :global(.dark) .button:hover::after {
@@ -762,14 +997,5 @@
   filter: brightness(0.9) contrast(1.1);
 }
 
-@keyframes energyPulse {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.1);
-  }
-}
+/* Animation removed - energyPulse keyframes no longer used */
 

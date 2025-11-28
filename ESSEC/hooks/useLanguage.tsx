@@ -39,16 +39,30 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setLanguage = (lang: Language) => {
     setLanguageState(lang)
     if (typeof window !== 'undefined') {
-      localStorage.setItem('language', lang)
-      document.documentElement.lang = lang
-      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
+      try {
+        localStorage.setItem('language', lang)
+        if (document && document.documentElement) {
+          document.documentElement.lang = lang
+          document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
+        }
+      } catch (error) {
+        // Silently handle DOM/localStorage errors
+        console.error('Error setting language:', error)
+      }
     }
   }
 
   useEffect(() => {
     if (mounted && typeof window !== 'undefined') {
-      document.documentElement.lang = language
-      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr'
+      try {
+        if (document && document.documentElement) {
+          document.documentElement.lang = language
+          document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr'
+        }
+      } catch (error) {
+        // Silently handle DOM errors
+        console.error('Error updating document language:', error)
+      }
     }
   }, [language, mounted])
 

@@ -1,0 +1,553 @@
+/* Edit Team Member Page Styles */
+.container {
+  min-height: 100vh;
+  background-color: rgb(249 250 251);
+  padding: 2rem 0;
+  padding-top: calc(5rem + 2rem);
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+
+:global(.dark) .container {
+  background: linear-gradient(135deg, #0B0F13 0%, rgba(0, 230, 118, 0.03) 30%, rgba(0, 176, 255, 0.03) 70%, #0B0F13 100%);
+  position: relative;
+}
+
+.container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.loadingContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(249 250 251);
+}
+
+:global(.dark) .loadingContainer {
+  background: linear-gradient(135deg, #0B0F13 0%, rgba(0, 230, 118, 0.03) 30%, rgba(0, 176, 255, 0.03) 70%, #0B0F13 100%);
+}
+
+.loadingContent {
+  text-align: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  border-radius: 9999px;
+  height: 3rem;
+  width: 3rem;
+  border: 3px solid transparent;
+  border-top-color: rgb(37 99 235);
+  border-right-color: rgb(37 99 235);
+  margin: 0 auto;
+}
+
+:global(.dark) .spinner {
+  border-top-color: #00B0FF;
+  border-right-color: #00E676;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Header Section */
+.header {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.backButton {
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: white;
+  color: rgb(75 85 99);
+  border: 1px solid rgb(229 231 235);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.backButton:hover {
+  background: rgb(249 250 251);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+:global(.dark) .backButton {
+  background: rgba(13, 17, 23, 0.7);
+  backdrop-filter: blur(20px);
+  border-color: rgba(0, 230, 118, 0.2);
+  color: #CCCCCC;
+}
+
+:global(.dark) .backButton:hover {
+  background: rgba(13, 17, 23, 0.9);
+  border-color: rgba(0, 230, 118, 0.3);
+  box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
+}
+
+.backIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: rgb(17 24 39);
+  transition: color 0.3s ease;
+}
+
+:global(.dark) .title {
+  color: #FFFFFF;
+  text-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 2.25rem;
+  }
+}
+
+/* Form Container */
+.form {
+  background: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 2.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+:global(.dark) .form {
+  background: rgba(13, 17, 23, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 230, 118, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 0 20px rgba(0, 230, 118, 0.05),
+    0 0 30px rgba(0, 230, 118, 0.1);
+}
+
+/* Section Styling */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: rgb(17 24 39);
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgb(229 231 235);
+  transition: all 0.3s ease;
+}
+
+:global(.dark) .sectionTitle {
+  color: #FFFFFF;
+  border-bottom-color: rgba(0, 230, 118, 0.3);
+  text-shadow: 0 0 10px rgba(0, 230, 118, 0.2);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgb(75 85 99);
+  transition: color 0.3s ease;
+}
+
+:global(.dark) .formLabel {
+  color: #CCCCCC;
+}
+
+.formInput,
+.formTextarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid rgb(209 213 219);
+  border-radius: 0.75rem;
+  background-color: white;
+  color: rgb(17 24 39);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.formInput:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: rgb(37 99 235);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+:global(.dark) .formInput,
+:global(.dark) .formTextarea {
+  background-color: rgba(31, 41, 55, 0.5);
+  border-color: rgba(0, 230, 118, 0.3);
+  color: #FFFFFF;
+}
+
+:global(.dark) .formInput:focus,
+:global(.dark) .formTextarea:focus {
+  border-color: rgba(0, 230, 118, 0.5);
+  box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.2);
+}
+
+:global(.dark) .formInput::placeholder,
+:global(.dark) .formTextarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+.orderControls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.helpText {
+  font-size: 0.875rem;
+  color: rgb(107 114 128);
+  margin: 0;
+}
+
+:global(.dark) .helpText {
+  color: #999999;
+}
+
+/* Upload Section */
+.uploadSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.uploadInputGroup {
+  display: flex;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.uploadInput {
+  flex: 1;
+}
+
+.uploadButton {
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, rgb(37 99 235) 0%, rgb(29 78 216) 100%);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.uploadButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgb(29 78 216) 0%, rgb(37 99 235) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+}
+
+.uploadButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+:global(.dark) .uploadButton {
+  background: linear-gradient(135deg, #00B0FF 0%, #00E676 100%);
+  box-shadow: 0 0 20px rgba(0, 176, 255, 0.3);
+}
+
+:global(.dark) .uploadButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #00E676 0%, #00B0FF 100%);
+  box-shadow: 0 0 30px rgba(0, 230, 118, 0.4);
+}
+
+.uploadButtonIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.previewContainer {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgb(229 231 235);
+  background: rgb(249 250 251);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+:global(.dark) .previewContainer {
+  border-color: rgba(0, 230, 118, 0.3);
+  background: rgba(13, 17, 23, 0.5);
+}
+
+.previewImage {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+.cvPreviewText {
+  font-size: 0.875rem;
+  color: rgb(75 85 99);
+  word-break: break-all;
+}
+
+:global(.dark) .cvPreviewText {
+  color: #CCCCCC;
+}
+
+.removeButton {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.removeButton:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+.removeIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.removedNotice {
+  padding: 1rem;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+:global(.dark) .removedNotice {
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.removedNotice p {
+  margin: 0;
+  color: rgb(120, 53, 15);
+  font-size: 0.875rem;
+}
+
+:global(.dark) .removedNotice p {
+  color: #fbbf24;
+}
+
+.restoreButton {
+  padding: 0.5rem 1rem;
+  background: rgba(251, 191, 36, 0.2);
+  color: rgb(120, 53, 15);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+  align-self: flex-start;
+}
+
+.restoreButton:hover {
+  background: rgba(251, 191, 36, 0.3);
+}
+
+:global(.dark) .restoreButton {
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.5);
+}
+
+:global(.dark) .restoreButton:hover {
+  background: rgba(251, 191, 36, 0.2);
+}
+
+/* Form Actions */
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgb(229 231 235);
+  flex-wrap: wrap;
+}
+
+:global(.dark) .formActions {
+  border-top-color: rgba(0, 230, 118, 0.2);
+}
+
+.submitButton {
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, rgb(37 99 235) 0%, rgb(29 78 216) 100%);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.submitButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgb(29 78 216) 0%, rgb(37 99 235) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+:global(.dark) .submitButton {
+  background: linear-gradient(135deg, #00B0FF 0%, #00E676 100%);
+  box-shadow: 0 0 20px rgba(0, 176, 255, 0.3);
+}
+
+:global(.dark) .submitButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #00E676 0%, #00B0FF 100%);
+  box-shadow: 0 0 30px rgba(0, 230, 118, 0.4);
+}
+
+.cancelButton {
+  padding: 0.875rem 1.5rem;
+  background: white;
+  color: rgb(75 85 99);
+  border: 1px solid rgb(209 213 219);
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelButton:hover {
+  background: rgb(249 250 251);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+:global(.dark) .cancelButton {
+  background: rgba(31, 41, 55, 0.7);
+  color: #CCCCCC;
+  border-color: rgba(0, 230, 118, 0.2);
+}
+
+:global(.dark) .cancelButton:hover {
+  background: rgba(31, 41, 55, 0.9);
+  border-color: rgba(0, 230, 118, 0.3);
+}
+
+.buttonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form {
+    padding: 1.5rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .uploadInputGroup {
+    flex-direction: column;
+  }
+
+  .uploadButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+
+  .submitButton,
+  .cancelButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

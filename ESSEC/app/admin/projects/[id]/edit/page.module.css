@@ -443,6 +443,30 @@
   height: 1rem;
 }
 
+.previewNote {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  z-index: 5;
+}
+
+.previewWarning {
+  background: rgba(251, 191, 36, 0.9);
+  color: rgb(120, 53, 15);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  margin: 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+:global(.dark) .previewWarning {
+  background: rgba(251, 191, 36, 0.8);
+  color: rgb(180, 83, 9);
+}
+
 /* Array Input Section */
 .arraySection {
   display: flex;

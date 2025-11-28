@@ -149,5 +149,183 @@ export const api = {
       throw new Error(error.error || 'Failed to delete project')
     }
   },
+
+  // Homepage Video Management
+  // Get active homepage video (public)
+  async getActiveHomepageVideo(): Promise<{ videoUrl: string; title?: string; subtitle?: string; isActive: boolean }> {
+    const response = await fetch(`${API_BASE_URL}/homepage-video/active`)
+    if (!response.ok) {
+      throw new Error('Failed to fetch homepage video')
+    }
+    return response.json()
+  },
+
+  // Get all homepage videos (protected)
+  async getHomepageVideos(): Promise<any[]> {
+    const response = await fetch(`${API_BASE_URL}/homepage-video`, {
+      headers: auth.getAuthHeaders(),
+    })
+    if (!response.ok) {
+      throw new Error('Failed to fetch homepage videos')
+    }
+    return response.json()
+  },
+
+  // Get a single homepage video by ID (protected)
+  async getHomepageVideo(id: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/homepage-video/${id}`, {
+      headers: auth.getAuthHeaders(),
+    })
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Failed to fetch homepage video' }))
+      if (response.status === 404) {
+        throw new Error('Homepage video not found')
+      }
+      throw new Error(error.error || 'Failed to fetch homepage video')
+    }
+    return response.json()
+  },
+
+  // Create a new homepage video (protected)
+  async createHomepageVideo(video: { videoUrl: string; title?: string; subtitle?: string; isActive?: boolean }): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/homepage-video`, {
+      method: 'POST',
+      headers: auth.getAuthHeaders(),
+      body: JSON.stringify(video),
+    })
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Failed to create homepage video')
+    }
+    return response.json()
+  },
+
+  // Update a homepage video (protected)
+  async updateHomepageVideo(id: string, video: Partial<{ videoUrl: string; title: string; subtitle: string; isActive: boolean }>): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/homepage-video/${id}`, {
+      method: 'PUT',
+      headers: auth.getAuthHeaders(),
+      body: JSON.stringify(video),
+    })
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Failed to update homepage video' }))
+      if (response.status === 404) {
+        throw new Error('Homepage video not found')
+      } else if (response.status === 401) {
+        throw new Error('Authentication required')
+      }
+      throw new Error(error.error || 'Failed to update homepage video')
+    }
+    return response.json()
+  },
+
+  // Delete a homepage video (protected)
+  async deleteHomepageVideo(id: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/homepage-video/${id}`, {
+      method: 'DELETE',
+      headers: auth.getAuthHeaders(),
+    })
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Failed to delete homepage video')
+    }
+  },
+
+  // Team Management
+  // Get all team members (public)
+  async getTeamMembers(): Promise<any[]> {
+    const response = await fetch(`${API_BASE_URL}/team`)
+    if (!response.ok) {
+      throw new Error('Failed to fetch team members')
+    }
+    return response.json()
+  },
+
+  // Get a single team member by ID (public)
+  async getTeamMember(id: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/team/${id}`)
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Failed to fetch team member' }))
+      if (response.status === 404) {
+        throw new Error('Team member not found')
+      }
+      throw new Error(error.error || 'Failed to fetch team member')
+    }
+    return response.json()
+  },
+
+  // Create a new team member (protected)
+  async createTeamMember(member: {
+    name: string
+    role: string
+    bio: string
+    profileImage?: string
+    socialLinks?: {
+      linkedin?: string
+      twitter?: string
+      facebook?: string
+      instagram?: string
+      website?: string
+    }
+    cvUrl?: string
+  }): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/team`, {
+      method: 'POST',
+      headers: auth.getAuthHeaders(),
+      body: JSON.stringify(member),
+    })
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Failed to create team member')
+    }
+    return response.json()
+  },
+
+  // Update a team member (protected)
+  async updateTeamMember(id: string, member: Partial<{
+    name: string
+    role: string
+    bio: string
+    profileImage?: string
+    socialLinks?: {
+      linkedin?: string
+      twitter?: string
+      facebook?: string
+      instagram?: string
+      website?: string
+    }
+    cvUrl?: string
+    displayOrder?: number
+    removeProfileImage?: boolean
+    removeCv?: boolean
+  }>): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/team/${id}`, {
+      method: 'PUT',
+      headers: auth.getAuthHeaders(),
+      body: JSON.stringify(member),
+    })
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Failed to update team member' }))
+      if (response.status === 404) {
+        throw new Error('Team member not found')
+      } else if (response.status === 401) {
+        throw new Error('Authentication required')
+      }
+      throw new Error(error.error || 'Failed to update team member')
+    }
+    return response.json()
+  },
+
+  // Delete a team member (protected)
+  async deleteTeamMember(id: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/team/${id}`, {
+      method: 'DELETE',
+      headers: auth.getAuthHeaders(),
+    })
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Failed to delete team member')
+    }
+  },
 }
 

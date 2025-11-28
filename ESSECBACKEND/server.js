@@ -7,9 +7,11 @@ const app = express();
 
 // Middleware
 app.use(cors());
-// Increase body size limit to handle large base64 images/videos (50MB)
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+// Increase body size limit to handle large base64 images/videos
+// Base64 encoding increases size by ~33%, so 50MB video becomes ~67MB
+// Set to 100MB to handle large base64-encoded videos safely
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/essec_projects';
@@ -31,8 +33,12 @@ mongoose.connect(MONGODB_URI)
 // Routes
 const projectRoutes = require('./routes/projects');
 const authRoutes = require('./routes/auth');
+const homepageVideoRoutes = require('./routes/homepageVideo');
+const teamRoutes = require('./routes/team');
 app.use('/api/projects', projectRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/homepage-video', homepageVideoRoutes);
+app.use('/api/team', teamRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -49,6 +55,14 @@ app.use((err, req, res, next) => {
   // Don't send error if response was already sent
   if (res.headersSent) {
     return next(err);
+  }
+  
+  // Handle "request entity too large" errors specifically
+  if (err.type === 'entity.too.large') {
+    return res.status(413).json({ 
+      error: 'Request entity too large. The file you are trying to upload is too big. Please use a smaller file or upload via URL instead.',
+      maxSize: '100MB (base64 encoded)'
+    });
   }
   
   res.status(err.status || 500).json({ 

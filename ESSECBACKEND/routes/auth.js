@@ -4,6 +4,15 @@ const Admin = require('../models/Admin');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../middleware/auth');
 
+// Hardcoded admin user for secure access
+// Change these credentials in production!
+const adminUser = {
+  email: process.env.ADMIN_EMAIL || "admin@example.com",
+  password: process.env.ADMIN_PASSWORD || "supersecret",
+  name: process.env.ADMIN_NAME || "Admin User",
+  id: "hardcoded-admin-id" // Special ID for hardcoded admin
+};
+
 // Register new admin (only for initial setup - you may want to protect this route)
 router.post('/register', async (req, res) => {
   try {
@@ -75,8 +84,35 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Please provide email and password' });
     }
 
-    // Find admin
-    const admin = await Admin.findOne({ email });
+    // Normalize email for comparison
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Check hardcoded admin first
+    if (normalizedEmail === adminUser.email.toLowerCase()) {
+      if (password === adminUser.password) {
+        // Generate JWT token for hardcoded admin
+        const token = jwt.sign(
+          { id: adminUser.id, email: adminUser.email, name: adminUser.name, isHardcoded: true },
+          JWT_SECRET,
+          { expiresIn: '7d' }
+        );
+
+        return res.json({
+          message: 'Login successful',
+          token,
+          admin: {
+            id: adminUser.id,
+            email: adminUser.email,
+            name: adminUser.name
+          }
+        });
+      } else {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+    }
+
+    // If not hardcoded admin, check database
+    const admin = await Admin.findOne({ email: normalizedEmail });
     if (!admin) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
@@ -123,6 +159,18 @@ router.get('/me', async (req, res) => {
 
     const token = authHeader.substring(7);
     const decoded = jwt.verify(token, JWT_SECRET);
+    
+    // Check if this is a hardcoded admin
+    if (decoded.isHardcoded && decoded.id === 'hardcoded-admin-id') {
+      return res.json({
+        admin: {
+          _id: 'hardcoded-admin-id',
+          email: decoded.email,
+          name: decoded.name || 'Admin User',
+          isHardcoded: true
+        }
+      });
+    }
     
     const admin = await Admin.findById(decoded.id).select('-password');
     if (!admin) {

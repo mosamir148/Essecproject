@@ -86,7 +86,7 @@ export default function NewProjectPage() {
 
     try {
       await api.createProject(formData as Omit<Project, 'id'>)
-      router.push('/admin')
+      router.push('/admin-dashboard')
     } catch (err) {
       alert(err instanceof Error ? err.message : t('admin.error'))
     } finally {
@@ -183,11 +183,49 @@ export default function NewProjectPage() {
       return
     }
 
-    // Check file size (limit to 50MB for base64 conversion)
-    const maxSize = 50 * 1024 * 1024 // 50MB
-    if (file.size > maxSize) {
-      alert('Video file is too large. Please use a file smaller than 50MB or upload via URL instead.')
+    // Check file size - FileReader has browser-specific limits (~17.8MB)
+    // The error "offset out of range" occurs at approximately 17825792 bytes (~17MB)
+    // We'll block files over 17MB to prevent this error
+    const fileReaderMaxSize = 17 * 1024 * 1024 // 17MB - hard limit to prevent FileReader errors
+    const maxSize = 50 * 1024 * 1024 // 50MB - theoretical max for URL uploads
+    
+    // Hard block for files that will cause FileReader errors
+    if (file.size > fileReaderMaxSize) {
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
+      alert(
+        `Video file is too large for direct upload (${fileSizeMB}MB).\n\n` +
+        `Files over 17MB will cause "offset out of range" errors due to browser limitations.\n\n` +
+        `Please use one of these options:\n` +
+        `1. Compress the video to under 17MB\n` +
+        `2. Upload the video to a hosting service and use the URL instead\n` +
+        `3. Use a smaller video file\n\n` +
+        `For best results, keep files under 15MB for direct upload.`
+      )
+      if (videoInputRef.current) {
+        videoInputRef.current.value = ''
+      }
       return
+    }
+    
+    // Warn about potential issues for files over 15MB
+    if (file.size > 15 * 1024 * 1024) {
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
+      const proceed = confirm(
+        `Warning: This video file is ${fileSizeMB}MB.\n\n` +
+        `Files over 15MB are close to browser limits and may cause errors.\n\n` +
+        `For best results:\n` +
+        `1. Use a file under 15MB (recommended)\n` +
+        `2. Compress your video file\n` +
+        `3. Upload via URL instead (best for large files)\n\n` +
+        `Would you like to continue anyway, or cancel and use a URL?`
+      )
+      
+      if (!proceed) {
+        if (videoInputRef.current) {
+          videoInputRef.current.value = ''
+        }
+        return
+      }
     }
 
     setUploadingVideo(true)
@@ -479,15 +517,35 @@ export default function NewProjectPage() {
                       src={videoPreview}
                       controls
                       className={styles.previewVideo}
+                      preload="metadata"
                       onError={(e) => {
                         console.error('Video preview error:', e)
-                        setVideoPreview(null)
-                        alert('Error loading video preview. The video may be too large. Please use a URL instead.')
+                        const videoElement = e.target as HTMLVideoElement
+                        const error = videoElement.error
+                        
+                        // Don't show alert if it's just a loading issue - video might still work
+                        // Only show error for actual playback failures
+                        if (error && error.code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
+                          // Video format not supported or too large for preview
+                          console.warn('Video preview not available - format may not be supported or file too large')
+                          // Don't remove the preview - let user save it anyway, it might work on the actual page
+                        } else if (error && error.code === MediaError.MEDIA_ERR_DECODE) {
+                          // Decoding error - likely file corruption or unsupported format
+                          console.warn('Video decoding error - file may be corrupted or unsupported')
+                        }
+                        // For other errors, don't remove preview - it might still work when displayed on the site
                       }}
                       onLoadStart={() => {
                         // Video is starting to load
                       }}
                     />
+                    <div className={styles.previewNote}>
+                      {videoPreview.startsWith('data:') && videoPreview.length > 10 * 1024 * 1024 && (
+                        <p className={styles.previewWarning}>
+                          Large video file - preview may not load, but it will work on the website
+                        </p>
+                      )}
+                    </div>
                     <button
                       type="button"
                       onClick={() => {

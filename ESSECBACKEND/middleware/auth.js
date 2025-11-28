@@ -33,7 +33,19 @@ const authenticate = async (req, res, next) => {
       throw jwtError;
     }
 
-    // Get admin from token
+    // Check if this is a hardcoded admin
+    if (decoded.isHardcoded && decoded.id === 'hardcoded-admin-id') {
+      // Create a mock admin object for hardcoded admin
+      req.admin = {
+        _id: 'hardcoded-admin-id',
+        email: decoded.email,
+        name: decoded.name || 'Admin User',
+        isHardcoded: true
+      };
+      return next();
+    }
+
+    // Get admin from database
     const admin = await Admin.findById(decoded.id).select('-password');
     
     if (!admin) {

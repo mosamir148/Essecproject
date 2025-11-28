@@ -46,32 +46,48 @@ export default function LoadingPage({
   useEffect(() => {
     if (!isVisible || !mounted) return
 
+    let isMounted = true
+    let progressInterval: NodeJS.Timeout | null = null
+    let contentCheckInterval: NodeJS.Timeout | null = null
+    let fallbackTimeout: NodeJS.Timeout | null = null
+    let completeTimeout: NodeJS.Timeout | null = null
+    let finalTimeout: NodeJS.Timeout | null = null
+
     // Calculate loading progress
     const calculateProgress = () => {
-      if (typeof window === 'undefined') return 0
+      if (typeof window === 'undefined' || !isMounted) return 0
 
-      let baseProgress = 50 // Start at 50% since document is usually already loaded in SPA
+      try {
+        let baseProgress = 50 // Start at 50% since document is usually already loaded in SPA
 
-      // Check if images are loaded
-      const images = document.querySelectorAll('img')
-      if (images.length > 0) {
-        let loadedImages = 0
-        images.forEach((img) => {
-          if (img.complete && img.naturalHeight !== 0) {
-            loadedImages++
-          }
-        })
-        const imageProgress = (loadedImages / images.length) * 50
-        return Math.min(100, baseProgress + imageProgress)
+        // Check if images are loaded
+        const images = document.querySelectorAll('img')
+        if (images.length > 0) {
+          let loadedImages = 0
+          images.forEach((img) => {
+            if (img.complete && img.naturalHeight !== 0) {
+              loadedImages++
+            }
+          })
+          const imageProgress = (loadedImages / images.length) * 50
+          return Math.min(100, baseProgress + imageProgress)
+        }
+
+        return baseProgress
+      } catch (error) {
+        // If DOM access fails, return safe default
+        return 50
       }
-
-      return baseProgress
     }
 
     // Simulate smooth progress animation
     let currentProgress = 0
     const targetProgress = 100
-    const progressInterval = setInterval(() => {
+    progressInterval = setInterval(() => {
+      if (!isMounted) {
+        if (progressInterval) clearInterval(progressInterval)
+        return
+      }
       // Gradually increase progress
       if (currentProgress < targetProgress) {
         currentProgress = Math.min(targetProgress, currentProgress + 2)
@@ -81,72 +97,106 @@ export default function LoadingPage({
 
     // Check for content readiness
     const checkContentReady = () => {
-      if (typeof window === 'undefined') return false
+      if (typeof window === 'undefined' || !isMounted) return false
       
-      // Check if main content exists and images are loading/loaded
-      const main = document.querySelector('main')
-      const images = document.querySelectorAll('img')
-      
-      if (main && images.length > 0) {
-        let allImagesLoaded = true
-        images.forEach((img) => {
-          if (!img.complete || img.naturalHeight === 0) {
-            allImagesLoaded = false
-          }
-        })
-        return allImagesLoaded
+      try {
+        // Check if main content exists and images are loading/loaded
+        const main = document.querySelector('main')
+        const images = document.querySelectorAll('img')
+        
+        if (main && images.length > 0) {
+          let allImagesLoaded = true
+          images.forEach((img) => {
+            if (!img.complete || img.naturalHeight === 0) {
+              allImagesLoaded = false
+            }
+          })
+          return allImagesLoaded
+        }
+        
+        return main !== null
+      } catch (error) {
+        // If DOM access fails, return false
+        return false
       }
-      
-      return main !== null
     }
 
     // Handle completion
     const handleComplete = () => {
-      if (isCompleteRef.current) return
+      if (isCompleteRef.current || !isMounted) return
       
       const elapsed = Date.now() - startTime.current
       const remainingTime = Math.max(0, minDisplayTime - elapsed)
       
-      setTimeout(() => {
-        if (isCompleteRef.current) return
+      completeTimeout = setTimeout(() => {
+        if (isCompleteRef.current || !isMounted) return
         isCompleteRef.current = true
         
-        setProgress(100)
-        clearInterval(progressInterval)
+        if (isMounted) {
+          setProgress(100)
+        }
         
-        setTimeout(() => {
-          setIsVisible(false)
-          if (onComplete) {
-            setTimeout(onComplete, 500)
+        if (progressInterval) {
+          clearInterval(progressInterval)
+          progressInterval = null
+        }
+        
+        finalTimeout = setTimeout(() => {
+          if (isMounted) {
+            setIsVisible(false)
+            if (onComplete) {
+              setTimeout(() => {
+                if (isMounted && onComplete) {
+                  onComplete()
+                }
+              }, 500)
+            }
           }
         }, 300)
       }, remainingTime)
     }
 
     // Check content readiness periodically
-    const contentCheckInterval = setInterval(() => {
+    contentCheckInterval = setInterval(() => {
+      if (!isMounted) {
+        if (contentCheckInterval) {
+          clearInterval(contentCheckInterval)
+          contentCheckInterval = null
+        }
+        return
+      }
+      
       if (checkContentReady() && currentProgress >= 90) {
-        clearInterval(contentCheckInterval)
+        if (contentCheckInterval) {
+          clearInterval(contentCheckInterval)
+          contentCheckInterval = null
+        }
         handleComplete()
       }
     }, 100)
 
     // Fallback: complete after reasonable time even if content check doesn't trigger
-    const fallbackTimeout = setTimeout(() => {
-      if (!isCompleteRef.current) {
-        clearInterval(contentCheckInterval)
+    fallbackTimeout = setTimeout(() => {
+      if (!isCompleteRef.current && isMounted) {
+        if (contentCheckInterval) {
+          clearInterval(contentCheckInterval)
+          contentCheckInterval = null
+        }
         handleComplete()
       }
     }, Math.max(minDisplayTime, 1500))
 
     return () => {
-      clearInterval(progressInterval)
-      clearInterval(contentCheckInterval)
-      clearTimeout(fallbackTimeout)
+      isMounted = false
+      if (progressInterval) clearInterval(progressInterval)
+      if (contentCheckInterval) clearInterval(contentCheckInterval)
+      if (fallbackTimeout) clearTimeout(fallbackTimeout)
+      if (completeTimeout) clearTimeout(completeTimeout)
+      if (finalTimeout) clearTimeout(finalTimeout)
     }
   }, [onComplete, minDisplayTime, isVisible, pathname, mounted])
 
-  if (!isVisible) return null
+  if (!isVisible || !mounted) return null
 
   return (
     <div className={styles.loadingContainer}>
@@ -162,7 +212,7 @@ export default function LoadingPage({
         {/* Logo or Website Name */}
         <div className={styles.logoContainer}>
           <DefaultImage 
-            src={logo} 
+            src={'/logo.PNG'} 
             alt={websiteName} 
             width={200} 
             height={70}

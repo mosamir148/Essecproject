@@ -1,13 +1,58 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useLanguage } from '@/hooks/useLanguage'
-import { teamMembers } from '@/data/team'
+import { api } from '@/lib/api'
 import DefaultImage from '@/components/DefaultImage'
 import { Award, Users, Calendar, Briefcase, UserCog } from 'lucide-react'
 import styles from './about.module.css'
 
+interface TeamMember {
+  id: string
+  name: string
+  role: string
+  bio: string
+  profileImage: string
+  socialLinks?: {
+    linkedin?: string
+    twitter?: string
+    facebook?: string
+    instagram?: string
+    website?: string
+  }
+  cvUrl?: string
+  displayOrder: number
+}
+
 export default function AboutPage() {
   const { t } = useLanguage()
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    loadTeamMembers()
+  }, [])
+
+  const loadTeamMembers = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const members = await api.getTeamMembers()
+      // Sort by displayOrder
+      const sortedMembers = members.sort((a: TeamMember, b: TeamMember) => 
+        (a.displayOrder || 0) - (b.displayOrder || 0)
+      )
+      setTeamMembers(sortedMembers)
+    } catch (err) {
+      console.error('Failed to load team members:', err)
+      setError('Failed to load team members')
+      // Fallback to empty array so page still renders
+      setTeamMembers([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className={styles.page}>
@@ -134,35 +179,88 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className={styles.teamGrid}>
-            {teamMembers.map((member) => (
-              <div
-                key={member.id}
-                className={styles.teamCard}
-              >
-                <div className={styles.teamCardImage}>
-                  <DefaultImage
-                    src={member.photo}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
+          {loading ? (
+            <div className={styles.loadingContainer}>
+              <div className={styles.spinner}></div>
+              <p className={styles.loadingText}>Loading team members...</p>
+            </div>
+          ) : error ? (
+            <div className={styles.errorContainer}>
+              <p className={styles.errorText}>{error}</p>
+            </div>
+          ) : teamMembers.length === 0 ? (
+            <div className={styles.emptyContainer}>
+              <p className={styles.emptyText}>No team members available.</p>
+            </div>
+          ) : (
+            <div className={styles.teamGrid}>
+              {teamMembers.map((member) => (
+                <div
+                  key={member.id}
+                  className={styles.teamCard}
+                >
+                  <div className={styles.teamCardImage}>
+                    <DefaultImage
+                      src={member.profileImage || '/team/placeholder.jpg'}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+                  <div className={styles.teamCardContent}>
+                    <h3 className={styles.teamCardName}>
+                      {member.name}
+                    </h3>
+                    <p className={styles.teamCardRole}>
+                      {member.role}
+                    </p>
+                    <p className={styles.teamCardBio}>
+                      {member.bio}
+                    </p>
+                    {/* Social Links */}
+                    {member.socialLinks && Object.values(member.socialLinks).some(link => link && link.trim()) && (
+                      <div className={styles.socialLinks}>
+                        {member.socialLinks.linkedin && (
+                          <a 
+                            href={member.socialLinks.linkedin} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className={styles.socialLink}
+                            aria-label="LinkedIn"
+                          >
+                            LinkedIn
+                          </a>
+                        )}
+                        {member.socialLinks.twitter && (
+                          <a 
+                            href={member.socialLinks.twitter} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className={styles.socialLink}
+                            aria-label="Twitter"
+                          >
+                            Twitter
+                          </a>
+                        )}
+                        {member.socialLinks.website && (
+                          <a 
+                            href={member.socialLinks.website} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className={styles.socialLink}
+                            aria-label="Website"
+                          >
+                            Website
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className={styles.teamCardContent}>
-                  <h3 className={styles.teamCardName}>
-                    {member.name}
-                  </h3>
-                  <p className={styles.teamCardRole}>
-                    {t(`about.${member.roleKey}`)}
-                  </p>
-                  <p className={styles.teamCardBio}>
-                    {member.bio}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

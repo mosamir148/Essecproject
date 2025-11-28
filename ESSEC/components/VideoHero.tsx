@@ -58,8 +58,11 @@ export default function VideoHero({ title, subtitle, videoSrc, imageSrc, fullHei
           className={styles.video}
           style={{ transform: `translateY(${parallaxOffset}px)` }}
           onError={handleVideoError}
+          key={videoSrc} // Force re-render when video source changes
         >
-          <source src={videoSrc} type={`video/${videoSrc.split('.').pop()}`} />
+          <source src={videoSrc} type="video/mp4" />
+          <source src={videoSrc} type="video/webm" />
+          <source src={videoSrc} type="video/ogg" />
         </video>
       ) : imageSrc ? (
         <div className={styles.imageContainer} style={{ transform: `translateY(${parallaxOffset}px)` }}>
