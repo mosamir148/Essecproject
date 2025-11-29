@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useLanguage } from '@/hooks/useLanguage'
 import { api, auth } from '@/lib/api'
 import { ArrowLeft, Save, Upload, X, Plus } from 'lucide-react'
 import DefaultImage from '@/components/DefaultImage'
@@ -19,6 +20,7 @@ interface NewsFormData {
 
 export default function NewNewsPage() {
   const router = useRouter()
+  const { t, dir } = useLanguage()
   const [loading, setLoading] = useState(true)
   const [authenticated, setAuthenticated] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -84,7 +86,7 @@ export default function NewNewsPage() {
       })
       router.push('/admin-dashboard')
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to create news item')
+      alert(err instanceof Error ? err.message : t('admin.failedToCreateNews'))
     } finally {
       setSaving(false)
     }
@@ -107,13 +109,13 @@ export default function NewNewsPage() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file')
+      alert(t('admin.pleaseSelectImage'))
       return
     }
 
     const maxSize = 10 * 1024 * 1024 // 10MB
     if (file.size > maxSize) {
-      alert('Image file is too large. Please use a file smaller than 10MB or upload via URL instead.')
+      alert(t('admin.imageFileTooLarge'))
       return
     }
 
@@ -125,10 +127,10 @@ export default function NewNewsPage() {
         const result = reader.result as string
         if (result) {
           setFormData({ ...formData, mainImage: result })
-          alert('Image uploaded successfully!')
+          alert(t('admin.imageUploadedSuccess'))
         }
       } catch (error) {
-        alert('Error processing image file')
+        alert(t('admin.errorProcessingImage'))
       } finally {
         setUploadingImage(false)
         if (imageInputRef.current) {
@@ -138,7 +140,7 @@ export default function NewNewsPage() {
     }
     
     reader.onerror = () => {
-      alert('Error reading image file')
+      alert(t('admin.errorReadingImage'))
       setUploadingImage(false)
       if (imageInputRef.current) {
         imageInputRef.current.value = ''
@@ -153,13 +155,13 @@ export default function NewNewsPage() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file')
+      alert(t('admin.pleaseSelectImage'))
       return
     }
 
     const maxSize = 10 * 1024 * 1024 // 10MB
     if (file.size > maxSize) {
-      alert('Image file is too large. Please use a file smaller than 10MB or upload via URL instead.')
+      alert(t('admin.imageFileTooLarge'))
       return
     }
 
@@ -175,10 +177,10 @@ export default function NewNewsPage() {
             additionalImages: [...formData.additionalImages, result],
           })
           setAdditionalImageInput('')
-          alert('Image uploaded successfully!')
+          alert(t('admin.imageUploadedSuccess'))
         }
       } catch (error) {
-        alert('Error processing image file')
+        alert(t('admin.errorProcessingImage'))
       } finally {
         setUploadingAdditionalImage(false)
         if (additionalImageInputRef.current) {
@@ -188,7 +190,7 @@ export default function NewNewsPage() {
     }
     
     reader.onerror = () => {
-      alert('Error reading image file')
+      alert(t('admin.errorReadingImage'))
       setUploadingAdditionalImage(false)
       if (additionalImageInputRef.current) {
         additionalImageInputRef.current.value = ''
@@ -221,7 +223,7 @@ export default function NewNewsPage() {
       <div className={styles.loadingContainer}>
         <div className={styles.loadingContent}>
           <div className={styles.spinner}></div>
-          <p className={styles.loadingText}>Loading...</p>
+          <p className={styles.loadingText}>{t('admin.loading')}</p>
         </div>
       </div>
     )
@@ -232,7 +234,7 @@ export default function NewNewsPage() {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} dir={dir}>
       <div className={styles.container}>
         <div className={styles.header}>
           <button
@@ -240,32 +242,32 @@ export default function NewNewsPage() {
             className={styles.backButton}
           >
             <ArrowLeft className={styles.backIcon} />
-            Back to Dashboard
+            {t('admin.backToDashboard')}
           </button>
-          <h1 className={styles.title}>Add New News Item</h1>
+          <h1 className={styles.title}>{t('admin.addNewNewsItem')}</h1>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>
           {/* Basic Information */}
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Basic Information</h2>
+            <h2 className={styles.sectionTitle}>{t('admin.basicInformation')}</h2>
             <div className={styles.formGrid}>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>
-                  Title *
+                  {t('admin.title')} *
                 </label>
                 <input
                   type="text"
                   required
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Enter news title"
+                  placeholder={t('admin.enterNewsTitle')}
                   className={styles.formInput}
                 />
               </div>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>
-                  Publication Date *
+                  {t('admin.publicationDateRequired')}
                 </label>
                 <input
                   type="date"
@@ -277,7 +279,7 @@ export default function NewNewsPage() {
               </div>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>
-                  Display Order
+                  {t('admin.displayOrder')}
                 </label>
                 <input
                   type="number"
@@ -291,16 +293,16 @@ export default function NewNewsPage() {
 
           {/* Summary */}
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Summary</h2>
+            <h2 className={styles.sectionTitle}>{t('admin.summary')}</h2>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>
-                Summary *
+                {t('admin.summaryRequired')}
               </label>
               <textarea
                 required
                 value={formData.summary}
                 onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
-                placeholder="Enter a short summary"
+                placeholder={t('admin.enterShortSummary')}
                 rows={3}
                 className={styles.formTextarea}
               />
@@ -309,16 +311,16 @@ export default function NewNewsPage() {
 
           {/* Full Text */}
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Full Text</h2>
+            <h2 className={styles.sectionTitle}>{t('admin.fullText')}</h2>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>
-                Full Text *
+                {t('admin.fullTextRequired')}
               </label>
               <textarea
                 required
                 value={formData.fullText}
                 onChange={(e) => setFormData({ ...formData, fullText: e.target.value })}
-                placeholder="Enter the full news text (use double line breaks for paragraphs)"
+                placeholder={t('admin.enterFullNewsText')}
                 rows={15}
                 className={styles.formTextarea}
               />
@@ -327,7 +329,7 @@ export default function NewNewsPage() {
 
           {/* Main Image */}
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Main Image</h2>
+            <h2 className={styles.sectionTitle}>{t('admin.mainImage')}</h2>
             <div className={styles.uploadSection}>
               <div className={styles.uploadInputGroup}>
                 <input
@@ -335,7 +337,7 @@ export default function NewNewsPage() {
                   required
                   value={formData.mainImage}
                   onChange={(e) => handleImageUrlChange(e.target.value)}
-                  placeholder="https://example.com/image.jpg or upload from PC"
+                  placeholder={t('admin.imageUrlPlaceholder')}
                   className={`${styles.formInput} ${styles.uploadInput}`}
                 />
                 <input
@@ -352,7 +354,7 @@ export default function NewNewsPage() {
                   className={styles.uploadButton}
                 >
                   <Upload className={styles.uploadButtonIcon} />
-                  {uploadingImage ? 'Uploading...' : 'Upload Image'}
+                  {uploadingImage ? t('admin.uploading') : t('admin.uploadImage')}
                 </button>
               </div>
               {imagePreview && (
@@ -360,7 +362,7 @@ export default function NewNewsPage() {
                   <div className={styles.previewImageWrapper}>
                     <DefaultImage
                       src={imagePreview}
-                      alt="Preview"
+                      alt={t('admin.preview')}
                       fill
                       className={styles.previewImage}
                     />
@@ -372,14 +374,14 @@ export default function NewNewsPage() {
 
           {/* Additional Images */}
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Additional Images (Optional)</h2>
+            <h2 className={styles.sectionTitle}>{t('admin.additionalImages')}</h2>
             <div className={styles.uploadSection}>
               <div className={styles.uploadInputGroup}>
                 <input
                   type="text"
                   value={additionalImageInput}
                   onChange={(e) => setAdditionalImageInput(e.target.value)}
-                  placeholder="https://example.com/image.jpg or upload from PC"
+                  placeholder={t('admin.imageUrlPlaceholder')}
                   className={`${styles.formInput} ${styles.uploadInput}`}
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
@@ -402,7 +404,7 @@ export default function NewNewsPage() {
                   className={styles.uploadButton}
                 >
                   <Upload className={styles.uploadButtonIcon} />
-                  {uploadingAdditionalImage ? 'Uploading...' : 'Upload Image'}
+                  {uploadingAdditionalImage ? t('admin.uploading') : t('admin.uploadImage')}
                 </button>
                 <button
                   type="button"
@@ -411,7 +413,7 @@ export default function NewNewsPage() {
                   className={styles.addButton}
                 >
                   <Plus className={styles.addButtonIcon} />
-                  Add URL
+                  {t('admin.addUrl')}
                 </button>
               </div>
               {formData.additionalImages.length > 0 && (
@@ -421,7 +423,7 @@ export default function NewNewsPage() {
                       <div className={styles.additionalImageWrapper}>
                         <DefaultImage
                           src={img}
-                          alt={`Additional ${index + 1}`}
+                          alt={`${t('admin.additional')} ${index + 1}`}
                           fill
                           className={styles.additionalImage}
                         />
@@ -448,14 +450,14 @@ export default function NewNewsPage() {
               className={`${styles.button} ${styles.buttonPrimary}`}
             >
               <Save className={styles.buttonIcon} />
-              {saving ? 'Saving...' : 'Save News Item'}
+              {saving ? t('admin.saving') : t('admin.saveNewsItem')}
             </button>
             <button
               type="button"
               onClick={() => router.push('/admin-dashboard')}
               className={`${styles.button} ${styles.buttonSecondary}`}
             >
-              Cancel
+              {t('admin.cancel')}
             </button>
           </div>
         </form>

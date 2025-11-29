@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useLanguage } from '@/hooks/useLanguage'
 import { api, auth } from '@/lib/api'
 import { ArrowLeft, Save, Upload, X } from 'lucide-react'
 import DefaultImage from '@/components/DefaultImage'
@@ -24,6 +25,7 @@ interface TeamMemberFormData {
 
 export default function NewTeamMemberPage() {
   const router = useRouter()
+  const { t, dir } = useLanguage()
   const [loading, setLoading] = useState(true)
   const [authenticated, setAuthenticated] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -90,7 +92,7 @@ export default function NewTeamMemberPage() {
     e.preventDefault()
     
     if (!formData.name.trim() || !formData.role.trim() || !formData.bio.trim()) {
-      alert('Name, role, and bio are required')
+      alert(t('admin.nameRoleBioRequired'))
       return
     }
 
@@ -109,7 +111,7 @@ export default function NewTeamMemberPage() {
       })
       router.push('/admin-dashboard')
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to create team member')
+      alert(err instanceof Error ? err.message : t('admin.failedToCreateTeamMember'))
     } finally {
       setSaving(false)
     }
@@ -136,13 +138,13 @@ export default function NewTeamMemberPage() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file')
+      alert(t('admin.pleaseSelectImage'))
       return
     }
 
     const maxSize = 10 * 1024 * 1024 // 10MB
     if (file.size > maxSize) {
-      alert('Image file is too large. Please use a file smaller than 10MB or upload via URL instead.')
+      alert(t('admin.imageFileTooLarge'))
       return
     }
 
@@ -154,10 +156,10 @@ export default function NewTeamMemberPage() {
         const result = reader.result as string
         if (result) {
           setFormData({ ...formData, profileImage: result })
-          alert('Image uploaded successfully!')
+          alert(t('admin.imageUploadedSuccess'))
         }
       } catch (error) {
-        alert('Error processing image file')
+        alert(t('admin.errorProcessingImage'))
       } finally {
         setUploadingImage(false)
         if (imageInputRef.current) {
@@ -167,7 +169,7 @@ export default function NewTeamMemberPage() {
     }
     
     reader.onerror = () => {
-      alert('Error reading image file')
+      alert(t('admin.errorReadingImage'))
       setUploadingImage(false)
       if (imageInputRef.current) {
         imageInputRef.current.value = ''
@@ -184,13 +186,13 @@ export default function NewTeamMemberPage() {
     // Accept PDF and images
     const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png']
     if (!validTypes.includes(file.type)) {
-      alert('Please select a PDF or image file (JPG, PNG)')
+      alert(t('admin.pleaseSelectPdfOrImage'))
       return
     }
 
     const maxSize = 10 * 1024 * 1024 // 10MB
     if (file.size > maxSize) {
-      alert('CV file is too large. Please use a file smaller than 10MB or upload via URL instead.')
+      alert(t('admin.cvFileTooLarge'))
       return
     }
 
@@ -202,10 +204,10 @@ export default function NewTeamMemberPage() {
         const result = reader.result as string
         if (result) {
           setFormData({ ...formData, cvUrl: result })
-          alert('CV uploaded successfully!')
+          alert(t('admin.cvUploadedSuccess'))
         }
       } catch (error) {
-        alert('Error processing CV file')
+        alert(t('admin.errorProcessingCv'))
       } finally {
         setUploadingCv(false)
         if (cvInputRef.current) {
@@ -215,7 +217,7 @@ export default function NewTeamMemberPage() {
     }
     
     reader.onerror = () => {
-      alert('Error reading CV file')
+      alert(t('admin.errorReadingCv'))
       setUploadingCv(false)
       if (cvInputRef.current) {
         cvInputRef.current.value = ''
@@ -230,67 +232,67 @@ export default function NewTeamMemberPage() {
       <div className={styles.loadingContainer}>
         <div className={styles.loadingContent}>
           <div className={styles.spinner}></div>
-          <p>Loading...</p>
+          <p>{t('admin.loading')}</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} dir={dir}>
       <div className={styles.header}>
         <button
           onClick={() => router.push('/admin-dashboard')}
           className={styles.backButton}
         >
           <ArrowLeft className={styles.backIcon} />
-          Back to Dashboard
+          {t('admin.backToDashboard')}
         </button>
-        <h1 className={styles.title}>Add New Team Member</h1>
+        <h1 className={styles.title}>{t('admin.addNewTeamMember')}</h1>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>
         {/* Basic Information */}
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Basic Information</h2>
+          <h2 className={styles.sectionTitle}>{t('admin.basicInformation')}</h2>
           
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>
-              Name *
+              {t('admin.nameRequired')}
             </label>
             <input
               type="text"
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Enter full name"
+              placeholder={t('admin.enterFullName')}
               className={styles.formInput}
             />
           </div>
 
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>
-              Role / Job Title *
+              {t('admin.roleJobTitle')}
             </label>
             <input
               type="text"
               required
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-              placeholder="e.g., Senior Solar Engineer"
+              placeholder={t('admin.rolePlaceholder')}
               className={styles.formInput}
             />
           </div>
 
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>
-              Short Bio *
+              {t('admin.shortBio')}
             </label>
             <textarea
               required
               value={formData.bio}
               onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-              placeholder="Enter a short biography"
+              placeholder={t('admin.enterShortBio')}
               rows={5}
               className={styles.formTextarea}
             />
@@ -299,14 +301,14 @@ export default function NewTeamMemberPage() {
 
         {/* Profile Image */}
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Profile Image</h2>
+          <h2 className={styles.sectionTitle}>{t('admin.profileImage')}</h2>
           <div className={styles.uploadSection}>
             <div className={styles.uploadInputGroup}>
               <input
                 type="text"
                 value={formData.profileImage}
                 onChange={(e) => handleImageUrlChange(e.target.value)}
-                placeholder="https://example.com/image.jpg or upload from PC"
+                placeholder={t('admin.imageUrlPlaceholder')}
                 className={`${styles.formInput} ${styles.uploadInput}`}
               />
               <input
@@ -323,14 +325,14 @@ export default function NewTeamMemberPage() {
                 className={styles.uploadButton}
               >
                 <Upload className={styles.uploadButtonIcon} />
-                {uploadingImage ? 'Uploading...' : 'Upload Image'}
+                {uploadingImage ? t('admin.uploading') : t('admin.uploadImage')}
               </button>
             </div>
             {imagePreview && (
               <div className={styles.previewContainer}>
                 <DefaultImage
                   src={imagePreview}
-                  alt="Profile preview"
+                  alt={t('admin.profilePreview')}
                   width={200}
                   height={200}
                   className={styles.previewImage}
@@ -344,7 +346,7 @@ export default function NewTeamMemberPage() {
                   className={styles.removeButton}
                 >
                   <X className={styles.removeIcon} />
-                  Remove
+                  {t('admin.remove')}
                 </button>
               </div>
             )}
@@ -353,10 +355,10 @@ export default function NewTeamMemberPage() {
 
         {/* Social Media Links */}
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Social Media Links (Optional)</h2>
+          <h2 className={styles.sectionTitle}>{t('admin.socialMediaLinks')}</h2>
           
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>LinkedIn</label>
+            <label className={styles.formLabel}>{t('admin.linkedin')}</label>
             <input
               type="url"
               value={formData.socialLinks.linkedin}
@@ -364,13 +366,13 @@ export default function NewTeamMemberPage() {
                 ...formData,
                 socialLinks: { ...formData.socialLinks, linkedin: e.target.value }
               })}
-              placeholder="https://linkedin.com/in/username"
+              placeholder={t('admin.linkedinPlaceholder')}
               className={styles.formInput}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Twitter</label>
+            <label className={styles.formLabel}>{t('admin.twitter')}</label>
             <input
               type="url"
               value={formData.socialLinks.twitter}
@@ -378,13 +380,13 @@ export default function NewTeamMemberPage() {
                 ...formData,
                 socialLinks: { ...formData.socialLinks, twitter: e.target.value }
               })}
-              placeholder="https://twitter.com/username"
+              placeholder={t('admin.twitterPlaceholder')}
               className={styles.formInput}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Facebook</label>
+            <label className={styles.formLabel}>{t('admin.facebook')}</label>
             <input
               type="url"
               value={formData.socialLinks.facebook}
@@ -392,13 +394,13 @@ export default function NewTeamMemberPage() {
                 ...formData,
                 socialLinks: { ...formData.socialLinks, facebook: e.target.value }
               })}
-              placeholder="https://facebook.com/username"
+              placeholder={t('admin.facebookPlaceholder')}
               className={styles.formInput}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Instagram</label>
+            <label className={styles.formLabel}>{t('admin.instagram')}</label>
             <input
               type="url"
               value={formData.socialLinks.instagram}
@@ -406,13 +408,13 @@ export default function NewTeamMemberPage() {
                 ...formData,
                 socialLinks: { ...formData.socialLinks, instagram: e.target.value }
               })}
-              placeholder="https://instagram.com/username"
+              placeholder={t('admin.instagramPlaceholder')}
               className={styles.formInput}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Website</label>
+            <label className={styles.formLabel}>{t('admin.website')}</label>
             <input
               type="url"
               value={formData.socialLinks.website}
@@ -420,7 +422,7 @@ export default function NewTeamMemberPage() {
                 ...formData,
                 socialLinks: { ...formData.socialLinks, website: e.target.value }
               })}
-              placeholder="https://example.com"
+              placeholder={t('admin.websitePlaceholder')}
               className={styles.formInput}
             />
           </div>
@@ -428,14 +430,14 @@ export default function NewTeamMemberPage() {
 
         {/* CV */}
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>CV / Resume (Optional)</h2>
+          <h2 className={styles.sectionTitle}>{t('admin.cvResume')}</h2>
           <div className={styles.uploadSection}>
             <div className={styles.uploadInputGroup}>
               <input
                 type="text"
                 value={formData.cvUrl}
                 onChange={(e) => handleCvUrlChange(e.target.value)}
-                placeholder="https://example.com/cv.pdf or upload PDF/image"
+                placeholder={t('admin.cvUrlPlaceholder')}
                 className={`${styles.formInput} ${styles.uploadInput}`}
               />
               <input
@@ -452,13 +454,13 @@ export default function NewTeamMemberPage() {
                 className={styles.uploadButton}
               >
                 <Upload className={styles.uploadButtonIcon} />
-                {uploadingCv ? 'Uploading...' : 'Upload CV'}
+                {uploadingCv ? t('admin.uploading') : t('admin.uploadCv')}
               </button>
             </div>
             {cvPreview && (
               <div className={styles.previewContainer}>
                 <p className={styles.cvPreviewText}>
-                  CV uploaded: {cvPreview.substring(0, 50)}...
+                  {t('admin.cvUploaded')} {cvPreview.substring(0, 50)}...
                 </p>
                 <button
                   type="button"
@@ -469,7 +471,7 @@ export default function NewTeamMemberPage() {
                   className={styles.removeButton}
                 >
                   <X className={styles.removeIcon} />
-                  Remove
+                  {t('admin.remove')}
                 </button>
               </div>
             )}
@@ -484,14 +486,14 @@ export default function NewTeamMemberPage() {
             className={styles.submitButton}
           >
             <Save className={styles.buttonIcon} />
-            {saving ? 'Saving...' : 'Save Team Member'}
+            {saving ? t('admin.saving') : t('admin.saveTeamMember')}
           </button>
           <button
             type="button"
             onClick={() => router.push('/admin-dashboard')}
             className={styles.cancelButton}
           >
-            Cancel
+            {t('admin.cancel')}
           </button>
         </div>
       </form>

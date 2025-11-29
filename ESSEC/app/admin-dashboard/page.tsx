@@ -29,7 +29,7 @@ interface NewsItem {
 
 export default function AdminDashboard() {
   const router = useRouter()
-  const { t } = useLanguage()
+  const { t, dir } = useLanguage()
   const [projects, setProjects] = useState<Project[]>([])
   const [homepageVideos, setHomepageVideos] = useState<HomepageVideo[]>([])
   const [teamMembers, setTeamMembers] = useState<any[]>([])
@@ -90,7 +90,7 @@ export default function AdminDashboard() {
       const data = await api.getProjects()
       setProjects(data)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load projects')
+      setError(err instanceof Error ? err.message : t('admin.failedToLoadProjects'))
     } finally {
       setLoading(false)
     }
@@ -130,14 +130,14 @@ export default function AdminDashboard() {
       const data = await api.getTeamMembers()
       setTeamMembers(data)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load team members')
+      setError(err instanceof Error ? err.message : t('admin.failedToLoadTeam'))
     } finally {
       setLoading(false)
     }
   }
 
   const handleDeleteTeamMember = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this team member?')) {
+    if (!confirm(t('admin.deleteTeamConfirm'))) {
       return
     }
 
@@ -145,7 +145,7 @@ export default function AdminDashboard() {
       await api.deleteTeamMember(id)
       await loadTeamMembers()
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to delete team member')
+      alert(err instanceof Error ? err.message : t('admin.failedToDeleteTeam'))
     }
   }
 
@@ -160,14 +160,14 @@ export default function AdminDashboard() {
       const data = await api.getNews('displayOrder')
       setNewsItems(data)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load news')
+      setError(err instanceof Error ? err.message : t('admin.failedToLoadNews'))
     } finally {
       setLoading(false)
     }
   }
 
   const handleDeleteNews = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this news item?')) {
+    if (!confirm(t('admin.deleteNewsConfirm'))) {
       return
     }
 
@@ -175,7 +175,7 @@ export default function AdminDashboard() {
       await api.deleteNews(id)
       await loadNews()
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to delete news item')
+      alert(err instanceof Error ? err.message : t('admin.failedToDeleteNews'))
     }
   }
 
@@ -219,7 +219,7 @@ export default function AdminDashboard() {
   const handleSaveVideo = async () => {
     // Check if either file or URL is provided
     if (!selectedVideoFile && !videoFormData.videoUrl.trim()) {
-      alert('Please provide a video file or video URL')
+      alert(t('admin.pleaseProvideVideo'))
       return
     }
 
@@ -264,16 +264,16 @@ export default function AdminDashboard() {
         isActive: true
       })
       
-      alert('Video saved successfully! The homepage will update shortly.')
+      alert(t('admin.videoSaved'))
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to save video')
+      alert(err instanceof Error ? err.message : t('admin.failedToSaveVideo'))
     } finally {
       setUploadingVideo(false)
     }
   }
 
   const handleDeleteVideo = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this video?')) {
+    if (!confirm(t('admin.deleteVideoConfirm'))) {
       return
     }
 
@@ -281,7 +281,7 @@ export default function AdminDashboard() {
       await api.deleteHomepageVideo(id)
       await loadHomepageVideos()
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to delete video')
+      alert(err instanceof Error ? err.message : t('admin.failedToDeleteVideo'))
     }
   }
 
@@ -296,9 +296,9 @@ export default function AdminDashboard() {
         window.dispatchEvent(new Event('homepage_video_updated'))
       }
       
-      alert('Video set as active! The homepage will update shortly.')
+      alert(t('admin.videoSetActive'))
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to set active video')
+      alert(err instanceof Error ? err.message : t('admin.failedToSetActive'))
     }
   }
 
@@ -312,7 +312,7 @@ export default function AdminDashboard() {
 
     // Check if it's a video
     if (!file.type.startsWith('video/')) {
-      alert('Please select a video file')
+      alert(t('admin.pleaseSelectVideo'))
       // Reset input
       if (videoInputRef.current) {
         videoInputRef.current.value = ''
@@ -326,12 +326,11 @@ export default function AdminDashboard() {
     if (file.size > maxSize) {
       const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
       alert(
-        `Video file is too large (${fileSizeMB}MB).\n\n` +
-        `Maximum file size is 100MB.\n\n` +
-        `Please:\n` +
-        `1. Compress the video to under 100MB\n` +
-        `2. Upload the video to a hosting service and use the URL instead\n` +
-        `3. Use a smaller video file`
+        `${t('admin.videoFileTooLarge')} (${fileSizeMB}MB).\n\n` +
+        `${t('admin.maxFileSize')}\n\n` +
+        `${t('admin.compressVideo')}\n` +
+        `${t('admin.uploadToHosting')}\n` +
+        `${t('admin.useSmallerFile')}`
       )
       // Reset input
       if (videoInputRef.current) {
@@ -344,7 +343,7 @@ export default function AdminDashboard() {
     setSelectedVideoFile(file)
     // Clear the URL field when a file is selected
     setVideoFormData({ ...videoFormData, videoUrl: '' })
-    alert(`Video file selected: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)}MB)\n\nClick "Save Video" to upload.`)
+    alert(`${t('admin.videoFileSelected')}: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)}MB)\n\n${t('admin.clickSaveToUpload')}`)
     
     // Reset input so same file can be selected again if needed
     if (videoInputRef.current) {
@@ -364,7 +363,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} dir={dir}>
       <div className={styles.dashboardLayout}>
         {/* Mobile Overlay */}
         {sidebarOpen && (
@@ -378,7 +377,7 @@ export default function AdminDashboard() {
         {/* Sidebar */}
         <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : styles.sidebarClosed}`}>
           <div className={styles.sidebarHeader}>
-            {sidebarOpen && <h2 className={styles.sidebarTitle}>Admin Panel</h2>}
+            {sidebarOpen && <h2 className={styles.sidebarTitle}>{t('admin.adminPanel')}</h2>}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className={styles.sidebarToggle}
@@ -399,7 +398,7 @@ export default function AdminDashboard() {
               className={`${styles.sidebarItem} ${activeSection === 'homepage' ? styles.sidebarItemActive : ''}`}
             >
               <Home className={styles.sidebarItemIcon} />
-              {sidebarOpen && <span>Homepage Management</span>}
+              {sidebarOpen && <span>{t('admin.homepageManagement')}</span>}
             </button>
             
             <button
@@ -412,7 +411,7 @@ export default function AdminDashboard() {
               className={`${styles.sidebarItem} ${activeSection === 'projects' ? styles.sidebarItemActive : ''}`}
             >
               <FolderPlus className={styles.sidebarItemIcon} />
-              {sidebarOpen && <span>Projects</span>}
+              {sidebarOpen && <span>{t('admin.projects')}</span>}
             </button>
             
             <button
@@ -425,7 +424,7 @@ export default function AdminDashboard() {
               className={`${styles.sidebarItem} ${activeSection === 'team' ? styles.sidebarItemActive : ''}`}
             >
               <Users className={styles.sidebarItemIcon} />
-              {sidebarOpen && <span>Team Members</span>}
+              {sidebarOpen && <span>{t('admin.teamMembers')}</span>}
             </button>
             
             <button
@@ -438,7 +437,7 @@ export default function AdminDashboard() {
               className={`${styles.sidebarItem} ${activeSection === 'news' ? styles.sidebarItemActive : ''}`}
             >
               <Newspaper className={styles.sidebarItemIcon} />
-              {sidebarOpen && <span>News</span>}
+              {sidebarOpen && <span>{t('admin.news')}</span>}
             </button>
           </nav>
           
@@ -448,7 +447,7 @@ export default function AdminDashboard() {
               className={styles.sidebarItem}
             >
               <LogOut className={styles.sidebarItemIcon} />
-              {sidebarOpen && <span>Logout</span>}
+              {sidebarOpen && <span>{t('admin.logout')}</span>}
             </button>
           </div>
         </aside>
@@ -470,16 +469,16 @@ export default function AdminDashboard() {
             <div className={styles.header}>
               <div className={styles.headerContent}>
                 <h1 className={styles.title}>
-                  {activeSection === 'homepage' ? 'Homepage Management' : activeSection === 'projects' ? 'Projects Management' : activeSection === 'team' ? 'Team Management' : 'News Management'}
+                  {activeSection === 'homepage' ? t('admin.homepageManagement') : activeSection === 'projects' ? t('admin.projectsManagement') : activeSection === 'team' ? t('admin.teamManagement') : t('admin.newsManagement')}
                 </h1>
                 <p className={styles.subtitle}>
                   {activeSection === 'homepage' 
-                    ? 'Manage homepage video and content'
+                    ? t('admin.manageHomepage')
                     : activeSection === 'projects'
                     ? t('admin.manageProjects')
                     : activeSection === 'team'
-                    ? 'Manage team members'
-                    : 'Manage news items'}
+                    ? t('admin.manageTeam')
+                    : t('admin.manageNews')}
                   {adminInfo && (
                     <span className={styles.subtitleSpan}>
                       - {t('admin.loggedInAs')} <span className={styles.subtitleBold}>{adminInfo.name || adminInfo.email}</span>
@@ -504,14 +503,14 @@ export default function AdminDashboard() {
                   <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>
                       <Video className={styles.sectionIcon} />
-                      Homepage Video Management
+                      {t('admin.homepageVideoManagement')}
                     </h2>
                     <button
                       onClick={handleAddVideo}
                       className={`${styles.button} ${styles.buttonPrimary}`}
                     >
                       <Plus className={styles.buttonIcon} />
-                      Add New Video
+                      {t('admin.addNewVideo')}
                     </button>
                   </div>
 
@@ -519,10 +518,10 @@ export default function AdminDashboard() {
                   {showVideoForm && (
                     <div className={styles.videoForm}>
                       <h3 className={styles.formTitle}>
-                        {editingVideo ? 'Edit Video' : 'Add New Video'}
+                        {editingVideo ? t('admin.editVideo') : t('admin.addNewVideo')}
                       </h3>
                       <div className={styles.formGroup}>
-                        <label className={styles.formLabel}>Video URL or File *</label>
+                        <label className={styles.formLabel}>{t('admin.videoUrlOrFile')}</label>
                         <div className={styles.uploadInputGroup}>
                           <input
                             type="text"
@@ -536,7 +535,7 @@ export default function AdminDashboard() {
                             }}
                             disabled={!!selectedVideoFile}
                             className={`${styles.formInput} ${styles.uploadInput}`}
-                            placeholder={selectedVideoFile ? "File selected - clear file to enter URL" : "/video.mp4 or https://example.com/video.mp4 (or upload file up to 100MB)"}
+                            placeholder={selectedVideoFile ? t('admin.fileSelected') : t('admin.videoUrlPlaceholder')}
                           />
                           <input
                             type="file"
@@ -552,12 +551,12 @@ export default function AdminDashboard() {
                             className={`${styles.uploadButton} ${styles.uploadButtonPurple}`}
                           >
                             <Upload className={styles.uploadButtonIcon} />
-                            {uploadingVideo ? 'Uploading...' : 'Select Video File'}
+                            {uploadingVideo ? t('admin.uploading') : t('admin.selectVideoFile')}
                           </button>
                         </div>
                         {selectedVideoFile && (
                           <div style={{ marginTop: '0.5rem', padding: '0.75rem', background: 'rgba(147, 51, 234, 0.1)', borderRadius: '0.5rem', fontSize: '0.875rem' }}>
-                            <strong>Selected file:</strong> {selectedVideoFile.name} ({(selectedVideoFile.size / (1024 * 1024)).toFixed(2)}MB)
+                            <strong>{t('admin.selectedFile')}</strong> {selectedVideoFile.name} ({(selectedVideoFile.size / (1024 * 1024)).toFixed(2)}MB)
                             <button
                               type="button"
                               onClick={() => {
@@ -568,29 +567,29 @@ export default function AdminDashboard() {
                               }}
                               style={{ marginLeft: '1rem', color: 'rgb(147, 51, 234)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}
                             >
-                              Clear
+                              {t('admin.clear')}
                             </button>
                           </div>
                         )}
                       </div>
                       <div className={styles.formGroup}>
-                        <label className={styles.formLabel}>Title (optional)</label>
+                        <label className={styles.formLabel}>{t('admin.titleOptional')}</label>
                         <input
                           type="text"
                           value={videoFormData.title}
                           onChange={(e) => setVideoFormData({ ...videoFormData, title: e.target.value })}
                           className={styles.formInput}
-                          placeholder="Video title"
+                          placeholder={t('admin.videoTitle')}
                         />
                       </div>
                       <div className={styles.formGroup}>
-                        <label className={styles.formLabel}>Subtitle (optional)</label>
+                        <label className={styles.formLabel}>{t('admin.subtitleOptional')}</label>
                         <input
                           type="text"
                           value={videoFormData.subtitle}
                           onChange={(e) => setVideoFormData({ ...videoFormData, subtitle: e.target.value })}
                           className={styles.formInput}
-                          placeholder="Video subtitle"
+                          placeholder={t('admin.videoSubtitle')}
                         />
                       </div>
                       <div className={styles.formGroup}>
@@ -601,7 +600,7 @@ export default function AdminDashboard() {
                             onChange={(e) => setVideoFormData({ ...videoFormData, isActive: e.target.checked })}
                             className={styles.formCheckbox}
                           />
-                          Set as active video (will replace current active video)
+                          {t('admin.setAsActive')}
                         </label>
                       </div>
                       <div className={styles.formActions}>
@@ -610,7 +609,7 @@ export default function AdminDashboard() {
                           className={`${styles.button} ${styles.buttonPrimary}`}
                         >
                           <Check className={styles.buttonIcon} />
-                          {editingVideo ? 'Update Video' : 'Add Video'}
+                          {editingVideo ? t('admin.updateVideo') : t('admin.addVideo')}
                         </button>
                         <button
                           onClick={() => {
@@ -626,7 +625,7 @@ export default function AdminDashboard() {
                           }}
                           className={`${styles.button} ${styles.buttonSecondary}`}
                         >
-                          Cancel
+                          {t('admin.cancel')}
                         </button>
                       </div>
                     </div>
@@ -637,7 +636,7 @@ export default function AdminDashboard() {
                     {homepageVideos.length === 0 ? (
                       <div className={styles.emptyState}>
                         <Video className={styles.emptyIcon} />
-                        <p>No videos added yet. Click "Add New Video" to get started.</p>
+                        <p>{t('admin.noVideos')}</p>
                       </div>
                     ) : (
                       <div className={styles.videosGrid}>
@@ -649,10 +648,10 @@ export default function AdminDashboard() {
                             <div className={styles.videoCardHeader}>
                               <div className={styles.videoCardInfo}>
                                 {video.isActive && (
-                                  <span className={styles.activeBadge}>Active</span>
+                                  <span className={styles.activeBadge}>{t('admin.active')}</span>
                                 )}
                                 <h4 className={styles.videoCardTitle}>
-                                  {video.title || 'Untitled Video'}
+                                  {video.title || t('admin.untitledVideo')}
                                 </h4>
                               </div>
                               <div className={styles.videoCardActions}>
@@ -660,7 +659,7 @@ export default function AdminDashboard() {
                                   <button
                                     onClick={() => handleSetActiveVideo(video.id)}
                                     className={`${styles.actionButton} ${styles.actionButtonGreen}`}
-                                    title="Set as Active"
+                                    title={t('admin.setActive')}
                                   >
                                     <Check className={styles.actionIcon} />
                                   </button>
@@ -668,14 +667,14 @@ export default function AdminDashboard() {
                                 <button
                                   onClick={() => handleEditVideo(video)}
                                   className={`${styles.actionButton} ${styles.actionButtonBlue}`}
-                                  title="Edit"
+                                  title={t('admin.edit')}
                                 >
                                   <Edit className={styles.actionIcon} />
                                 </button>
                                 <button
                                   onClick={() => handleDeleteVideo(video.id)}
                                   className={`${styles.actionButton} ${styles.actionButtonRed}`}
-                                  title="Delete"
+                                  title={t('admin.delete')}
                                 >
                                   <Trash2 className={styles.actionIcon} />
                                 </button>
@@ -703,14 +702,14 @@ export default function AdminDashboard() {
                   <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>
                       <Users className={styles.sectionIcon} />
-                      Team Members Management
+                      {t('admin.teamMembersManagement')}
                     </h2>
                     <button
                       onClick={handleAddNew}
                       className={`${styles.button} ${styles.buttonPrimary}`}
                     >
                       <Plus className={styles.buttonIcon} />
-                      Add New Team Member
+                      {t('admin.addNewTeamMember')}
                     </button>
                   </div>
                 </div>
@@ -722,16 +721,16 @@ export default function AdminDashboard() {
                       <thead className={styles.tableHead}>
                         <tr className={styles.tableRow}>
                           <th className={styles.tableHeader}>
-                            Name
+                            {t('admin.name')}
                           </th>
                           <th className={styles.tableHeader}>
-                            Role
+                            {t('admin.role')}
                           </th>
                           <th className={styles.tableHeader}>
-                            Display Order
+                            {t('admin.displayOrder')}
                           </th>
                           <th className={`${styles.tableHeader} ${styles.tableHeaderRight}`}>
-                            Actions
+                            {t('admin.actions')}
                           </th>
                         </tr>
                       </thead>
@@ -739,7 +738,7 @@ export default function AdminDashboard() {
                         {teamMembers.length === 0 ? (
                           <tr key="empty-team" className={styles.tableRow}>
                             <td colSpan={4} className={`${styles.tableCell} ${styles.tableCellCenter}`}>
-                              No team members added yet. Click "Add New Team Member" to get started.
+                              {t('admin.noTeamMembers')}
                             </td>
                           </tr>
                         ) : (
@@ -759,14 +758,14 @@ export default function AdminDashboard() {
                                   <button
                                     onClick={() => handleEditTeamMember(member)}
                                     className={`${styles.actionButton} ${styles.actionButtonGreen}`}
-                                    title="Edit"
+                                    title={t('admin.edit')}
                                   >
                                     <Edit className={styles.actionIcon} />
                                   </button>
                                   <button
                                     onClick={() => handleDeleteTeamMember(member.id)}
                                     className={`${styles.actionButton} ${styles.actionButtonRed}`}
-                                    title="Delete"
+                                    title={t('admin.delete')}
                                   >
                                     <Trash2 className={styles.actionIcon} />
                                   </button>
@@ -789,7 +788,7 @@ export default function AdminDashboard() {
                   <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>
                       <FolderPlus className={styles.sectionIcon} />
-                      Projects Management
+                      {t('admin.projectsManagement')}
                     </h2>
                     <button
                       onClick={handleAddNew}
@@ -895,24 +894,24 @@ export default function AdminDashboard() {
                         </div>
                         <div className={styles.modalBody}>
                           <div className={styles.modalField}>
-                            <strong className={styles.modalFieldLabel}>Location:</strong>{' '}
+                            <strong className={styles.modalFieldLabel}>{t('admin.locationLabel')}</strong>{' '}
                             <span className={styles.modalFieldValue}>{viewingProject.location}</span>
                           </div>
                           <div className={styles.modalField}>
-                            <strong className={styles.modalFieldLabel}>Year:</strong>{' '}
+                            <strong className={styles.modalFieldLabel}>{t('admin.yearLabel')}</strong>{' '}
                             <span className={styles.modalFieldValue}>{viewingProject.year}</span>
                           </div>
                           <div className={styles.modalField}>
-                            <strong className={styles.modalFieldLabel}>Duration:</strong>{' '}
+                            <strong className={styles.modalFieldLabel}>{t('admin.durationLabel')}</strong>{' '}
                             <span className={styles.modalFieldValue}>{viewingProject.duration}</span>
                           </div>
                           <div className={styles.modalField}>
-                            <strong className={styles.modalFieldLabel}>Description:</strong>
+                            <strong className={styles.modalFieldLabel}>{t('admin.descriptionLabel')}</strong>
                             <p className={styles.modalFieldValue}>{viewingProject.description}</p>
                           </div>
                           {viewingProject.challenges.length > 0 && (
                             <div className={styles.modalField}>
-                              <strong className={styles.modalFieldLabel}>Challenges:</strong>
+                              <strong className={styles.modalFieldLabel}>{t('admin.challengesLabel')}</strong>
                               <ul className={styles.modalList}>
                                 {viewingProject.challenges.map((challenge, idx) => (
                                   <li key={idx}>{challenge}</li>
@@ -922,7 +921,7 @@ export default function AdminDashboard() {
                           )}
                           {viewingProject.executionMethods.length > 0 && (
                             <div className={styles.modalField}>
-                              <strong className={styles.modalFieldLabel}>Execution Methods:</strong>
+                              <strong className={styles.modalFieldLabel}>{t('admin.executionMethodsLabel')}</strong>
                               <ul className={styles.modalList}>
                                 {viewingProject.executionMethods.map((method, idx) => (
                                   <li key={idx}>{method}</li>
@@ -932,7 +931,7 @@ export default function AdminDashboard() {
                           )}
                           {viewingProject.results.length > 0 && (
                             <div className={styles.modalField}>
-                              <strong className={styles.modalFieldLabel}>Results:</strong>
+                              <strong className={styles.modalFieldLabel}>{t('admin.resultsLabel')}</strong>
                               <ul className={styles.modalList}>
                                 {viewingProject.results.map((result, idx) => (
                                   <li key={idx}>{result}</li>
@@ -942,7 +941,7 @@ export default function AdminDashboard() {
                           )}
                           {viewingProject.technicalNotes && (
                             <div className={styles.modalField}>
-                              <strong className={styles.modalFieldLabel}>Technical Notes:</strong>
+                              <strong className={styles.modalFieldLabel}>{t('admin.technicalNotesLabel')}</strong>
                               <p className={styles.modalFieldValue}>{viewingProject.technicalNotes}</p>
                             </div>
                           )}
@@ -961,14 +960,14 @@ export default function AdminDashboard() {
                   <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>
                       <Newspaper className={styles.sectionIcon} />
-                      News Management
+                      {t('admin.newsManagement')}
                     </h2>
                     <button
                       onClick={handleAddNew}
                       className={`${styles.button} ${styles.buttonPrimary}`}
                     >
                       <Plus className={styles.buttonIcon} />
-                      Add New News
+                      {t('admin.addNewNews')}
                     </button>
                   </div>
                 </div>
@@ -980,16 +979,16 @@ export default function AdminDashboard() {
                       <thead className={styles.tableHead}>
                         <tr className={styles.tableRow}>
                           <th className={styles.tableHeader}>
-                            Title
+                            {t('admin.title')}
                           </th>
                           <th className={styles.tableHeader}>
-                            Publication Date
+                            {t('admin.publicationDate')}
                           </th>
                           <th className={styles.tableHeader}>
-                            Display Order
+                            {t('admin.displayOrder')}
                           </th>
                           <th className={`${styles.tableHeader} ${styles.tableHeaderRight}`}>
-                            Actions
+                            {t('admin.actions')}
                           </th>
                         </tr>
                       </thead>
@@ -997,7 +996,7 @@ export default function AdminDashboard() {
                         {newsItems.length === 0 ? (
                           <tr key="empty-news" className={styles.tableRow}>
                             <td colSpan={4} className={`${styles.tableCell} ${styles.tableCellCenter}`}>
-                              No news items added yet. Click "Add New News" to get started.
+                              {t('admin.noNews')}
                             </td>
                           </tr>
                         ) : (
@@ -1017,14 +1016,14 @@ export default function AdminDashboard() {
                                   <button
                                     onClick={() => handleEditNews(news)}
                                     className={`${styles.actionButton} ${styles.actionButtonGreen}`}
-                                    title="Edit"
+                                    title={t('admin.edit')}
                                   >
                                     <Edit className={styles.actionIcon} />
                                   </button>
                                   <button
                                     onClick={() => handleDeleteNews(news.id)}
                                     className={`${styles.actionButton} ${styles.actionButtonRed}`}
-                                    title="Delete"
+                                    title={t('admin.delete')}
                                   >
                                     <Trash2 className={styles.actionIcon} />
                                   </button>
