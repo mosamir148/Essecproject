@@ -163,11 +163,50 @@ export const api = {
   },
 
   // Create a new project
-  async createProject(project: Omit<Project, 'id'>): Promise<Project> {
+  async createProject(project: Omit<Project, 'id'> & { videoFile?: File }): Promise<Project> {
+    const formData = new FormData()
+    
+    // If a video file is provided, add it to FormData
+    if (project.videoFile) {
+      formData.append('video', project.videoFile)
+      // Remove videoFile from project data
+      const { videoFile, ...projectData } = project
+      project = projectData
+    }
+    
+    // Add all project fields to FormData
+    formData.append('name', project.name || '')
+    formData.append('location', project.location || '')
+    formData.append('year', (project.year || new Date().getFullYear()).toString())
+    formData.append('duration', project.duration || '')
+    formData.append('image', project.image || '')
+    formData.append('description', project.description || '')
+    formData.append('technicalNotes', project.technicalNotes || '')
+    
+    // Add video URL if no file was uploaded
+    if (!project.videoFile && project.video) {
+      formData.append('video', project.video)
+    } else if (!project.videoFile) {
+      formData.append('video', '')
+    }
+    
+    // Add arrays as JSON strings
+    formData.append('challenges', JSON.stringify(project.challenges || []))
+    formData.append('executionMethods', JSON.stringify(project.executionMethods || []))
+    formData.append('results', JSON.stringify(project.results || []))
+    formData.append('gallery', JSON.stringify(project.gallery || []))
+
+    const token = auth.getToken()
+    const headers: HeadersInit = {}
+    if (token) {
+      headers.Authorization = `Bearer ${token}`
+    }
+    // Don't set Content-Type for FormData, browser will set it with boundary
+
     const response = await fetch(`${API_BASE_URL}/projects`, {
       method: 'POST',
-      headers: auth.getAuthHeaders(),
-      body: JSON.stringify(project),
+      headers: headers,
+      body: formData,
     })
     if (!response.ok) {
       const error = await response.json()
@@ -179,11 +218,46 @@ export const api = {
   },
 
   // Update a project
-  async updateProject(id: string, project: Partial<Project>): Promise<Project> {
+  async updateProject(id: string, project: Partial<Project> & { videoFile?: File }): Promise<Project> {
+    const formData = new FormData()
+    
+    // If a video file is provided, add it to FormData
+    if (project.videoFile) {
+      formData.append('video', project.videoFile)
+      // Remove videoFile from project data
+      const { videoFile, ...projectData } = project
+      project = projectData
+    } else if (project.video !== undefined) {
+      // If video URL is provided, add it as a field
+      formData.append('video', project.video)
+    }
+    
+    // Add all project fields to FormData if they are defined
+    if (project.name !== undefined) formData.append('name', project.name)
+    if (project.location !== undefined) formData.append('location', project.location)
+    if (project.year !== undefined) formData.append('year', project.year.toString())
+    if (project.duration !== undefined) formData.append('duration', project.duration)
+    if (project.image !== undefined) formData.append('image', project.image)
+    if (project.description !== undefined) formData.append('description', project.description)
+    if (project.technicalNotes !== undefined) formData.append('technicalNotes', project.technicalNotes)
+    
+    // Add arrays as JSON strings if they are defined
+    if (project.challenges !== undefined) formData.append('challenges', JSON.stringify(project.challenges))
+    if (project.executionMethods !== undefined) formData.append('executionMethods', JSON.stringify(project.executionMethods))
+    if (project.results !== undefined) formData.append('results', JSON.stringify(project.results))
+    if (project.gallery !== undefined) formData.append('gallery', JSON.stringify(project.gallery))
+
+    const token = auth.getToken()
+    const headers: HeadersInit = {}
+    if (token) {
+      headers.Authorization = `Bearer ${token}`
+    }
+    // Don't set Content-Type for FormData, browser will set it with boundary
+
     const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
       method: 'PUT',
-      headers: auth.getAuthHeaders(),
-      body: JSON.stringify(project),
+      headers: headers,
+      body: formData,
     })
     if (!response.ok) {
       const error = await response.json().catch(() => ({ error: 'Failed to update project' }))
@@ -261,11 +335,32 @@ export const api = {
   },
 
   // Create a new homepage video (protected)
-  async createHomepageVideo(video: { videoUrl: string; title?: string; subtitle?: string; isActive?: boolean }): Promise<any> {
+  async createHomepageVideo(video: { videoUrl?: string; videoFile?: File; title?: string; subtitle?: string; isActive?: boolean }): Promise<any> {
+    const formData = new FormData()
+    
+    // If a file is provided, add it to FormData
+    if (video.videoFile) {
+      formData.append('video', video.videoFile)
+    } else if (video.videoUrl) {
+      // If URL is provided, add it as a field
+      formData.append('videoUrl', video.videoUrl)
+    }
+    
+    if (video.title !== undefined) formData.append('title', video.title)
+    if (video.subtitle !== undefined) formData.append('subtitle', video.subtitle)
+    if (video.isActive !== undefined) formData.append('isActive', video.isActive.toString())
+
+    const token = auth.getToken()
+    const headers: HeadersInit = {}
+    if (token) {
+      headers.Authorization = `Bearer ${token}`
+    }
+    // Don't set Content-Type for FormData, browser will set it with boundary
+
     const response = await fetch(`${API_BASE_URL}/homepage-video`, {
       method: 'POST',
-      headers: auth.getAuthHeaders(),
-      body: JSON.stringify(video),
+      headers: headers,
+      body: formData,
     })
     if (!response.ok) {
       const error = await response.json()
@@ -275,11 +370,32 @@ export const api = {
   },
 
   // Update a homepage video (protected)
-  async updateHomepageVideo(id: string, video: Partial<{ videoUrl: string; title: string; subtitle: string; isActive: boolean }>): Promise<any> {
+  async updateHomepageVideo(id: string, video: Partial<{ videoUrl: string; videoFile?: File; title: string; subtitle: string; isActive: boolean }>): Promise<any> {
+    const formData = new FormData()
+    
+    // If a file is provided, add it to FormData
+    if (video.videoFile) {
+      formData.append('video', video.videoFile)
+    } else if (video.videoUrl !== undefined) {
+      // If URL is provided, add it as a field
+      formData.append('videoUrl', video.videoUrl)
+    }
+    
+    if (video.title !== undefined) formData.append('title', video.title)
+    if (video.subtitle !== undefined) formData.append('subtitle', video.subtitle)
+    if (video.isActive !== undefined) formData.append('isActive', video.isActive.toString())
+
+    const token = auth.getToken()
+    const headers: HeadersInit = {}
+    if (token) {
+      headers.Authorization = `Bearer ${token}`
+    }
+    // Don't set Content-Type for FormData, browser will set it with boundary
+
     const response = await fetch(`${API_BASE_URL}/homepage-video/${id}`, {
       method: 'PUT',
-      headers: auth.getAuthHeaders(),
-      body: JSON.stringify(video),
+      headers: headers,
+      body: formData,
     })
     if (!response.ok) {
       const error = await response.json().catch(() => ({ error: 'Failed to update homepage video' }))

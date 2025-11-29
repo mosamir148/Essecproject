@@ -43,6 +43,7 @@ export default function AdminDashboard() {
   const [showVideoForm, setShowVideoForm] = useState(false)
   const [uploadingVideo, setUploadingVideo] = useState(false)
   const videoInputRef = useRef<HTMLInputElement>(null)
+  const [selectedVideoFile, setSelectedVideoFile] = useState<File | null>(null)
   const [videoFormData, setVideoFormData] = useState({
     videoUrl: '',
     title: '',
@@ -194,6 +195,7 @@ export default function AdminDashboard() {
   const handleAddVideo = () => {
     setEditingVideo(null)
     setShowVideoForm(true)
+    setSelectedVideoFile(null)
     setVideoFormData({
       videoUrl: '',
       title: '',
@@ -205,6 +207,7 @@ export default function AdminDashboard() {
   const handleEditVideo = (video: HomepageVideo) => {
     setEditingVideo(video)
     setShowVideoForm(true)
+    setSelectedVideoFile(null)
     setVideoFormData({
       videoUrl: video.videoUrl,
       title: video.title || '',
@@ -214,16 +217,32 @@ export default function AdminDashboard() {
   }
 
   const handleSaveVideo = async () => {
-    if (!videoFormData.videoUrl.trim()) {
-      alert('Video URL is required')
+    // Check if either file or URL is provided
+    if (!selectedVideoFile && !videoFormData.videoUrl.trim()) {
+      alert('Please provide a video file or video URL')
       return
     }
 
     try {
-      if (editingVideo) {
-        await api.updateHomepageVideo(editingVideo.id, videoFormData)
+      setUploadingVideo(true)
+      
+      const videoData: any = {
+        title: videoFormData.title,
+        subtitle: videoFormData.subtitle,
+        isActive: videoFormData.isActive
+      }
+
+      // If a file is selected, send it; otherwise send the URL
+      if (selectedVideoFile) {
+        videoData.videoFile = selectedVideoFile
       } else {
-        await api.createHomepageVideo(videoFormData)
+        videoData.videoUrl = videoFormData.videoUrl.trim()
+      }
+
+      if (editingVideo) {
+        await api.updateHomepageVideo(editingVideo.id, videoData)
+      } else {
+        await api.createHomepageVideo(videoData)
       }
       await loadHomepageVideos()
       
@@ -237,6 +256,7 @@ export default function AdminDashboard() {
       
       setEditingVideo(null)
       setShowVideoForm(false)
+      setSelectedVideoFile(null)
       setVideoFormData({
         videoUrl: '',
         title: '',
@@ -247,6 +267,8 @@ export default function AdminDashboard() {
       alert('Video saved successfully! The homepage will update shortly.')
     } catch (err) {
       alert(err instanceof Error ? err.message : 'Failed to save video')
+    } finally {
+      setUploadingVideo(false)
     }
   }
 
@@ -298,23 +320,18 @@ export default function AdminDashboard() {
       return
     }
 
-    // Check file size - FileReader has browser-specific limits (~17.8MB)
-    // The error "offset out of range" occurs at approximately 17825792 bytes (~17MB)
-    // We'll block files over 17MB to prevent this error
-    const fileReaderMaxSize = 17 * 1024 * 1024 // 17MB - hard limit to prevent FileReader errors
-    const maxSize = 50 * 1024 * 1024 // 50MB - theoretical max for URL uploads
+    // Check file size - 100MB limit (backend limit)
+    const maxSize = 100 * 1024 * 1024 // 100MB
     
-    // Hard block for files that will cause FileReader errors
-    if (file.size > fileReaderMaxSize) {
+    if (file.size > maxSize) {
       const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
       alert(
-        `Video file is too large for direct upload (${fileSizeMB}MB).\n\n` +
-        `Files over 17MB will cause "offset out of range" errors due to browser limitations.\n\n` +
-        `Please use one of these options:\n` +
-        `1. Compress the video to under 17MB\n` +
+        `Video file is too large (${fileSizeMB}MB).\n\n` +
+        `Maximum file size is 100MB.\n\n` +
+        `Please:\n` +
+        `1. Compress the video to under 100MB\n` +
         `2. Upload the video to a hosting service and use the URL instead\n` +
-        `3. Use a smaller video file\n\n` +
-        `For best results, keep files under 15MB for direct upload.`
+        `3. Use a smaller video file`
       )
       // Reset input
       if (videoInputRef.current) {
@@ -322,106 +339,16 @@ export default function AdminDashboard() {
       }
       return
     }
-    
-    // Warn about potential issues for files over 15MB
-    if (file.size > 15 * 1024 * 1024) {
-      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
-      const proceed = confirm(
-        `Warning: This video file is ${fileSizeMB}MB.\n\n` +
-        `Files over 15MB are close to browser limits and may cause errors.\n\n` +
-        `For best results:\n` +
-        `1. Use a file under 15MB (recommended)\n` +
-        `2. Compress your video file\n` +
-        `3. Upload via URL instead (best for large files)\n\n` +
-        `Would you like to continue anyway, or cancel and use a URL?`
-      )
-      
-      if (!proceed) {
-        // Reset input
-        if (videoInputRef.current) {
-          videoInputRef.current.value = ''
-        }
-        return
-      }
-    }
 
-    setUploadingVideo(true)
-    const reader = new FileReader()
+    // Store the file directly - no need for FileReader
+    setSelectedVideoFile(file)
+    // Clear the URL field when a file is selected
+    setVideoFormData({ ...videoFormData, videoUrl: '' })
+    alert(`Video file selected: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)}MB)\n\nClick "Save Video" to upload.`)
     
-    // Enhanced error handling for FileReader offset errors
-    reader.onerror = (event) => {
-      console.error('FileReader error:', event)
-      const error = (event.target as FileReader)?.error
-      const errorMessage = error?.message || 'Unknown error'
-      
-      // Check for specific offset/range errors
-      if (errorMessage.includes('offset') || errorMessage.includes('range') || errorMessage.includes('out of range')) {
-        alert(`Video file is too large to process (${(file.size / (1024 * 1024)).toFixed(2)}MB).\n\nThe browser cannot handle this file size.\n\nPlease:\n1. Use a smaller file (try under 15MB)\n2. Compress your video file\n3. Upload via URL instead (recommended for large files)`)
-      } else {
-        alert(`Error reading video file: ${errorMessage}\n\nPlease try a smaller file or use a URL instead.`)
-      }
-      setUploadingVideo(false)
-      // Reset input
-      if (videoInputRef.current) {
-        videoInputRef.current.value = ''
-      }
-    }
-    
-    reader.onabort = () => {
-      alert('Video upload was cancelled.')
-      setUploadingVideo(false)
-      // Reset input
-      if (videoInputRef.current) {
-        videoInputRef.current.value = ''
-      }
-    }
-    
-    try {
-      reader.onloadend = () => {
-        try {
-          const result = reader.result as string
-          if (result) {
-            setVideoFormData({ ...videoFormData, videoUrl: result })
-            alert('Video uploaded successfully!')
-          } else {
-            throw new Error('Empty result from FileReader')
-          }
-        } catch (error) {
-          console.error('Error processing video:', error)
-          const errorMessage = error instanceof Error ? error.message : String(error)
-          
-          // Check for offset errors in processing
-          if (errorMessage.includes('offset') || errorMessage.includes('range') || errorMessage.includes('out of range')) {
-            alert(`Video file is too large to process (${(file.size / (1024 * 1024)).toFixed(2)}MB).\n\nThe browser cannot handle this file size.\n\nPlease:\n1. Use a smaller file (try under 15MB)\n2. Compress your video file\n3. Upload via URL instead (recommended for large files)`)
-          } else {
-            alert(`Error processing video file: ${errorMessage}\n\nPlease try a smaller file or use a URL instead.`)
-          }
-        } finally {
-          setUploadingVideo(false)
-          // Reset input so same file can be selected again
-          if (videoInputRef.current) {
-            videoInputRef.current.value = ''
-          }
-        }
-      }
-      
-      // Attempt to read the file
-      reader.readAsDataURL(file)
-    } catch (error) {
-      console.error('Error reading video file:', error)
-      const errorMessage = error instanceof Error ? error.message : String(error)
-      
-      // Check for offset errors
-      if (errorMessage.includes('offset') || errorMessage.includes('range') || errorMessage.includes('out of range')) {
-        alert(`Video file is too large to process (${(file.size / (1024 * 1024)).toFixed(2)}MB).\n\nThe browser cannot handle this file size.\n\nPlease:\n1. Use a smaller file (try under 15MB)\n2. Compress your video file\n3. Upload via URL instead (recommended for large files)`)
-      } else {
-        alert(`Error reading video file: ${errorMessage}\n\nPlease try a smaller file or use a URL instead.`)
-      }
-      setUploadingVideo(false)
-      // Reset input
-      if (videoInputRef.current) {
-        videoInputRef.current.value = ''
-      }
+    // Reset input so same file can be selected again if needed
+    if (videoInputRef.current) {
+      videoInputRef.current.value = ''
     }
   }
 
@@ -595,14 +522,21 @@ export default function AdminDashboard() {
                         {editingVideo ? 'Edit Video' : 'Add New Video'}
                       </h3>
                       <div className={styles.formGroup}>
-                        <label className={styles.formLabel}>Video URL *</label>
+                        <label className={styles.formLabel}>Video URL or File *</label>
                         <div className={styles.uploadInputGroup}>
                           <input
                             type="text"
                             value={videoFormData.videoUrl}
-                            onChange={(e) => setVideoFormData({ ...videoFormData, videoUrl: e.target.value })}
+                            onChange={(e) => {
+                              setVideoFormData({ ...videoFormData, videoUrl: e.target.value })
+                              // Clear selected file when URL is entered
+                              if (e.target.value.trim()) {
+                                setSelectedVideoFile(null)
+                              }
+                            }}
+                            disabled={!!selectedVideoFile}
                             className={`${styles.formInput} ${styles.uploadInput}`}
-                            placeholder="/video.mp4 or https://example.com/video.mp4 (or upload file up to 50MB)"
+                            placeholder={selectedVideoFile ? "File selected - clear file to enter URL" : "/video.mp4 or https://example.com/video.mp4 (or upload file up to 100MB)"}
                           />
                           <input
                             type="file"
@@ -618,9 +552,26 @@ export default function AdminDashboard() {
                             className={`${styles.uploadButton} ${styles.uploadButtonPurple}`}
                           >
                             <Upload className={styles.uploadButtonIcon} />
-                            {uploadingVideo ? 'Uploading...' : 'Upload Video'}
+                            {uploadingVideo ? 'Uploading...' : 'Select Video File'}
                           </button>
                         </div>
+                        {selectedVideoFile && (
+                          <div style={{ marginTop: '0.5rem', padding: '0.75rem', background: 'rgba(147, 51, 234, 0.1)', borderRadius: '0.5rem', fontSize: '0.875rem' }}>
+                            <strong>Selected file:</strong> {selectedVideoFile.name} ({(selectedVideoFile.size / (1024 * 1024)).toFixed(2)}MB)
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedVideoFile(null)
+                                if (videoInputRef.current) {
+                                  videoInputRef.current.value = ''
+                                }
+                              }}
+                              style={{ marginLeft: '1rem', color: 'rgb(147, 51, 234)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}
+                            >
+                              Clear
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <div className={styles.formGroup}>
                         <label className={styles.formLabel}>Title (optional)</label>
@@ -665,6 +616,7 @@ export default function AdminDashboard() {
                           onClick={() => {
                             setEditingVideo(null)
                             setShowVideoForm(false)
+                            setSelectedVideoFile(null)
                             setVideoFormData({
                               videoUrl: '',
                               title: '',

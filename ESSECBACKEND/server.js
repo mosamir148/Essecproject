@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const compression = require('compression');
+const path = require('path');
+const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
@@ -14,6 +16,16 @@ app.use(cors());
 // Set to 100MB to handle large base64-encoded videos safely
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
+
+// Serve static files from videos folder
+// Calculate path to ESSEC/public/videos relative to backend
+const videosPath = path.join(__dirname, '..', 'ESSEC', 'public', 'videos');
+// Ensure videos directory exists
+if (!fs.existsSync(videosPath)) {
+  fs.mkdirSync(videosPath, { recursive: true });
+}
+// Serve videos as static files
+app.use('/videos', express.static(videosPath));
 
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/essec_projects';

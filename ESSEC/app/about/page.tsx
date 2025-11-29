@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useLanguage } from '@/hooks/useLanguage'
 import { api } from '@/lib/api'
 import DefaultImage from '@/components/DefaultImage'
+import Link from 'next/link'
 import { Award, Users, Calendar, Briefcase, UserCog } from 'lucide-react'
 import styles from './about.module.css'
 
@@ -213,8 +214,9 @@ export default function AboutPage() {
           ) : (
             <div className={styles.teamGrid}>
               {teamMembers.map((member) => (
-                <div
+                <Link
                   key={member.id}
+                  href={`/team/${member.id}`}
                   className={styles.teamCard}
                 >
                   <div className={styles.teamCardImage}>
@@ -246,6 +248,7 @@ export default function AboutPage() {
                             rel="noopener noreferrer"
                             className={styles.socialLink}
                             aria-label="LinkedIn"
+                            onClick={(e) => e.stopPropagation()}
                           >
                             LinkedIn
                           </a>
@@ -257,6 +260,7 @@ export default function AboutPage() {
                             rel="noopener noreferrer"
                             className={styles.socialLink}
                             aria-label="Twitter"
+                            onClick={(e) => e.stopPropagation()}
                           >
                             Twitter
                           </a>
@@ -268,6 +272,7 @@ export default function AboutPage() {
                             rel="noopener noreferrer"
                             className={styles.socialLink}
                             aria-label="Website"
+                            onClick={(e) => e.stopPropagation()}
                           >
                             Website
                           </a>
@@ -275,7 +280,7 @@ export default function AboutPage() {
                       </div>
                     )}
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

@@ -35,6 +35,7 @@ export default function NewProjectPage() {
   const [galleryInput, setGalleryInput] = useState('')
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [videoPreview, setVideoPreview] = useState<string | null>(null)
+  const [selectedVideoFile, setSelectedVideoFile] = useState<File | null>(null)
   const imageInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
   const galleryInputRef = useRef<HTMLInputElement>(null)
@@ -85,7 +86,19 @@ export default function NewProjectPage() {
     setSaving(true)
 
     try {
-      await api.createProject(formData as Omit<Project, 'id'>)
+      // Prepare project data with video file if selected
+      const projectData: Omit<Project, 'id'> & { videoFile?: File } = {
+        ...formData,
+      } as Omit<Project, 'id'> & { videoFile?: File }
+      
+      // If a video file was selected, include it and clear the video URL
+      if (selectedVideoFile) {
+        projectData.videoFile = selectedVideoFile
+        // Don't send video URL if we're uploading a file
+        projectData.video = ''
+      }
+      
+      await api.createProject(projectData)
       router.push('/admin-dashboard')
     } catch (err) {
       alert(err instanceof Error ? err.message : t('admin.error'))
@@ -121,6 +134,14 @@ export default function NewProjectPage() {
 
   const handleVideoUrlChange = (url: string) => {
     setFormData({ ...formData, video: url })
+    // Clear the selected file when URL is entered
+    if (selectedVideoFile) {
+      setSelectedVideoFile(null)
+      // Revoke the object URL to free memory
+      if (videoPreview && videoPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(videoPreview)
+      }
+    }
   }
 
   const handleImageFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -180,84 +201,44 @@ export default function NewProjectPage() {
     // Check if it's a video
     if (!file.type.startsWith('video/')) {
       alert('Please select a video file')
-      return
-    }
-
-    // Check file size - FileReader has browser-specific limits (~17.8MB)
-    // The error "offset out of range" occurs at approximately 17825792 bytes (~17MB)
-    // We'll block files over 17MB to prevent this error
-    const fileReaderMaxSize = 17 * 1024 * 1024 // 17MB - hard limit to prevent FileReader errors
-    const maxSize = 50 * 1024 * 1024 // 50MB - theoretical max for URL uploads
-    
-    // Hard block for files that will cause FileReader errors
-    if (file.size > fileReaderMaxSize) {
-      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
-      alert(
-        `Video file is too large for direct upload (${fileSizeMB}MB).\n\n` +
-        `Files over 17MB will cause "offset out of range" errors due to browser limitations.\n\n` +
-        `Please use one of these options:\n` +
-        `1. Compress the video to under 17MB\n` +
-        `2. Upload the video to a hosting service and use the URL instead\n` +
-        `3. Use a smaller video file\n\n` +
-        `For best results, keep files under 15MB for direct upload.`
-      )
+      // Reset input
       if (videoInputRef.current) {
         videoInputRef.current.value = ''
       }
       return
     }
+
+    // Check file size - 100MB limit (backend limit)
+    const maxSize = 100 * 1024 * 1024 // 100MB
     
-    // Warn about potential issues for files over 15MB
-    if (file.size > 15 * 1024 * 1024) {
+    if (file.size > maxSize) {
       const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
-      const proceed = confirm(
-        `Warning: This video file is ${fileSizeMB}MB.\n\n` +
-        `Files over 15MB are close to browser limits and may cause errors.\n\n` +
-        `For best results:\n` +
-        `1. Use a file under 15MB (recommended)\n` +
-        `2. Compress your video file\n` +
-        `3. Upload via URL instead (best for large files)\n\n` +
-        `Would you like to continue anyway, or cancel and use a URL?`
+      alert(
+        `Video file is too large (${fileSizeMB}MB).\n\n` +
+        `Maximum file size is 100MB.\n\n` +
+        `Please:\n` +
+        `1. Compress the video to under 100MB\n` +
+        `2. Upload the video to a hosting service and use the URL instead\n` +
+        `3. Use a smaller video file`
       )
-      
-      if (!proceed) {
-        if (videoInputRef.current) {
-          videoInputRef.current.value = ''
-        }
-        return
+      // Reset input
+      if (videoInputRef.current) {
+        videoInputRef.current.value = ''
       }
+      return
     }
 
-    setUploadingVideo(true)
-    const reader = new FileReader()
+    // Store the file directly - no need for FileReader
+    setSelectedVideoFile(file)
+    // Clear the URL field when a file is selected
+    setFormData({ ...formData, video: '' })
+    // Create a preview URL for the video
+    const previewUrl = URL.createObjectURL(file)
+    setVideoPreview(previewUrl)
     
-    try {
-      reader.onloadend = () => {
-        try {
-          const result = reader.result as string
-          if (result) {
-            handleVideoUrlChange(result)
-          }
-        } catch (error) {
-          console.error('Error processing video:', error)
-          alert('Error processing video file. Please try a smaller file or use a URL instead.')
-        } finally {
-          setUploadingVideo(false)
-        }
-      }
-      reader.onerror = () => {
-        alert('Error reading video file. Please try a smaller file or use a URL instead.')
-        setUploadingVideo(false)
-      }
-      reader.onabort = () => {
-        alert('Video upload was cancelled.')
-        setUploadingVideo(false)
-      }
-      reader.readAsDataURL(file)
-    } catch (error) {
-      console.error('Error reading video file:', error)
-      alert('Error reading video file. Please try a smaller file or use a URL instead.')
-      setUploadingVideo(false)
+    // Reset input so same file can be selected again if needed
+    if (videoInputRef.current) {
+      videoInputRef.current.value = ''
     }
   }
 
@@ -504,11 +485,11 @@ export default function NewProjectPage() {
                   <button
                     type="button"
                     onClick={triggerVideoFileInput}
-                    disabled={uploadingVideo}
+                    disabled={saving}
                     className={`${styles.uploadButton} ${styles.uploadButtonPurple}`}
                   >
                     <Upload className={styles.uploadButtonIcon} />
-                    {uploadingVideo ? t('admin.loading') : t('admin.uploadVideo')}
+                    {selectedVideoFile ? `${selectedVideoFile.name} (${(selectedVideoFile.size / (1024 * 1024)).toFixed(2)}MB)` : t('admin.uploadVideo')}
                   </button>
                 </div>
                 {videoPreview && (
@@ -518,38 +499,23 @@ export default function NewProjectPage() {
                       controls
                       className={styles.previewVideo}
                       preload="metadata"
-                      onError={(e) => {
-                        console.error('Video preview error:', e)
-                        const videoElement = e.target as HTMLVideoElement
-                        const error = videoElement.error
-                        
-                        // Don't show alert if it's just a loading issue - video might still work
-                        // Only show error for actual playback failures
-                        if (error && error.code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
-                          // Video format not supported or too large for preview
-                          console.warn('Video preview not available - format may not be supported or file too large')
-                          // Don't remove the preview - let user save it anyway, it might work on the actual page
-                        } else if (error && error.code === MediaError.MEDIA_ERR_DECODE) {
-                          // Decoding error - likely file corruption or unsupported format
-                          console.warn('Video decoding error - file may be corrupted or unsupported')
-                        }
-                        // For other errors, don't remove preview - it might still work when displayed on the site
-                      }}
-                      onLoadStart={() => {
-                        // Video is starting to load
-                      }}
                     />
-                    <div className={styles.previewNote}>
-                      {videoPreview.startsWith('data:') && videoPreview.length > 10 * 1024 * 1024 && (
-                        <p className={styles.previewWarning}>
-                          Large video file - preview may not load, but it will work on the website
+                    {selectedVideoFile && (
+                      <div className={styles.previewNote}>
+                        <p className={styles.previewInfo}>
+                          File: {selectedVideoFile.name} ({(selectedVideoFile.size / (1024 * 1024)).toFixed(2)}MB)
                         </p>
-                      )}
-                    </div>
+                      </div>
+                    )}
                     <button
                       type="button"
                       onClick={() => {
                         setFormData({ ...formData, video: '' })
+                        setSelectedVideoFile(null)
+                        // Revoke the object URL to free memory
+                        if (videoPreview && videoPreview.startsWith('blob:')) {
+                          URL.revokeObjectURL(videoPreview)
+                        }
                         setVideoPreview(null)
                       }}
                       className={styles.removeButton}

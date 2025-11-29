@@ -430,6 +430,20 @@
       "designInstall": "System Design, Installation, and Maintenance"
     }
   },
+  "team": {
+    "detail": {
+      "loading": "Loading team member...",
+      "notFound": "Team Member Not Found",
+      "notFoundMessage": "The team member you're looking for doesn't exist.",
+      "backToTeam": "Back to Team",
+      "about": "About",
+      "information": "Information",
+      "role": "Role",
+      "socialLinks": "Social Links",
+      "website": "Website",
+      "downloadCV": "Download CV"
+    }
+  },
   "services": {
     "title": "Our Services",
     "subtitle": "Comprehensive solar energy solutions",

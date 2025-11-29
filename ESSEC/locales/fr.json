@@ -430,6 +430,20 @@
       "designInstall": "Conception de système, installation et maintenance"
     }
   },
+  "team": {
+    "detail": {
+      "loading": "Chargement du membre de l'équipe...",
+      "notFound": "Membre de l'équipe introuvable",
+      "notFoundMessage": "Le membre de l'équipe que vous recherchez n'existe pas.",
+      "backToTeam": "Retour à l'équipe",
+      "about": "À propos",
+      "information": "Informations",
+      "role": "Rôle",
+      "socialLinks": "Liens sociaux",
+      "website": "Site Web",
+      "downloadCV": "Télécharger le CV"
+    }
+  },
   "services": {
     "title": "Nos services",
     "subtitle": "Solutions complètes d'énergie solaire",
