@@ -55,6 +55,7 @@ export default function VideoHero({ title, subtitle, videoSrc, imageSrc, fullHei
           loop
           muted
           playsInline
+          preload="metadata"
           className={styles.video}
           style={{ transform: `translateY(${parallaxOffset}px)` }}
           onError={handleVideoError}

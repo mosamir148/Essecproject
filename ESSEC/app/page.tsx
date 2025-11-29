@@ -1,17 +1,19 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, Suspense, lazy } from 'react'
 import { useLanguage } from '@/hooks/useLanguage'
 import { api } from '@/lib/api'
 import VideoHero from '@/components/VideoHero'
 import SplitSection from '@/components/SplitSection'
 import SplitSectionReverse from '@/components/SplitSectionReverse'
-import NewsSection from '@/components/NewsSection'
-import BenefitsSection from '@/components/BenefitsSection'
-import Timeline from '@/components/Timeline'
-import VisionSection from '@/components/VisionSection'
-import FAQSection from '@/components/FAQSection'
 import styles from './page.module.css'
+
+// Lazy load below-the-fold components for better initial load performance
+const NewsSection = lazy(() => import('@/components/NewsSection'))
+const BenefitsSection = lazy(() => import('@/components/BenefitsSection'))
+const Timeline = lazy(() => import('@/components/Timeline'))
+const VisionSection = lazy(() => import('@/components/VisionSection'))
+const FAQSection = lazy(() => import('@/components/FAQSection'))
 
 export default function Home() {
   const { t } = useLanguage()
@@ -30,11 +32,22 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Fetch homepage video from API
+  // Fetch homepage video from API (non-blocking)
   useEffect(() => {
+    let mounted = true
+    
     const loadHomepageVideo = async () => {
       try {
-        const videoData = await api.getActiveHomepageVideo()
+        // Use a timeout to prevent blocking the page load
+        const videoData = await Promise.race([
+          api.getActiveHomepageVideo(),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Video load timeout')), 3000)
+          )
+        ]) as any
+        
+        if (!mounted) return
+        
         if (videoData.videoUrl) {
           // Use video URL directly - let browser handle caching
           setVideoSrc(videoData.videoUrl)
@@ -46,12 +59,15 @@ export default function Home() {
           setVideoSubtitle(videoData.subtitle)
         }
       } catch (error) {
-        console.error('Failed to load homepage video:', error)
-        // Keep default video if API fails
+        // Silently fail - use default video
+        if (mounted && process.env.NODE_ENV === 'development') {
+          console.log('Using default video:', error)
+        }
       }
     }
 
-    loadHomepageVideo()
+    // Load video after a short delay to prioritize initial render
+    const timeoutId = setTimeout(loadHomepageVideo, 100)
     
     // Listen for custom event to refresh when video is updated in admin panel
     const handleVideoUpdate = () => {
@@ -61,9 +77,24 @@ export default function Home() {
     window.addEventListener('homepage_video_updated', handleVideoUpdate)
     
     return () => {
+      mounted = false
+      clearTimeout(timeoutId)
       window.removeEventListener('homepage_video_updated', handleVideoUpdate)
     }
   }, [])
+
+  // Loading fallback component - minimal to avoid blocking
+  const LoadingFallback = () => (
+    <div style={{ 
+      minHeight: '200px', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      opacity: 0.3
+    }}>
+      {/* Minimal loading indicator */}
+    </div>
+  )
 
   return (
     <div ref={pageRef} className={styles.page}>
@@ -75,11 +106,27 @@ export default function Home() {
       />
       <SplitSection scrollY={scrollY} />
       <SplitSectionReverse scrollY={scrollY} />
-      <NewsSection scrollY={scrollY} />
-      <VisionSection scrollY={scrollY} />
-      <BenefitsSection scrollY={scrollY} />
-      <Timeline scrollY={scrollY} />
-      <FAQSection scrollY={scrollY} />
+      
+      {/* Lazy loaded components with Suspense */}
+      <Suspense fallback={<LoadingFallback />}>
+        <NewsSection scrollY={scrollY} />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingFallback />}>
+        <VisionSection scrollY={scrollY} />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingFallback />}>
+        <BenefitsSection scrollY={scrollY} />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingFallback />}>
+        <Timeline scrollY={scrollY} />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingFallback />}>
+        <FAQSection scrollY={scrollY} />
+      </Suspense>
     </div>
   )
 }

@@ -16,7 +16,7 @@ export default function LoadingPage({
   logo = '/logo.PNG', 
   websiteName = 'ESSEC',
   onComplete,
-  minDisplayTime = 2000 
+  minDisplayTime = 2000 // 2 seconds for navigation
 }: LoadingPageProps) {
   const pathname = usePathname()
   const [isVisible, setIsVisible] = useState(true)
@@ -24,22 +24,33 @@ export default function LoadingPage({
   const [mounted, setMounted] = useState(false)
   const startTime = useRef(Date.now())
   const isCompleteRef = useRef(false)
+  const isInitialLoad = useRef(true)
   const previousPathname = useRef(pathname)
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   // Set mounted flag to avoid hydration issues
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // Reset loading state when pathname changes
+  // Show loading page on every navigation (initial load and client-side navigation)
   useEffect(() => {
-    if (previousPathname.current !== pathname) {
-      // Route changed - show loading page
+    // Check if this is a navigation (pathname changed)
+    const isNavigation = previousPathname.current !== pathname
+    
+    if (isNavigation) {
+      // Show loading page immediately on navigation
       setIsVisible(true)
       setProgress(0)
       startTime.current = Date.now()
       isCompleteRef.current = false
       previousPathname.current = pathname
+      
+      // Reset any existing intervals
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current)
+        progressIntervalRef.current = null
+      }
     }
   }, [pathname])
 
@@ -48,6 +59,7 @@ export default function LoadingPage({
 
     let isMounted = true
     let progressInterval: NodeJS.Timeout | null = null
+    progressIntervalRef.current = null // Reset
     let completeTimeout: NodeJS.Timeout | null = null
     let finalTimeout: NodeJS.Timeout | null = null
 
@@ -260,8 +272,10 @@ export default function LoadingPage({
       }
     }
 
-    // Update progress periodically
+    // Note: Progress will be updated in checkFullPageLoad for smoother animation
+    // We'll start with a basic progress update here
     progressInterval = setInterval(updateProgress, 100)
+    progressIntervalRef.current = progressInterval
 
     // Wait for content to be loaded (check for loading states and empty content)
     const waitForContentLoaded = (): Promise<void> => {
@@ -429,100 +443,94 @@ export default function LoadingPage({
       })
     }
 
-    // Main loading check - wait for everything
+    // Show loader for 2 seconds on navigation
     const checkFullPageLoad = async () => {
-      if (!isMounted) return
+      if (!isMounted || isCompleteRef.current) return
 
       try {
-        // Wait for DOM to be ready
+        // Stop the old progress interval and start smooth animation
+        if (progressInterval) {
+          clearInterval(progressInterval)
+          progressInterval = null
+          progressIntervalRef.current = null
+        }
+
+        // Animate progress to 100% smoothly over 2 seconds
+        const progressSteps = 100
+        const stepInterval = minDisplayTime / progressSteps
+        let currentProgress = 0
+        
+        const progressTimer = setInterval(() => {
+          if (!isMounted || isCompleteRef.current) {
+            clearInterval(progressTimer)
+            return
+          }
+          currentProgress += 1
+          if (currentProgress <= 100) {
+            setProgress(currentProgress)
+          } else {
+            clearInterval(progressTimer)
+          }
+        }, stepInterval)
+
+        // Wait for DOM to be ready (fast check)
         if (document.readyState === 'loading') {
           await new Promise<void>((resolve) => {
             if (document.readyState !== 'loading') {
               resolve()
             } else {
               document.addEventListener('DOMContentLoaded', () => resolve(), { once: true })
+              setTimeout(resolve, 500)
             }
           })
         }
 
-        // Wait for window.onload (all initial resources loaded)
-        if (document.readyState !== 'complete') {
-          await new Promise<void>((resolve) => {
-            if (document.readyState === 'complete') {
-              resolve()
-            } else {
-              window.addEventListener('load', () => resolve(), { once: true })
-              // Fallback timeout
-              setTimeout(resolve, 5000)
-            }
-          })
-        }
-
-        // Wait for content to be loaded (checks for loading states and empty content)
-        await waitForContentLoaded()
-
-        // Wait for dynamically loaded content to stabilize
-        await waitForDynamicContent()
-
-        // Wait for all images, videos, and iframes (including dynamically added ones)
-        await waitForImages()
-
-        // Wait for fonts
-        await waitForFonts()
-
-        // Additional check: ensure main content exists and is populated
-        let mainCheckCount = 0
-        while (mainCheckCount < 20) {
+        // Quick check for main content
+        let checkCount = 0
+        while (checkCount < 3) {
           const main = document.querySelector('main')
-          const hasContent = main && main.children.length > 0
-          
-          // Check for loading states
-          const loadingElements = main?.querySelectorAll('[class*="loading"], [class*="spinner"]')
-          const isLoading = loadingElements && loadingElements.length > 0
-          
-          if (hasContent && !isLoading) {
+          if (main && main.children.length > 0) {
             break
           }
-          await new Promise(resolve => setTimeout(resolve, 100))
-          mainCheckCount++
+          await new Promise(resolve => setTimeout(resolve, 50))
+          checkCount++
         }
 
-        // Small delay to ensure everything is rendered
-        await new Promise(resolve => setTimeout(resolve, 300))
+        if (!isMounted || isCompleteRef.current) {
+          clearInterval(progressTimer)
+          return
+        }
 
-        if (!isMounted) return
-
-        setProgress(100)
-
-        // Ensure minimum display time
+        // Ensure minimum display time of 2 seconds
         const elapsed = Date.now() - startTime.current
         const remainingTime = Math.max(0, minDisplayTime - elapsed)
 
         completeTimeout = setTimeout(() => {
-          if (!isMounted || isCompleteRef.current) return
+          if (!isMounted || isCompleteRef.current) {
+            clearInterval(progressTimer)
+            return
+          }
           isCompleteRef.current = true
+          clearInterval(progressTimer)
 
           if (progressInterval) {
             clearInterval(progressInterval)
             progressInterval = null
+            progressIntervalRef.current = null
           }
 
           finalTimeout = setTimeout(() => {
             if (isMounted) {
               setIsVisible(false)
               if (onComplete) {
-                setTimeout(() => {
-                  if (isMounted && onComplete) {
-                    onComplete()
-                  }
-                }, 500)
+                onComplete()
               }
             }
-          }, 300)
+          }, 100)
         }, remainingTime)
 
       } catch (error) {
-        // If anything fails, still complete after minimum time
+        // If anything fails, complete quickly
         if (!isMounted || isCompleteRef.current) return
         
         const elapsed = Date.now() - startTime.current
@@ -536,20 +544,17 @@ export default function LoadingPage({
           if (progressInterval) {
             clearInterval(progressInterval)
             progressInterval = null
+            progressIntervalRef.current = null
           }
           
           finalTimeout = setTimeout(() => {
             if (isMounted) {
               setIsVisible(false)
               if (onComplete) {
-                setTimeout(() => {
-                  if (isMounted && onComplete) {
-                    onComplete()
-                  }
-                }, 500)
+                onComplete()
               }
             }
-          }, 300)
+          }, 100) // Reduced from 300ms
         }, remainingTime)
       }
     }

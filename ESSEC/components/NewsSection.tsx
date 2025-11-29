@@ -54,16 +54,24 @@ export default function NewsSection({ scrollY = 0 }: NewsSectionProps) {
   }, [])
 
   useEffect(() => {
+    // Only load news when section becomes visible (lazy loading)
+    if (!isVisible) return
+    
+    let mounted = true
+    
     const loadNews = async () => {
       try {
         setLoading(true)
-        // API client handles timeout (30s) - limit to 5 items initially to reduce payload
+        // API client handles timeout (10s) - limit to 5 items initially to reduce payload
         const news = await api.getNews('displayOrder', 5)
-        setNewsItems(news)
+        if (mounted) {
+          setNewsItems(news)
+        }
       } catch (error) {
-        console.error('Failed to load news:', error)
-        // Check if it's a connection error
-        if (error instanceof Error) {
+        if (!mounted) return
+        
+        // Silently handle errors - show empty state
+        if (error instanceof Error && process.env.NODE_ENV === 'development') {
           if (error.message.includes('Failed to fetch')) {
             console.warn('Backend server may not be running. Please ensure the backend is started on port 5000.')
           } else if (error.message.includes('timeout')) {
@@ -73,12 +81,20 @@ export default function NewsSection({ scrollY = 0 }: NewsSectionProps) {
         // Set empty array on error to show empty state instead of hanging
         setNewsItems([])
       } finally {
-        setLoading(false)
+        if (mounted) {
+          setLoading(false)
+        }
       }
     }
 
-    loadNews()
-  }, [])
+    // Small delay to ensure smooth rendering
+    const timeoutId = setTimeout(loadNews, 100)
+    
+    return () => {
+      mounted = false
+      clearTimeout(timeoutId)
+    }
+  }, [isVisible])
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? newsItems.length - 1 : prev - 1))

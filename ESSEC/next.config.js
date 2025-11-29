@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Enable SWC minification for faster builds and smaller bundles
+  swcMinify: true,
+  // Compress output
+  compress: true,
   images: {
     domains: ['localhost'],
     // Disable optimization in development to avoid 400 errors for missing images
