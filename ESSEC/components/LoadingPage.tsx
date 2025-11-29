@@ -395,9 +395,10 @@ export default function LoadingPage({
 
           // Check for empty content areas that might be loading
           const emptyContainers = Array.from(document.querySelectorAll('div, section')).filter(el => {
+            const htmlEl = el as HTMLElement
             const hasChildren = el.children.length > 0
             const hasText = el.textContent && el.textContent.trim().length > 0
-            const isVisible = el.offsetHeight > 0
+            const isVisible = htmlEl.offsetHeight > 0
             return isVisible && !hasChildren && !hasText
           })
 

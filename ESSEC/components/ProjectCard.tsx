@@ -82,7 +82,7 @@ export default function ProjectCard({ id, name, location, year, duration, image,
       </div>
 
       {/* Content Section */}
-      <Link href={`/projects/${id}`}>
+      <Link href={id ? `/projects/${id}` : '#'}>
         <div className={styles.content}>
           <h3 className={styles.title}>
             {name}

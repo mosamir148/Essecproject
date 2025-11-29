@@ -20,16 +20,29 @@ export default function ProjectDetailPage() {
   useEffect(() => {
     const loadProject = async () => {
       try {
-        // Try to fetch from API first
-        try {
-          const apiProject = await api.getProject(projectId)
-          setProject(apiProject)
-        } catch (apiError) {
-          // If API fails, try to find in static data
-          const staticProject = staticProjects.find((p) => p.id === projectId)
-          if (staticProject) {
-            setProject(staticProject)
+        // Check if projectId is a valid MongoDB ObjectId format (24 hex characters)
+        const isObjectId = /^[0-9a-fA-F]{24}$/.test(projectId);
+        
+        if (isObjectId) {
+          // Try to fetch from API first for ObjectId format
+          try {
+            const apiProject = await api.getProject(projectId)
+            // Ensure the project has an id field
+            if (apiProject && !apiProject.id && apiProject._id) {
+              apiProject.id = apiProject._id.toString();
+            }
+            setProject(apiProject)
+            return;
+          } catch (apiError) {
+            // If API fails, continue to check static data
+            console.log('API fetch failed, trying static data:', apiError);
           }
+        }
+        
+        // Try to find in static data (for string IDs like 'commercial-solar-farm')
+        const staticProject = staticProjects.find((p) => p.id === projectId)
+        if (staticProject) {
+          setProject(staticProject)
         }
       } catch (error) {
         console.error('Error loading project:', error)
@@ -40,6 +53,8 @@ export default function ProjectDetailPage() {
 
     if (projectId) {
       loadProject()
+    } else {
+      setLoading(false)
     }
   }, [projectId])
 

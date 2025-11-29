@@ -128,18 +128,22 @@ export default function ProjectsPage() {
             </div>
           ) : (
             <div className={styles.projectsGrid}>
-              {projects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  id={project.id}
-                  name={project.name}
-                  location={project.location}
-                  year={project.year}
-                  duration={project.duration}
-                  image={project.image}
-                  video={project.video}
-                />
-              ))}
+              {projects.map((project) => {
+                // Ensure project has a valid ID
+                const projectId = project.id || project._id || `project-${project.name?.toLowerCase().replace(/\s+/g, '-') || Math.random()}`;
+                return (
+                  <ProjectCard
+                    key={projectId}
+                    id={projectId}
+                    name={project.name}
+                    location={project.location}
+                    year={project.year}
+                    duration={project.duration}
+                    image={project.image}
+                    video={project.video}
+                  />
+                );
+              })}
             </div>
           )}
         </div>

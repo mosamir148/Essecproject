@@ -50,7 +50,14 @@ router.get('/', async (req, res) => {
       .sort({ createdAt: -1 })
       .lean()
       .maxTimeMS(5000); // 5 second timeout
-    res.json(projects);
+    
+    // Map projects to ensure id field is present (lean() doesn't include virtuals)
+    const projectsWithId = projects.map(project => ({
+      ...project,
+      id: project._id ? project._id.toString() : project.id
+    }));
+    
+    res.json(projectsWithId);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
