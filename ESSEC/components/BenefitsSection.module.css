@@ -398,12 +398,13 @@
 @media (max-width: 768px) {
   .circleContainer {
     max-width: 100%;
-    height: 650px;
+    height: auto;
+    flex-direction: column;
+    gap: 3rem;
   }
 }
 
-
-/* Crescent Path for Benefits */
+/* Crescent Path for Benefits - Large screens */
 .crescentPath {
   position: absolute;
   width: 100%;
@@ -411,24 +412,90 @@
   border-radius: 50%;
   pointer-events: none;
   z-index: 3;
+  display: block;
 }
 
+@media (max-width: 768px) {
+  .crescentPath {
+    display: none;
+  }
+}
+
+/* Benefits Slider - Small screens only */
+.benefitsSlider {
+  display: none;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 2rem 0;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+}
+
+@media (max-width: 768px) {
+  .benefitsSlider {
+    display: block;
+  }
+}
+
+.benefitsSlider:hover .benefitsSliderTrack {
+  animation-play-state: paused;
+}
+
+.benefitsSliderTrack {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  animation: scrollBenefits 30s linear infinite;
+  will-change: transform;
+}
+
+@keyframes scrollBenefits {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Benefit Badge - Different styles for circular vs slider */
 .benefitBadge {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform-origin: 0 0;
-  transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-400px) rotate(calc(-1 * var(--angle)));
   opacity: 0;
   transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: all;
   z-index: 3;
 }
 
+/* Circular layout - Large screens */
+@media (min-width: 769px) {
+  .benefitBadge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 0 0;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-400px) rotate(calc(-1 * var(--angle)));
+  }
+}
+
+/* Slider layout - Small screens */
 @media (max-width: 768px) {
   .benefitBadge {
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-300px) rotate(calc(-1 * var(--angle)));
+    position: relative;
+    flex-shrink: 0;
+    transform: none;
   }
 }
 
@@ -438,12 +505,11 @@
 
 .benefitBadge.benefitHidden {
   opacity: 0;
-  transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-360px) rotate(calc(-1 * var(--angle))) scale(0.85);
 }
 
-@media (max-width: 768px) {
+@media (min-width: 769px) {
   .benefitBadge.benefitHidden {
-    left: 50%;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-360px) rotate(calc(-1 * var(--angle))) scale(0.85);
   }
 }
 
@@ -593,8 +659,29 @@
 
 @media (max-width: 768px) {
   .centerCircle {
-    width: 500px;
-    height: 500px;
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    margin: 0 auto;
+    width: 90vw;
+    max-width: 500px;
+    height: auto;
+    min-height: auto;
+    border-radius: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .centerCircle::before {
+    border-radius: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .centerCircle {
+    width: 95vw;
+    max-width: 450px;
   }
 }
 
@@ -610,6 +697,17 @@
   transform: translate(-50%, -50%);
 }
 
+@media (max-width: 768px) {
+  .centerCircleVisible {
+    transform: none;
+  }
+
+  .centerCircleHidden {
+    transform: none;
+    opacity: 0;
+  }
+}
+
 .centerCircleInner {
   width: 100%;
   height: 100%;
@@ -617,16 +715,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1.75rem;
   overflow: hidden;
   box-sizing: border-box;
 }
 
+@media (min-width: 769px) {
+  .centerCircleInner {
+    padding: 3rem 3.5rem;
+    gap: 2rem;
+  }
+}
+
 @media (max-width: 768px) {
   .centerCircleInner {
-    padding: 2.5rem;
-    gap: 1.25rem;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+    min-height: auto;
+    justify-content: center;
   }
 }
 
@@ -638,10 +745,24 @@
   margin-bottom: 0.25rem;
 }
 
+@media (max-width: 768px) {
+  .centerTitleWrapper {
+    gap: 0.375rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
 .titleIcon {
   color: #09A86B;
   stroke-width: 2;
   filter: drop-shadow(0 2px 4px rgba(9, 168, 107, 0.3));
+}
+
+@media (max-width: 768px) {
+  .titleIcon {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .centerTitle {
@@ -659,23 +780,99 @@
 
 @media (max-width: 768px) {
   .centerTitle {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+    line-height: 1.3;
   }
 }
 
 .features {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
   width: 100%;
   max-width: 100%;
-  align-items: stretch;
   box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+/* Large screens - vertical slider */
+@media (min-width: 769px) {
+  .features {
+    height: 380px;
+    max-height: 380px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .features:hover .featuresTrack {
+    animation-play-state: paused;
+  }
+
+  .featuresTrack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    animation: scrollFeaturesVertical 25s linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes scrollFeaturesVertical {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+}
+
+/* Features Track - Base styles */
+.featuresTrack {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Hide duplicate features on small screens */
+.featureDuplicate {
+  display: block;
 }
 
 @media (max-width: 768px) {
+  .featureDuplicate {
+    display: none !important;
+  }
+}
+
+/* Small screens - static layout */
+@media (max-width: 768px) {
   .features {
-    gap: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    mask-image: none;
+    -webkit-mask-image: none;
+    overflow: visible;
+    height: auto;
+  }
+
+  .featuresTrack {
+    gap: 0.75rem;
+    animation: none;
   }
 }
 
@@ -693,10 +890,28 @@
     0 2px 6px -1px rgba(16, 119, 217, 0.05),
     0 0 0 1px rgba(9, 168, 107, 0.08);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0;
-  transform: translateX(-10px);
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Large screens - features in slider are always visible */
+@media (min-width: 769px) {
+  .feature {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Small screens - features fade in */
+@media (max-width: 768px) {
+  .feature {
+    padding: 1rem;
+    gap: 0.875rem;
+    border-radius: 0.875rem;
+    opacity: 0;
+    transform: translateX(-10px);
+  }
 }
 
 .feature::before {
@@ -715,21 +930,35 @@
   opacity: 1;
 }
 
-.centerCircleVisible .feature {
-  opacity: 1;
-  transform: translateX(0);
+/* Small screens - features fade in when circle is visible */
+@media (max-width: 768px) {
+  .centerCircleVisible .feature {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 
 .feature:hover {
-  transform: translateX(6px) translateY(-2px);
   background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(9, 168, 107, 0.03) 100%);
   box-shadow: 
     0 8px 20px -4px rgba(9, 168, 107, 0.2),
     0 4px 12px -2px rgba(16, 119, 217, 0.1),
     0 0 0 1px rgba(9, 168, 107, 0.2);
   border-color: rgba(9, 168, 107, 0.25);
+}
+
+@media (min-width: 769px) {
+  .feature:hover {
+    transform: translateY(-2px) scale(1.02);
   }
+}
+
+@media (max-width: 768px) {
+  .feature:hover {
+    transform: translateX(6px) translateY(-2px);
+  }
+}
 
 
 .featureIconContainer {
@@ -746,6 +975,14 @@
     0 0 0 2px rgba(255, 255, 255, 0.9),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+  .featureIconContainer {
+    width: 40px;
+    height: 40px;
+    border-radius: 0.75rem;
+  }
 }
 
 .feature:hover .featureIconContainer {
@@ -778,6 +1015,14 @@
   stroke-width: 2.5;
 }
 
+@media (max-width: 768px) {
+  .featureIcon {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+  }
+}
+
 .featureContent {
   flex: 1;
   display: flex;
@@ -794,6 +1039,14 @@
   margin-bottom: 0.125rem;
 }
 
+@media (max-width: 768px) {
+  .featureTitle {
+    font-size: 0.9375rem;
+    line-height: 1.3;
+    margin-bottom: 0.25rem;
+  }
+}
+
 @media (min-width: 768px) {
   .featureTitle {
     font-size: 1.1875rem;
@@ -807,6 +1060,13 @@
   color: #4a5568;
   font-weight: 500;
   letter-spacing: -0.01em;
+}
+
+@media (max-width: 768px) {
+  .featureDescription {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
 }
 
 @media (min-width: 768px) {
@@ -846,22 +1106,77 @@
     font-size: 0.9375rem;
   }
   
+  .centerCircleInner {
+    padding: 1.5rem 1.25rem;
+    gap: 1.25rem;
+  }
+
+  .centerTitle {
+    font-size: 1.375rem;
+  }
+
+  .titleIcon {
+    width: 22px;
+    height: 22px;
+  }
+
   .feature {
-    padding: 1rem;
-    gap: 0.875rem;
+    padding: 0.875rem;
+    gap: 0.75rem;
   }
   
   .featureIconContainer {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .featureIcon {
+    width: 16px;
+    height: 16px;
   }
   
   .featureTitle {
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
   
   .featureDescription {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .benefitsSlider {
+    padding: 1rem 0;
+  }
+
+  .benefitsSliderTrack {
+    gap: 0.875rem;
+    animation-duration: 20s;
+  }
+
+  .centerCircle {
+    width: 95vw;
+    max-width: 450px;
+    min-height: 450px;
+  }
+
+  .centerCircleInner {
+    padding: 1.5rem;
+  }
+}
+
+/* Responsive adjustments for benefits slider */
+@media (max-width: 768px) {
+  .benefitsSlider {
+    padding: 1.5rem 0;
+  }
+
+  .benefitsSliderTrack {
+    gap: 1rem;
+    animation-duration: 25s;
+  }
+
+  .centerCircleInner {
+    padding: 2rem 1.5rem;
   }
 }
 

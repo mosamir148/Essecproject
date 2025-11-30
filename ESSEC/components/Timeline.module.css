@@ -1,4 +1,4 @@
-/* Timeline Section - S-Wave Design */
+/* Timeline Section - Clean Design */
 .section {
   padding: 6rem 0;
   position: relative;
@@ -18,20 +18,12 @@
 @media (max-width: 768px) {
   .section {
     padding: 3rem 0;
-    overflow-x: hidden;
-    overflow-y: visible;
   }
 }
 
 @media (max-width: 480px) {
   .section {
     padding: 2rem 0;
-  }
-}
-
-@media (max-width: 360px) {
-  .section {
-    padding: 1.5rem 0;
   }
 }
 
@@ -65,20 +57,6 @@
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-  }
-}
-
-@media (max-width: 360px) {
-  .container {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
   }
 }
 
@@ -116,501 +94,367 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (max-width: 768px) {
   .sectionTitle {
-    font-size: 3rem;
-    margin-bottom: 5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    font-size: 2rem;
+    margin-bottom: 3rem;
   }
 }
 
 @media (max-width: 480px) {
-  .sectionTitle {
-    font-size: 2rem;
-    margin-bottom: 3rem;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-  }
-}
-
-@media (max-width: 360px) {
   .sectionTitle {
     font-size: 1.75rem;
     margin-bottom: 2.5rem;
   }
 }
 
-/* Timeline Wrapper */
-.timelineWrapper {
-  position: relative;
+/* Timeline Container */
+.timelineContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
   width: 100%;
-  min-height: 2000px;
-  height: 2000px;
-  padding: 0;
-  overflow: hidden;
+  position: relative;
 }
 
-@media (max-width: 1024px) {
-  .timelineWrapper {
-    height: auto;
-    min-height: 1800px;
-  }
-}
-
-@media (max-width: 768px) {
-  .timelineWrapper {
-    height: auto;
-    min-height: auto;
-    padding: 1rem 0;
-    overflow: visible;
-  }
-}
-
-@media (max-width: 480px) {
-  .timelineWrapper {
-    padding: 0.5rem 0;
-  }
-}
-
-/* S-Wave SVG */
-.sWaveSVG {
+/* Vertical Center Lines - Six Parallel Lines with Stroke Animation */
+.centerLine {
   position: absolute;
   left: 50%;
   top: 0;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 1200px;
-  height: 2000px;
-  z-index: 1;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: top center;
+  z-index: 0;
   pointer-events: none;
-  /* SVG viewBox is 0 0 1200 2000, wave center is at x=600 (50%) */
+  background: linear-gradient(
+    to bottom,
+    #457B9D 0%,
+    #1D3557 50%,
+    #457B9D 100%
+  );
+  opacity: 0.6;
+  box-shadow: 
+    -5px 0 0 0 rgba(69, 123, 157, 0.6),
+    5px 0 0 0 rgba(69, 123, 157, 0.6),
+    -10px 0 0 0 rgba(69, 123, 157, 0.6),
+    10px 0 0 0 rgba(69, 123, 157, 0.6),
+    -15px 0 0 0 rgba(69, 123, 157, 0.6),
+    15px 0 0 0 rgba(69, 123, 157, 0.6);
+  animation: drawStrokeCenter 2s ease-out forwards;
+  animation-delay: 0.3s;
 }
 
-@media (max-width: 1200px) {
-  .sWaveSVG {
-    width: 100%;
-    height: auto;
-    min-height: 2000px;
+.centerLine::before,
+.centerLine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    #457B9D 0%,
+    #1D3557 50%,
+    #457B9D 100%
+  );
+  opacity: 0.6;
+  transform: scaleY(0);
+  transform-origin: top center;
+  animation: drawStroke 2s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+.centerLine::before {
+  left: -5px;
+}
+
+.centerLine::after {
+  right: -5px;
+}
+
+@keyframes drawStroke {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes drawStrokeCenter {
+  from {
+    transform: translateX(-50%) scaleY(0);
+  }
+  to {
+    transform: translateX(-50%) scaleY(1);
   }
 }
 
 @media (max-width: 768px) {
-  .sWaveSVG {
-    position: absolute;
-    left: 1.5rem;
-    top: 0;
-    transform: none;
-    width: 4px !important;
-    height: 100% !important;
-    min-height: 100%;
-    max-width: 4px !important;
-    opacity: 0.6;
-    overflow: visible;
+  .centerLine {
+    display: none;
   }
-  
-  .sWaveSVG path {
-    stroke-width: 4;
-  }
-  
-  .sWaveSVG circle {
-    r: 4;
+}
+
+@media (max-width: 768px) {
+  .timelineContainer {
+    gap: 3rem;
   }
 }
 
 @media (max-width: 480px) {
-  .sWaveSVG {
-    left: 1.25rem;
-    width: 3px !important;
-    max-width: 3px !important;
-    opacity: 0.5;
-  }
-  
-  .sWaveSVG path {
-    stroke-width: 3;
-  }
-  
-  .sWaveSVG circle {
-    r: 3;
+  .timelineContainer {
+    gap: 2.5rem;
   }
 }
 
-@media (max-width: 360px) {
-  .sWaveSVG {
-    left: 1rem;
-    width: 2px !important;
-    max-width: 2px !important;
-    opacity: 0.4;
-  }
-  
-  .sWaveSVG path {
-    stroke-width: 2;
-  }
-  
-  .sWaveSVG circle {
-    r: 2;
-  }
-}
-
-/* Steps Container */
-.stepsContainer {
-  position: relative;
-  z-index: 2;
+/* Timeline Item */
+.timelineItem {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
-  min-height: 2000px;
-  height: 2000px;
+  position: relative;
+  z-index: 1;
 }
 
-@media (max-width: 1024px) {
-  .stepsContainer {
-    min-height: 1325px;
-    height: auto;
-  }
+.timelineItem.itemVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timelineItem.itemHidden {
+  opacity: 0;
+  transform: translateY(2rem);
 }
 
 @media (max-width: 768px) {
-  .stepsContainer {
-    min-height: auto;
-    height: auto;
-    padding-left: 0;
-    padding-right: 0;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    width: 100%;
+  .timelineItem {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 }
 
-/* Individual Step */
-.step {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+/* Image Container */
+.itemImage {
   width: 100%;
-  max-width: 1200px;
-  opacity: 0;
-  transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Step positioned at wave Y coordinate relative to timeline wrapper */
-  top: var(--wave-y-percent, 0%);
-  box-sizing: border-box;
-  /* Step container acts as reference point for wave connection */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.stepVisible {
-  opacity: 1;
+.itemImage.left {
+  order: 1;
 }
 
-.stepHidden {
-  opacity: 0;
+.itemImage.right {
+  order: 2;
 }
 
-/* Connection Line - Vertical line from wave to image */
-.connectionLine {
-  position: absolute;
-  left: 50%;
-  width: 3px;
-  background: #A8DADC;
-  opacity: 0.4;
-  border: none;
-  border-radius: 2px;
-  z-index: 1;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 4px,
-    #A8DADC 4px,
-    #A8DADC 8px
-  );
-  /* Line starts at wave point (top: 0) and extends to image center */
-  /* Height calculated from connection-height-percent: 1% = 20px */
-  height: calc(var(--connection-height-percent, 0) * 20px);
-}
-
-/* Step Image - Circular, centered on connection line */
-.stepImage {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  z-index: 3;
-  /* Image positioned relative to step container (which is at wave point) */
-  /* Calculate offset: (imageY% - waveY%) of 2000px base height */
-  /* For step 4: 86% - 85% = 1%, so 1 * 20px = 20px below wave point */
-  /* With translateY(-50%), the image center aligns with the top position */
-  top: calc(var(--image-offset-percent, 0) * 20px);
-  /* Ensure image center is exactly at the calculated position */
+@media (max-width: 768px) {
+  .itemImage.left,
+  .itemImage.right {
+    order: 1;
+  }
 }
 
 .imageWrapper {
   position: relative;
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1;
+  border-radius: 16px;
   overflow: hidden;
   background: #E8F4F8;
   box-shadow: 
-    0 4px 8px rgba(0, 0, 0, 0.1),
-    0 0 0 2px rgba(168, 218, 220, 0.3);
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-  flex-shrink: 0;
+    0 8px 16px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(168, 218, 220, 0.2);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
     box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .imageWrapper {
+    max-width: 450px;
+  }
+}
+
+@media (max-width: 768px) {
+  .imageWrapper {
+    max-width: 100%;
+    border-radius: 12px;
+  }
 }
 
 .image {
   object-fit: cover;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
-@media (max-width: 768px) {
-  .imageWrapper {
-    width: 160px;
-    height: 160px;
-  }
-}
-
-@media (max-width: 480px) {
-  .imageWrapper {
-    width: 120px;
-    height: 120px;
-  }
-}
-
-@media (max-width: 360px) {
-  .imageWrapper {
-    width: 100px;
-    height: 100px;
-  }
-}
-
-/* Step Content - Text */
-.stepContent {
-  position: absolute;
+/* Content Container */
+.itemContent {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  z-index: 2;
-  transform: translateY(-50%);
-  max-width: 400px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  /* Text positioned relative to step container */
-  /* In SVG: text is positioned ~80px above image center (4% of 2000px) */
-  /* Image center is at: calc(var(--image-offset-percent) * 20px) */
-  /* Text should be at: image center - 80px = calc(var(--image-offset-percent) * 20px - 80px) */
-  top: calc(var(--image-offset-percent, 0) * 20px - 80px);
+  gap: 1.25rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border-radius: 1.75rem;
+  padding: 2.5rem;
+  box-shadow: 
+    0 10px 25px -5px rgba(69, 123, 157, 0.1),
+    0 4px 12px -2px rgba(29, 53, 87, 0.06),
+    0 0 0 1px rgba(69, 123, 157, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(69, 123, 157, 0.15);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+  box-sizing: border-box;
 }
 
-.stepContent.left {
-  right: calc(50% + 150px);
-  text-align: right;
+.itemContent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #457B9D, #1D3557);
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
-.stepContent.right {
-  left: calc(50% + 150px);
+.itemContent:hover::before {
+  opacity: 1;
+}
+
+.itemContent:hover {
+  transform: translateY(-6px);
+  box-shadow: 
+    0 20px 40px -8px rgba(69, 123, 157, 0.2),
+    0 8px 20px -4px rgba(29, 53, 87, 0.12),
+    0 0 0 1px rgba(69, 123, 157, 0.2);
+  border-color: rgba(69, 123, 157, 0.25);
+}
+
+.itemContent.left {
+  order: 1;
   text-align: left;
 }
 
-@media (max-width: 1024px) and (min-width: 769px) {
-  .stepContent.left {
-    right: calc(50% + 130px);
-    max-width: 320px;
-  }
-  
-  .stepContent.right {
-    left: calc(50% + 130px);
-    max-width: 320px;
-  }
-  
-  .imageWrapper {
-    width: 200px;
-    height: 200px;
-  }
+.itemContent.right {
+  order: 2;
+  text-align: right;
 }
 
-@media (max-width: 900px) and (min-width: 769px) {
-  .stepContent.left {
-    right: calc(50% + 120px);
-    max-width: 300px;
-  }
-  
-  .stepContent.right {
-    left: calc(50% + 120px);
-    max-width: 300px;
-  }
-  
-  .imageWrapper {
-    width: 180px;
-    height: 180px;
-  }
-}
-
-@media (max-width: 640px) and (min-width: 481px) {
-  .stepContent.left {
-    right: calc(50% + 110px);
-    max-width: 280px;
-  }
-  
-  .stepContent.right {
-    left: calc(50% + 110px);
-    max-width: 280px;
+@media (max-width: 1024px) {
+  .itemContent {
+    padding: 2rem;
+    border-radius: 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
-  .stepContent {
-    position: static;
-    transform: none;
-    max-width: 100%;
-    width: 100%;
-    padding-left: 3.5rem;
-    padding-right: 1rem;
-    margin-top: 1.5rem;
-    text-align: left !important;
-    gap: 0.5rem;
-    box-sizing: border-box;
+  .itemContent.left,
+  .itemContent.right {
+    order: 2;
+    text-align: left;
   }
   
-  .stepContent.left,
-  .stepContent.right {
-    left: auto;
-    right: auto;
+  .itemContent {
+    padding: 1.75rem;
+    border-radius: 1.25rem;
+    gap: 1rem;
   }
   
-  .step {
-    position: relative !important;
-    margin-bottom: 3rem;
-    left: 0 !important;
-    transform: none !important;
-    width: 100%;
-    top: auto !important;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-  
-  .step:last-child {
-    margin-bottom: 0;
-  }
-  
-  .stepImage {
-    position: relative;
-    left: 0;
-    transform: translateX(0) translateY(0) !important;
-    margin: 0;
-    margin-bottom: 1rem;
-    margin-left: 0.5rem;
-    top: auto !important;
-    width: auto;
-  }
-  
-  .connectionLine {
-    display: block;
-  position: absolute;
-    left: 1.5rem;
-    transform: translateX(-50%);
-    width: 2px;
-    top: 0;
-    bottom: 0;
-    height: auto;
-    opacity: 0.3;
+  .itemContent:hover {
+    transform: translateY(-4px);
   }
 }
 
 @media (max-width: 480px) {
-  .stepContent {
-    padding-left: 2.75rem;
-    padding-right: 0.75rem;
-    margin-top: 1rem;
-    gap: 0.375rem;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-  
-  .step {
-    margin-bottom: 2.5rem;
-  }
-  
-  .stepImage {
-    margin-left: 0.25rem;
-  }
-  
-  .connectionLine {
-    left: 1.25rem;
-    width: 1.5px;
-  }
-  
-  .imageWrapper {
-    max-width: 100%;
-    box-sizing: border-box;
+  .itemContent {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    gap: 0.875rem;
   }
 }
 
-@media (max-width: 360px) {
-  .stepContent {
-    padding-left: 2.5rem;
-    padding-right: 0.5rem;
-  }
-  
-  .step {
-    margin-bottom: 2rem;
-  }
-  
-  .connectionLine {
-    left: 1rem;
-    width: 1px;
-  }
-  
-  .imageWrapper {
-    width: 90px !important;
-    height: 90px !important;
-  }
-  }
-  
-  .stepTitle {
+/* Ensure proper text direction inheritance */
+.itemContent * {
+  direction: inherit;
+  text-align: inherit;
+}
+
+.itemTitle {
   font-size: 2rem;
-  font-weight: 600;
-  font-style: italic;
+  font-weight: 700;
   color: #1D3557;
   letter-spacing: -0.5px;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.4;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
   }
   
-  .stepDescription {
+:global([dir="rtl"]) .itemTitle {
+  letter-spacing: 0;
+}
+
+@media (max-width: 1024px) {
+  .itemTitle {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .itemTitle {
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 480px) {
+  .itemTitle {
+    font-size: 1.25rem;
+  }
+}
+
+.itemDescription {
   font-size: 1.125rem;
   font-weight: 400;
   color: #457B9D;
   letter-spacing: 0;
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.8;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
 }
 
-@media (max-width: 768px) {
-  .stepTitle {
-    font-size: 1.5rem;
-    line-height: 1.3;
-    letter-spacing: -0.3px;
+@media (max-width: 1024px) {
+  .itemDescription {
+    font-size: 1rem;
   }
-  
-  .stepDescription {
+}
+
+@media (max-width: 768px) {
+  .itemDescription {
     font-size: 0.9375rem;
-    line-height: 1.5;
+    line-height: 1.6;
   }
 }
 
 @media (max-width: 480px) {
-  .stepTitle {
-    font-size: 1.25rem;
-    line-height: 1.35;
-  }
-  
-  .stepDescription {
+  .itemDescription {
     font-size: 0.875rem;
-    line-height: 1.5;
   }
 }
 
@@ -623,92 +467,42 @@
   color: #FFFFFF;
 }
 
-:global(.dark) .stepTitle {
+:global(.dark) .itemTitle {
   color: #E8F4F8;
 }
 
-:global(.dark) .stepDescription {
+:global(.dark) .itemDescription {
   color: #A8DADC;
 }
 
 :global(.dark) .imageWrapper {
   background: #1D3557;
   box-shadow: 
-    0 4px 8px rgba(0, 0, 0, 0.3),
-    0 0 0 2px rgba(69, 123, 157, 0.5);
+    0 8px 16px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(69, 123, 157, 0.4);
 }
 
-:global(.dark) .connectionLine {
-  background: #457B9D;
-  opacity: 0.6;
+:global(.dark) .itemContent {
+  background: rgba(13, 17, 23, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(168, 218, 220, 0.2);
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.4),
+    0 4px 12px -2px rgba(168, 218, 220, 0.1),
+    0 0 0 1px rgba(168, 218, 220, 0.15);
+  color: #FFFFFF;
 }
 
-@media (max-width: 768px) {
-  :global(.dark) .sWaveSVG {
-    opacity: 0.5;
-  }
-  
-  :global(.dark) .connectionLine {
-    opacity: 0.5;
-  }
+:global(.dark) .itemContent::before {
+  background: linear-gradient(90deg, #A8DADC, #457B9D);
 }
 
-@media (max-width: 480px) {
-  :global(.dark) .sWaveSVG {
-    opacity: 0.4;
-  }
-  
-  :global(.dark) .connectionLine {
-    opacity: 0.4;
-  }
-}
-
-/* Touch-friendly improvements */
-@media (hover: none) and (pointer: coarse) {
-  .stepContent {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-  
-  .imageWrapper {
-    transition: transform 0.2s ease;
-  }
-  
-  .imageWrapper:active {
-    transform: scale(0.98);
-  }
-}
-
-/* Landscape orientation optimizations */
-@media (max-width: 1024px) and (orientation: landscape) {
-  .section {
-    padding: 4rem 0;
-  }
-  
-  .sectionTitle {
-    font-size: 2.5rem;
-    margin-bottom: 4rem;
-  }
-  
-  .timelineWrapper {
-    min-height: 1600px;
-  }
-  
-  .stepsContainer {
-    min-height: 1440px;
-  }
-}
-
-/* High DPI / Retina display optimizations */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .sWaveSVG path {
-    shape-rendering: geometricPrecision;
-  }
-  
-  .imageWrapper {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-  }
+:global(.dark) .itemContent:hover {
+  border-color: rgba(168, 218, 220, 0.3);
+  box-shadow: 
+    0 20px 40px -8px rgba(0, 0, 0, 0.5),
+    0 8px 20px -4px rgba(168, 218, 220, 0.2),
+    0 0 0 1px rgba(168, 218, 220, 0.25);
 }
 
 /* Print styles */
@@ -718,84 +512,96 @@
     page-break-inside: avoid;
   }
   
-  .step {
+  .timelineItem {
     page-break-inside: avoid;
     margin-bottom: 2rem;
-  }
-  
-  .sWaveSVG {
-    opacity: 0.8;
   }
 }
 
 /* Prevent horizontal overflow */
-@media (max-width: 768px) {
-  .stepContent,
-  .stepImage,
-  .step {
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-  
-  .stepContent * {
-    max-width: 100%;
-  }
-  
-  .timelineWrapper {
-    overflow-x: hidden;
-  }
-  
-  .stepsContainer {
-    overflow-x: hidden;
-  }
-}
-
-/* Tablet and medium screen optimizations */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .stepContent {
-    max-width: 350px;
-  }
-  
-  .stepContent.left {
-    right: calc(50% + 125px);
-  }
-  
-  .stepContent.right {
-    left: calc(50% + 125px);
-  }
-}
-
-/* Large mobile / small tablet */
-@media (min-width: 481px) and (max-width: 768px) {
-  .stepContent {
-    padding-left: 4rem;
-    padding-right: 1.5rem;
-  }
-  
-  .connectionLine {
-    left: 1.75rem;
-  }
-  
-  .imageWrapper {
-    width: 140px;
-    height: 140px;
-  }
-}
-
-/* Ensure no overflow on all screen sizes */
 .section,
 .container,
-.timelineWrapper,
-.stepsContainer {
-  max-width: 100%;
-  overflow-x: hidden;
+.timelineContainer,
+.timelineItem {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+/* RTL Support for Arabic */
+:global([dir="rtl"]) .section {
+  direction: rtl;
+}
+
+:global([dir="rtl"]) .sectionTitle {
+  text-align: center;
+  direction: rtl;
+  font-family: inherit;
+}
+
+:global([dir="rtl"]) .timelineContainer {
+  direction: rtl;
+}
+
+:global([dir="rtl"]) .timelineItem {
+  direction: rtl;
+}
+
+:global([dir="rtl"]) .itemContent {
+  direction: rtl;
+  text-align: right;
+}
+
+:global([dir="rtl"]) .itemContent.left {
+  text-align: right;
+}
+
+:global([dir="rtl"]) .itemContent.right {
+  text-align: right;
+}
+
+:global([dir="rtl"]) .itemTitle {
+  direction: rtl;
+  text-align: right;
+  letter-spacing: 0;
+  font-family: inherit;
+}
+
+:global([dir="rtl"]) .itemDescription {
+  direction: rtl;
+  text-align: right;
+  font-family: inherit;
 }
 
 @media (max-width: 768px) {
-  .section,
-  .container,
-  .timelineWrapper,
-  .stepsContainer {
-    overflow-x: hidden;
+  :global([dir="rtl"]) .itemContent.left,
+  :global([dir="rtl"]) .itemContent.right {
+    text-align: right;
   }
+  
+  :global([dir="rtl"]) .itemTitle,
+  :global([dir="rtl"]) .itemDescription {
+    text-align: right;
+  }
+}
+
+/* LTR Support for English (default) */
+:global([dir="ltr"]) .sectionTitle {
+  text-align: center;
+  direction: ltr;
+}
+
+:global([dir="ltr"]) .itemContent.left {
+  text-align: left;
+  direction: ltr;
+}
+
+:global([dir="ltr"]) .itemContent.right {
+  text-align: right;
+  direction: ltr;
+}
+
+:global([dir="ltr"]) .itemTitle,
+:global([dir="ltr"]) .itemDescription {
+  direction: ltr;
+  text-align: inherit;
 }

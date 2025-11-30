@@ -106,7 +106,7 @@ export default function BenefitsSection({ scrollY = 0 }: BenefitsSectionProps) {
         </h2>
 
         <div className={styles.circleContainer}>
-          {/* Crescent path benefits */}
+          {/* Crescent path benefits - Large screens only */}
           <div className={styles.crescentPath}>
             {crescentBenefits.map((benefit, index) => {
               const Icon = benefit.icon
@@ -139,26 +139,93 @@ export default function BenefitsSection({ scrollY = 0 }: BenefitsSectionProps) {
               </div>
               
               <div className={styles.features}>
-                {centerFeatures.map((feature, index) => {
-                  const Icon = feature.icon
-                  return (
-                    <div 
-                      key={index}
-                      className={styles.feature}
-                      data-accent={feature.accent}
-                      style={{ transitionDelay: `${(index + 1) * 100}ms` }}
-                    >
-                      <div className={styles.featureIconContainer}>
-                        <Icon className={styles.featureIcon} size={20} />
+                <div className={styles.featuresTrack}>
+                  {/* First set of features */}
+                  {centerFeatures.map((feature, index) => {
+                    const Icon = feature.icon
+                    return (
+                      <div 
+                        key={`first-${index}`}
+                        className={styles.feature}
+                        data-accent={feature.accent}
+                        style={{ transitionDelay: `${(index + 1) * 100}ms` }}
+                      >
+                        <div className={styles.featureIconContainer}>
+                          <Icon className={styles.featureIcon} size={20} />
+                        </div>
+                        <div className={styles.featureContent}>
+                          <div className={styles.featureTitle}>{t(`home.benefits.${feature.titleKey}`)}</div>
+                          <div className={styles.featureDescription}>{t(`home.benefits.${feature.descKey}`)}</div>
+                        </div>
                       </div>
-                      <div className={styles.featureContent}>
-                        <div className={styles.featureTitle}>{t(`home.benefits.${feature.titleKey}`)}</div>
-                        <div className={styles.featureDescription}>{t(`home.benefits.${feature.descKey}`)}</div>
+                    )
+                  })}
+                  {/* Duplicate set for seamless loop - Large screens only */}
+                  {centerFeatures.map((feature, index) => {
+                    const Icon = feature.icon
+                    return (
+                      <div 
+                        key={`second-${index}`}
+                        className={`${styles.feature} ${styles.featureDuplicate}`}
+                        data-accent={feature.accent}
+                        aria-hidden="true"
+                      >
+                        <div className={styles.featureIconContainer}>
+                          <Icon className={styles.featureIcon} size={20} />
+                        </div>
+                        <div className={styles.featureContent}>
+                          <div className={styles.featureTitle}>{t(`home.benefits.${feature.titleKey}`)}</div>
+                          <div className={styles.featureDescription}>{t(`home.benefits.${feature.descKey}`)}</div>
+                        </div>
                       </div>
-                    </div>
-                  )
-                })}
+                    )
+                  })}
+                </div>
               </div>
+            </div>
+          </div>
+
+          {/* Benefits slider below the circle - Small screens only */}
+          <div className={styles.benefitsSlider}>
+            <div className={styles.benefitsSliderTrack}>
+              {/* First set of benefits */}
+              {crescentBenefits.map((benefit, index) => {
+                const Icon = benefit.icon
+                return (
+                  <div
+                    key={`first-${index}`}
+                    className={`${styles.benefitBadge} ${isVisible ? styles.benefitVisible : styles.benefitHidden}`}
+                    style={{
+                      transitionDelay: `${index * 120}ms`,
+                    } as React.CSSProperties}
+                  >
+                    <div className={styles.benefitCard}>
+                      <div className={styles.benefitIconWrapper}>
+                        <Icon className={styles.benefitIcon} size={22} />
+                      </div>
+                      <span className={styles.benefitText}>{t(`home.benefits.crescent.${benefit.key}`)}</span>
+                    </div>
+                  </div>
+                )
+              })}
+              {/* Duplicate set for seamless loop */}
+              {crescentBenefits.map((benefit, index) => {
+                const Icon = benefit.icon
+                return (
+                  <div
+                    key={`second-${index}`}
+                    className={`${styles.benefitBadge} ${isVisible ? styles.benefitVisible : styles.benefitHidden}`}
+                    aria-hidden="true"
+                  >
+                    <div className={styles.benefitCard}>
+                      <div className={styles.benefitIconWrapper}>
+                        <Icon className={styles.benefitIcon} size={22} />
+                      </div>
+                      <span className={styles.benefitText}>{t(`home.benefits.crescent.${benefit.key}`)}</span>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
