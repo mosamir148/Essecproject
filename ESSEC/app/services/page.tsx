@@ -2,7 +2,7 @@
 
 import { useLanguage } from '@/hooks/useLanguage'
 import DefaultImage from '@/components/DefaultImage'
-import { Settings, Wrench, Headphones, Truck } from 'lucide-react'
+import { Settings, Wrench, Headphones, Truck, Award } from 'lucide-react'
 import styles from './services.module.css'
 
 export default function ServicesPage() {
@@ -115,6 +115,38 @@ export default function ServicesPage() {
                 </div>
               )
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Work Areas Section */}
+      <section className={styles.workAreasSection}>
+        <div className={styles.container}>
+          <div className={styles.workAreasHeader}>
+            <h2 className={styles.workAreasTitle}>
+              {t('services.workAreas.title')}
+            </h2>
+          </div>
+          <div className={styles.workAreasList}>
+            {[
+              'gridConnected',
+              'offGrid',
+              'irrigationPumps',
+              'waterHeatingManufacturing',
+              'centralHeating',
+              'poolHeating',
+              'waterTreatment',
+              'solarDrying',
+              'upsSystems',
+              'researchLabs'
+            ].map((key, index) => (
+              <div key={key} className={styles.workAreaItem}>
+                <Award className={styles.workAreaIcon} />
+                <span className={styles.workAreaText}>
+                  {t(`services.workAreas.${key}`)}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>

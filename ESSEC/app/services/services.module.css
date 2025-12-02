@@ -509,6 +509,122 @@
   color: rgb(209, 213, 219);
 }
 
+/* Work Areas Section */
+.workAreasSection {
+  padding: 5rem 0;
+  background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+
+:global(.dark) .workAreasSection {
+  background: linear-gradient(135deg, #0B0F13 0%, rgba(0, 230, 118, 0.02) 30%, rgba(0, 176, 255, 0.02) 70%, #0B0F13 100%);
+  position: relative;
+}
+
+.workAreasHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.workAreasTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: rgb(17 24 39);
+  margin-bottom: 1rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .workAreasTitle {
+    font-size: 3rem;
+  }
+}
+
+:global(.dark) .workAreasTitle {
+  color: #FFFFFF;
+  text-shadow: 0 0 20px rgba(0, 230, 118, 0.3);
+}
+
+.workAreasList {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .workAreasList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .workAreasList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+.workAreaItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: rgb(249 250 251);
+  border-radius: 0.75rem;
+  border: 1px solid rgb(229 231 235);
+  transition: all 0.3s ease;
+}
+
+.workAreaItem:hover {
+  background-color: rgb(243 244 246);
+  border-color: rgb(209 213 219);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+:global(.dark) .workAreaItem {
+  background-color: rgba(17, 24, 39, 0.5);
+  border-color: rgba(55, 65, 81, 0.5);
+}
+
+:global(.dark) .workAreaItem:hover {
+  background-color: rgba(31, 41, 55, 0.7);
+  border-color: rgba(75, 85, 99, 0.5);
+  box-shadow: 0 4px 6px -1px rgba(0, 230, 118, 0.1), 0 2px 4px -1px rgba(0, 176, 255, 0.1);
+}
+
+.workAreaIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #09A86B;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  transition: color 0.3s ease;
+}
+
+:global(.dark) .workAreaIcon {
+  color: #00E676;
+}
+
+.workAreaText {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: rgb(55 65 81);
+  transition: color 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .workAreaText {
+    font-size: 1.25rem;
+  }
+}
+
+:global(.dark) .workAreaText {
+  color: #E5E7EB;
+}
+
 /* RTL Support for Arabic */
 .page[dir="rtl"] {
   direction: rtl;

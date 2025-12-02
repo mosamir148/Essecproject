@@ -37,7 +37,7 @@
     "vision": {
       "title": "Our Vision",
       "subtitle": "Shaping the future of renewable energy",
-      "description": "At ESSEC Solar Engineering, we envision a world where clean, sustainable energy is accessible to everyone. Our mission is to lead the transformation towards renewable energy solutions that are not only environmentally responsible but also economically viable.",
+      "description": "ESSEC Solar Engineering Services is one of the leading companies in the energy sector, focusing since 2004 on spreading the use of small solar energy systems, especially centralized production plants installed in residential, commercial, and public buildings, in addition to factories and hotels.\n\nThe company aims to support the expansion of large-scale grid-connected solar power plants, with a focus on increasing the local component ratio in manufacturing and qualifying specialized technical cadres. Through this, the company seeks to enhance emerging markets for this technology in Egypt, create new job opportunities for youth, and remove obstacles that hinder the expansion of energy production through small solar cells.",
       "points": {
         "innovation": "Innovation",
         "innovationDesc": "Pioneering cutting-edge solar technologies",
@@ -421,8 +421,8 @@
       "workers": "Workers",
       "managers": "Managers"
     },
-    "companyDescription1": "ESSEC Solar Engineering is a leading provider of comprehensive solar energy solutions, committed to delivering sustainable and efficient renewable energy systems. With years of experience in the industry, we specialize in designing, installing, and maintaining solar photovoltaic systems for residential, commercial, and industrial applications.",
-    "companyDescription2": "Our mission is to make clean, renewable energy accessible to everyone while providing exceptional service and support throughout the entire project lifecycle.",
+    "companyDescription1": "Our experience extends over twenty years, with our company having an outstanding and distinguished track record in the solar energy sector since our inception. We have been at the forefront of companies contributing to the development of solar energy technologies and promoting sustainable energy solutions. Our journey began with advanced research in photovoltaic cell systems, which paved the way for developing effective solutions, including high-efficiency solar panels and innovative energy storage systems. We have successfully implemented numerous projects at both commercial and residential levels, as well as in large-scale solar power plants.",
+    "companyDescription2": "Our projects have effectively contributed to reducing carbon emissions, reflecting our deep commitment to achieving environmental sustainability and supporting energy independence. Among our most notable achievements is the integration of smart grid technologies within high-efficiency solar energy systems. We take pride in our reputation built on providing reliable and high-quality solar solutions that meet diverse customer needs. Our team of experts continues to push the boundaries of technological development to ensure our leadership in this field, contributing to shaping the future of the energy sector through innovation and excellence. We continue to support a greener and more sustainable world through reliance on renewable energy.",
     "solutionsList": {
       "solarPV": "Solar PV Power Generation Systems (On-Grid, Off-Grid, Net-Meter)",
       "waterHeating": "Solar Water Heating Systems",
@@ -475,6 +475,19 @@
         "description": "Ongoing monitoring and maintenance"
       }
     },
+    "workAreas": {
+      "title": "Company Work Areas",
+      "gridConnected": "Grid-connected solar power plants",
+      "offGrid": "Off-grid solar power plants",
+      "irrigationPumps": "Solar power plants for operating solar irrigation pumps",
+      "waterHeatingManufacturing": "Manufacturing all components of solar water heating systems for residential purposes and villas",
+      "centralHeating": "Central water heating systems for hospitals, hotels, industrial facilities, university cities, and camps",
+      "poolHeating": "Pool heating and warming systems, solar oven heating and heating, condensers for farm and poultry rooms, in addition to solar cooking systems",
+      "waterTreatment": "Solar water desalination and treatment systems and solar cooling systems",
+      "solarDrying": "Solar drying systems for agricultural crops and medicinal and aromatic plants",
+      "upsSystems": "UPS units for charging with solar energy or electricity in case of power outage",
+      "researchLabs": "Equipping research and scientific laboratories with all their needs for devices related to new and renewable energy"
+    },
     "heroImageAlt": "ESSEC Services"
   },
   "contact": {
@@ -492,9 +505,9 @@
     "info": {
       "title": "Get in Touch",
       "address": "Address",
-      "addressValue": "Solar Energy District\nBuilding 123, Street 456\nCity, Country 12345",
+      "addressValue": "Main Branch - Factories\nQaha City - Qalyubia\n65 Abdel Hamid Badawy street, Heliopolis, Cairo, Egypt\n\nThe second branch\n112 Gharb el-seka el-hadeed st, El Mataria, Cairo",
       "phone": "Phone",
-      "phoneValue": "+123 456 7890\n+123 456 7891",
+      "phoneValue": "+201004505055\n+201222478117\n02-26233026",
       "email": "Email",
       "emailValue": "info@essec-solar.com\nsupport@essec-solar.com"
     },
@@ -523,8 +536,8 @@
     "phone": "Phone",
     "address": "Address",
     "emailValue": "info@essec-solar.com",
-    "phoneValue": "+123 456 7890",
-    "addressValue": "Solar Energy District",
+    "phoneValue": "+201004505055, +201222478117, 02-26233026",
+    "addressValue": "Main Branch - Factories, Qaha City - Qalyubia, 65 Abdel Hamid Badawy street, Heliopolis, Cairo, Egypt | The second branch: 112 Gharb el-seka el-hadeed st, El Mataria, Cairo",
     "copyright": "All rights reserved.",
     "logoAlt": "ESSEC Solar Engineering Logo"
   },

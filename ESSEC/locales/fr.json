@@ -37,7 +37,7 @@
     "vision": {
       "title": "Notre Vision",
       "subtitle": "Façonner l'avenir de l'énergie renouvelable",
-      "description": "Chez ESSEC Solar Engineering, nous envisageons un monde où l'énergie propre et durable est accessible à tous. Notre mission est de mener la transformation vers des solutions d'énergie renouvelable qui sont non seulement respectueuses de l'environnement mais aussi économiquement viables.",
+      "description": "ESSEC Solar Engineering Services est l'une des entreprises leaders du secteur de l'énergie, se concentrant depuis 2004 sur la diffusion de l'utilisation de petits systèmes d'énergie solaire, en particulier les centrales de production centralisées installées dans les bâtiments résidentiels, commerciaux et publics, en plus des usines et des hôtels.\n\nL'entreprise vise à soutenir l'expansion des grandes centrales solaires connectées au réseau, en se concentrant sur l'augmentation du ratio de composants locaux dans la fabrication et la qualification des cadres techniques spécialisés. À travers cela, l'entreprise cherche à renforcer les marchés émergents de cette technologie en Égypte, créer de nouvelles opportunités d'emploi pour les jeunes et supprimer les obstacles qui entravent l'expansion de la production d'énergie grâce aux petites cellules solaires.",
       "points": {
         "innovation": "Innovation",
         "innovationDesc": "Pionnier des technologies solaires de pointe",
@@ -421,8 +421,8 @@
       "workers": "Ouvriers",
       "managers": "Gestionnaires"
     },
-    "companyDescription1": "ESSEC Solar Engineering est un fournisseur de premier plan de solutions complètes d'énergie solaire, engagé à fournir des systèmes d'énergie renouvelable durables et efficaces. Avec des années d'expérience dans l'industrie, nous nous spécialisons dans la conception, l'installation et la maintenance de systèmes photovoltaïques solaires pour les applications résidentielles, commerciales et industrielles.",
-    "companyDescription2": "Notre mission est de rendre l'énergie propre et renouvelable accessible à tous tout en fournissant un service et un support exceptionnels tout au long du cycle de vie du projet.",
+    "companyDescription1": "Notre expérience s'étend sur plus de vingt ans, notre entreprise ayant un bilan remarquable et distingué dans le secteur de l'énergie solaire depuis nos débuts. Nous avons été à l'avant-garde des entreprises contribuant au développement des technologies de l'énergie solaire et à la promotion de solutions énergétiques durables. Notre parcours a commencé par des recherches avancées sur les systèmes de cellules photovoltaïques, qui ont ouvert la voie au développement de solutions efficaces, notamment des panneaux solaires à haut rendement et des systèmes de stockage d'énergie innovants. Nous avons mis en œuvre avec succès de nombreux projets aux niveaux commercial et résidentiel, ainsi que dans des centrales solaires à grande échelle.",
+    "companyDescription2": "Nos projets ont contribué efficacement à la réduction des émissions de carbone, reflétant notre engagement profond en faveur de la durabilité environnementale et du soutien à l'indépendance énergétique. Parmi nos réalisations les plus notables figure l'intégration de technologies de réseau intelligent dans les systèmes d'énergie solaire à haut rendement. Nous sommes fiers de notre réputation fondée sur la fourniture de solutions solaires fiables et de haute qualité qui répondent aux besoins divers des clients. Notre équipe d'experts continue de repousser les limites du développement technologique pour assurer notre leadership dans ce domaine et contribuer à façonner l'avenir du secteur de l'énergie grâce à l'innovation et à l'excellence. Nous continuons à soutenir un monde plus vert et plus durable grâce à l'utilisation des énergies renouvelables.",
     "solutionsList": {
       "solarPV": "Systèmes de génération d'énergie solaire PV (Sur réseau, Hors réseau, Compteur net)",
       "waterHeating": "Systèmes de chauffage solaire de l'eau",
@@ -475,6 +475,19 @@
         "description": "Surveillance continue et maintenance"
       }
     },
+    "workAreas": {
+      "title": "Domaines d'activité de l'entreprise",
+      "gridConnected": "Centrales solaires connectées au réseau électrique public",
+      "offGrid": "Centrales solaires hors réseau électrique public",
+      "irrigationPumps": "Centrales solaires pour faire fonctionner les pompes d'irrigation solaires",
+      "waterHeatingManufacturing": "Fabrication de tous les composants des systèmes de chauffage solaire de l'eau pour usage résidentiel et villas",
+      "centralHeating": "Systèmes de chauffage central de l'eau pour hôpitaux, hôtels, installations industrielles, villes universitaires et camps",
+      "poolHeating": "Systèmes de chauffage et de réchauffage des piscines, chauffage et réchauffage des fours solaires et condenseurs pour les salles d'élevage et de volaille, en plus des systèmes de cuisson solaire",
+      "waterTreatment": "Systèmes de dessalement et de traitement de l'eau solaire et systèmes de refroidissement solaire",
+      "solarDrying": "Systèmes de séchage solaire pour les cultures agricoles et les plantes médicinales et aromatiques",
+      "upsSystems": "Unités UPS pour la charge avec l'énergie solaire ou l'électricité en cas de panne de courant",
+      "researchLabs": "Équipement des laboratoires de recherche et scientifiques avec tous leurs besoins en appareils liés aux énergies nouvelles et renouvelables"
+    },
     "heroImageAlt": "Services ESSEC"
   },
   "contact": {
@@ -492,9 +505,9 @@
     "info": {
       "title": "Contactez-nous",
       "address": "Adresse",
-      "addressValue": "Quartier de l'énergie solaire\nBâtiment 123, Rue 456\nVille, Pays 12345",
+      "addressValue": "Succursale principale - Usines\nVille de Qaha - Qalyubia\n65 rue Abdel Hamid Badawy, Héliopolis, Le Caire, Égypte\n\nLa deuxième succursale\n112 rue Gharb el-seka el-hadeed, El Mataria, Le Caire",
       "phone": "Téléphone",
-      "phoneValue": "+123 456 7890\n+123 456 7891",
+      "phoneValue": "+201004505055\n+201222478117\n02-26233026",
       "email": "Email",
       "emailValue": "info@essec-solar.com\nsupport@essec-solar.com"
     },
@@ -523,8 +536,8 @@
     "phone": "Téléphone",
     "address": "Adresse",
     "emailValue": "info@essec-solar.com",
-    "phoneValue": "+123 456 7890",
-    "addressValue": "Quartier de l'énergie solaire",
+    "phoneValue": "+201004505055, +201222478117, 02-26233026",
+    "addressValue": "Succursale principale - Usines, Ville de Qaha - Qalyubia, 65 rue Abdel Hamid Badawy, Héliopolis, Le Caire, Égypte | La deuxième succursale: 112 rue Gharb el-seka el-hadeed, El Mataria, Le Caire",
     "copyright": "Tous droits réservés.",
     "logoAlt": "Logo ESSEC Solar Engineering"
   },

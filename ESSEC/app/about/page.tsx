@@ -129,7 +129,7 @@ export default function AboutPage() {
               
               <div className={styles.establishmentInfo}>
                 <Calendar className={styles.establishmentIcon} />
-                <span className={styles.establishmentText}>{t('about.establishment')}: 2010</span>
+                <span className={styles.establishmentText}>{t('about.establishment')}: 2004</span>
               </div>
             </div>
             

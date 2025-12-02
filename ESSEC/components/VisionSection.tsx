@@ -126,6 +126,15 @@ export default function VisionSection({ scrollY = 0 }: VisionSectionProps) {
         <h2 className={`${styles.sectionTitle} ${isVisible ? styles.visible : styles.hidden}`}>
           {t('home.vision.title')}
         </h2>
+        {t('home.vision.description') && (
+          <div className={`${styles.description} ${isVisible ? styles.visible : styles.hidden}`}>
+            {t('home.vision.description').split('\n').map((paragraph, index) => (
+              <p key={index} className={styles.descriptionParagraph}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
       
       <div className={styles.content}>
