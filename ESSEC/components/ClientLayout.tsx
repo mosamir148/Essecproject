@@ -10,7 +10,7 @@ import { useTheme } from 'next-themes'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
-function LoadingPageWithTheme() {
+function LoadingPageWithTheme({ onLoadingChange }: { onLoadingChange?: (isLoading: boolean) => void }) {
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -68,22 +68,30 @@ function LoadingPageWithTheme() {
   // Determine which logo to use based on theme
   const logoSrc = isDarkMode ? '/logo w.PNG' : '/logo.PNG'
 
-  return <LoadingPage logo={logoSrc} websiteName="ESSEC" />
+  return <LoadingPage logo={logoSrc} websiteName="ESSEC" onLoadingChange={onLoadingChange} />
 }
 
 export function ClientLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const isAdminPage = pathname?.startsWith('/admin')
+  const [isLoading, setIsLoading] = useState(true)
   
   return (
     <Providers>
-      <LoadingPageWithTheme />
-      <Navbar />
-      <main className="pt-20">
-        {children}
-      </main>
-      {!isAdminPage && <Footer />}
-      <ScrollToTop />
+      <LoadingPageWithTheme onLoadingChange={setIsLoading} />
+      <div style={{ 
+        opacity: isLoading ? 0 : 1, 
+        visibility: isLoading ? 'hidden' : 'visible',
+        transition: 'opacity 0.5s ease-in, visibility 0.5s ease-in',
+        minHeight: isLoading ? '100vh' : 'auto'
+      }}>
+        <Navbar />
+        <main className="pt-20">
+          {children}
+        </main>
+        {!isAdminPage && <Footer />}
+        <ScrollToTop />
+      </div>
     </Providers>
   )
 }

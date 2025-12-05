@@ -574,6 +574,11 @@ export const api = {
 
   // Get a single news item by ID (public)
   async getNewsItem(id: string): Promise<any> {
+    // Validate ID before making request
+    if (!id || id === 'undefined' || typeof id !== 'string' || id.trim() === '') {
+      throw new Error('Invalid news ID')
+    }
+    
     const response = await fetch(`${API_BASE_URL}/news/${id}`)
     if (!response.ok) {
       const error = await response.json().catch(() => ({ error: 'Failed to fetch news item' }))

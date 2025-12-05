@@ -40,8 +40,11 @@ export default function NewsDetailPage() {
       }
     }
 
-    if (newsId) {
+    // Validate newsId before making API call
+    if (newsId && newsId !== 'undefined' && typeof newsId === 'string' && newsId.trim() !== '') {
       loadNews()
+    } else {
+      setLoading(false)
     }
   }, [newsId])
 
@@ -208,6 +211,9 @@ export default function NewsDetailPage() {
     </div>
   )
 }
+
+
+
 
 
 

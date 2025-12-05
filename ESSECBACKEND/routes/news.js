@@ -77,7 +77,16 @@ router.get('/', async (req, res) => {
       .lean() // Use lean() for faster queries
       .maxTimeMS(5000); // 5 second timeout for the query
     
-    res.json(news);
+    // Transform _id to id for consistency (lean() bypasses Mongoose transforms)
+    const transformedNews = news.map(item => {
+      const { _id, ...rest } = item;
+      return {
+        ...rest,
+        id: _id.toString()
+      };
+    });
+    
+    res.json(transformedNews);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

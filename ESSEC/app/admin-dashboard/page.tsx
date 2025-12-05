@@ -180,7 +180,12 @@ export default function AdminDashboard() {
   }
 
   const handleEditNews = (news: NewsItem) => {
-    router.push(`/admin/news/${news.id}/edit`)
+    const newsId = (news as any).id || (news as any)._id?.toString() || news.id
+    if (!newsId || newsId === 'undefined') {
+      alert('Invalid news ID')
+      return
+    }
+    router.push(`/admin/news/${newsId}/edit`)
   }
 
   const loadHomepageVideos = async () => {
@@ -1000,8 +1005,11 @@ export default function AdminDashboard() {
                             </td>
                           </tr>
                         ) : (
-                          newsItems.map((news) => (
-                            <tr key={news.id || `news-${news.title}`} className={styles.tableRow}>
+                          newsItems.map((news) => {
+                            // Handle both id and _id (fallback for backward compatibility)
+                            const newsId = (news as any).id || (news as any)._id?.toString() || news.id || ''
+                            return (
+                            <tr key={newsId || `news-${news.title}`} className={styles.tableRow}>
                               <td className={`${styles.tableCell} ${styles.tableCellName}`}>
                                 {news.title}
                               </td>
@@ -1021,7 +1029,7 @@ export default function AdminDashboard() {
                                     <Edit className={styles.actionIcon} />
                                   </button>
                                   <button
-                                    onClick={() => handleDeleteNews(news.id)}
+                                    onClick={() => handleDeleteNews(newsId)}
                                     className={`${styles.actionButton} ${styles.actionButtonRed}`}
                                     title={t('admin.delete')}
                                   >
@@ -1030,7 +1038,8 @@ export default function AdminDashboard() {
                                 </div>
                               </td>
                             </tr>
-                          ))
+                            )
+                          })
                         )}
                       </tbody>
                     </table>

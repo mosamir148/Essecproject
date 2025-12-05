@@ -10,13 +10,15 @@ interface LoadingPageProps {
   websiteName?: string
   onComplete?: () => void
   minDisplayTime?: number // Minimum time to show loader in ms
+  onLoadingChange?: (isLoading: boolean) => void // Callback to notify parent of loading state
 }
 
 export default function LoadingPage({ 
   logo = '/logo.PNG', 
   websiteName = 'ESSEC',
   onComplete,
-  minDisplayTime = 2000 // 2 seconds for navigation
+  minDisplayTime = 2000, // 2 seconds for navigation
+  onLoadingChange
 }: LoadingPageProps) {
   const pathname = usePathname()
   const [isVisible, setIsVisible] = useState(true)
@@ -31,7 +33,18 @@ export default function LoadingPage({
   // Set mounted flag to avoid hydration issues
   useEffect(() => {
     setMounted(true)
-  }, [])
+    // Notify parent immediately on mount that we're loading
+    if (onLoadingChange) {
+      onLoadingChange(true)
+    }
+  }, [onLoadingChange])
+
+  // Notify parent of loading state changes
+  useEffect(() => {
+    if (onLoadingChange && mounted) {
+      onLoadingChange(isVisible)
+    }
+  }, [isVisible, mounted, onLoadingChange])
 
   // Show loading page on every navigation (initial load and client-side navigation)
   useEffect(() => {
@@ -571,10 +584,12 @@ export default function LoadingPage({
     }
   }, [onComplete, minDisplayTime, isVisible, pathname, mounted])
 
-  if (!isVisible || !mounted) return null
+  // Always render the container, but control visibility with CSS
+  // This ensures it's in the DOM from the start and can hide content behind it
+  if (!mounted) return null
 
   return (
-    <div className={styles.loadingContainer}>
+    <div className={`${styles.loadingContainer} ${!isVisible ? styles.hidden : ''}`}>
       {/* Background with subtle 3D gradient */}
       <div className={styles.background}>
         <div className={styles.gradientOrb1} />

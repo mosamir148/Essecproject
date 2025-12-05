@@ -105,6 +105,11 @@ export default function NewsSection({ scrollY = 0 }: NewsSectionProps) {
   }
 
   const handleReadMore = (id: string) => {
+    // Validate ID before navigation
+    if (!id || id === 'undefined' || typeof id !== 'string' || id.trim() === '') {
+      console.error('Invalid news ID:', id)
+      return
+    }
     router.push(`/news/${id}`)
   }
 
@@ -265,11 +270,15 @@ export default function NewsSection({ scrollY = 0 }: NewsSectionProps) {
                 <div
                   className={styles.sliderTrack}
                   style={{
-                    transform: `translateX(-${currentIndex * 100}%)`
+                    transform: `translateX(-${currentIndex * 100}%)`,
+                    width: `${newsItems.length * 100}%`
                   }}
                 >
-                  {newsItems.map((item) => (
-                    <div key={item.id} className={styles.newsCard}>
+                  {newsItems.map((item) => {
+                    // Handle both id and _id (fallback for backward compatibility)
+                    const itemId = item.id || item._id?.toString() || ''
+                    return (
+                    <div key={itemId || `news-${item.title}`} className={styles.newsCard}>
                       <div className={styles.imageContainer}>
                         <DefaultImage
                           src={item.mainImage}
@@ -290,13 +299,14 @@ export default function NewsSection({ scrollY = 0 }: NewsSectionProps) {
                         <p className={styles.newsSummary}>{item.summary}</p>
                         <button
                           className={styles.readMoreButton}
-                          onClick={() => handleReadMore(item.id)}
+                          onClick={() => handleReadMore(itemId)}
                         >
                           {t('home.news.readMore')}
                         </button>
                       </div>
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
 

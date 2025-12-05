@@ -80,6 +80,13 @@ export default function EditNewsPage() {
   }
 
   const loadNews = async () => {
+    // Validate newsId before making API call
+    if (!newsId || newsId === 'undefined' || typeof newsId !== 'string' || newsId.trim() === '') {
+      alert('Invalid news ID')
+      router.push('/admin-dashboard')
+      return
+    }
+    
     try {
       const news = await api.getNewsItem(newsId)
       setFormData({
@@ -545,6 +552,9 @@ export default function EditNewsPage() {
     </div>
   )
 }
+
+
+
 
 
 

@@ -28,7 +28,7 @@ async function createAdmin() {
     }
 
     // Create new admin
-    const admin = new Admin({ email, password, name });
+    const admin = new Admin({ "email": "admin@essec.edu", "password": "admin123", "name": "Admin" });
     await admin.save();
 
     console.log('✅ Admin created successfully!');
